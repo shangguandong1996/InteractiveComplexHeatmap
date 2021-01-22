@@ -5,6 +5,7 @@ articles:
   InteractiveComplexHeatmap: InteractiveComplexHeatmap.html
   decoration: decoration.html
   implementation: implementation.html
+  interactivate_indirect: interactivate_indirect.html
   shiny_dev: shiny_dev.html
-last_built: 2021-01-17T09:49Z
+last_built: 2021-01-22T20:44Z
 
