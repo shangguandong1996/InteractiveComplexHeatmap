@@ -1,8 +1,4 @@
 
-shiny_env = new.env()
-shiny_env$history = list()
-
-
 # == title
 # UI for the interactive ComplexHeatmap
 #
@@ -32,8 +28,8 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 	output_div = TRUE, css = "") {
 
 	if(is.null(heatmap_id)) {
-		heatmap_id = paste0("ht_", digest(Sys.time()))
-		shiny_env$current_heatmap_id = heatmap_id
+		increase_widget_index()
+		heatmap_id = paste0("ht", get_widget_index())
 	}
 
 	if(grepl("^\\d", heatmap_id)) {
@@ -44,6 +40,7 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 	}
 
 	shiny_env[[heatmap_id]] = list()
+	shiny_env$current_heatmap_id = heatmap_id
 
 	action = match.arg(action)[1]
 	if(action == "dblclick") {
@@ -123,6 +120,8 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 	fluidPage(class = qq("@{heatmap_id}_widget"),
 
 		list(jqueryui_dep, pickr_dep, fontawesome_dep, ht_js_dep),
+
+		htmlOutput(qq("@{heatmap_id}_warning")),
 
 		div(id = qq("@{heatmap_id}_heatmap_group"),
 			h5(title1),
@@ -211,8 +210,10 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 							),
 							div(
 								checkboxInput(qq("@{heatmap_id}_show_annotation_checkbox"), label = "Show heatmap annotations", value = TRUE),
-								checkboxInput(qq("@{heatmap_id}_show_cell_fun_checkbox"), label = "Show cell decorations", value = TRUE)
+								checkboxInput(qq("@{heatmap_id}_show_cell_fun_checkbox"), label = "Show cell decorations", value = TRUE),
+								checkboxInput(qq("@{heatmap_id}_fill_figure_checkbox"), label = "Fill figure region", value = FALSE)
 							),
+							actionButton(qq("@{heatmap_id}_open_modal"), label = "Interactivate sub-heatmap")
 						)
 					),
 					tabPanel(HTML("<i class='fa fa-table'></i>"),
@@ -244,3 +245,6 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 		if(output_div) htmlOutput(qq("@{heatmap_id}_info")) else NULL
 	)
 }
+
+
+

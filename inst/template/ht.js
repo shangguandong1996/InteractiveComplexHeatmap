@@ -101,48 +101,6 @@ $(function() {
 		}
 	});
 
-	var @{heatmap_id}_pickr1 = Pickr.create({
-	    el: '#@{heatmap_id}_color_pickers_border',
-	    default: '#003366',
-	    theme: 'nano',
-	    comparison: false,
-	    components: {
-	    	preview: true, 
-	    	opacity: true,
-	    	hue: true
-	    }
-	});	
-
-	@{heatmap_id}_pickr1.on('change', (color, source, instance) => {
-		$('#@{heatmap_id}_heatmap_brush').css('border-color', color.toRGBA().toString());
-		$('#@{heatmap_id}_heatmap').mousedown(function() {
-			if($('#@{heatmap_id}_heatmap_brush').length > 0) {
-				$('#@{heatmap_id}_heatmap_brush').css('border-color', color.toRGBA().toString());
-			}
-		});
-	});
-
-	var @{heatmap_id}_pickr2 = Pickr.create({
-	    el: '#@{heatmap_id}_color_pickers_fill',
-	    default: '#99ccff',
-	    theme: 'nano',
-	    comparison: false,
-	    components: {
-	    	preview: true, 
-	    	opacity: true,
-	    	hue: true
-	    }
-	});	
-
-	@{heatmap_id}_pickr2.on('change', (color, source, instance) => {
-		$('#@{heatmap_id}_heatmap_brush').css('background-color', color.toRGBA().toString());
-		$('#@{heatmap_id}_heatmap').mousedown(function() {
-			if($('#@{heatmap_id}_heatmap_brush').length > 0) {
-				$('#@{heatmap_id}_heatmap_brush').css('background-color', color.toRGBA().toString());
-			}
-		});
-	});
-
 	$('#@{heatmap_id}_color_pickers_border_width').change(function() {
 		var val = $(this).val();
 		$('#@{heatmap_id}_heatmap_brush').css('border-width', val);
@@ -164,8 +122,6 @@ $(function() {
 	});
 
 	// sub heamtaps
-
-
 	$('#@{heatmap_id}_sub_heatmap_input_size_button').click(function(){
 		var width = $('#@{heatmap_id}_sub_heatmap_input_width').val();
 		width = parseInt(width);
@@ -201,9 +157,10 @@ $(function() {
 		}
 	});
 
+	@{heatmap_id}_create_color_picker();
+	
 	Shiny.addCustomMessageHandler('@{heatmap_id}_initialized', function(message) {
 		$('#@{heatmap_id}_heatmap_control').css("display", "block");
-		Shiny.setInputValue('@{heatmap_id}_heatmap_download_trigger', Math.random());
 	});
 
 	Shiny.addCustomMessageHandler('@{heatmap_id}_empty_search', function(message) {
@@ -216,11 +173,11 @@ $(function() {
 		} else {
 			$('#@{heatmap_id}_sub_heatmap_control').css("display", "none");
 		}
-		Shiny.setInputValue('@{heatmap_id}_sub_heatmap_download_trigger', Math.random());
 	});
 
+	// similar function as "jquery ui tabs"
 	var objs = $('#@{heatmap_id}_heatmap_control li a');
-	$(objs[0]).attr("title", "Search heatmap");
+	$(objs[0]).attr("title", "Search in heatmaps");
 	$(objs[1]).attr("title", "Configure brush");
 	$(objs[2]).attr("title", "Save image");
 	$(objs[3]).attr("title", "Resize heatmap");
@@ -339,3 +296,52 @@ $(function() {
 		})
 	}
 });
+
+function @{heatmap_id}_create_color_picker() {
+	
+	var @{heatmap_id}_pickr1 = Pickr.create({
+	    el: '#@{heatmap_id}_color_pickers_border',
+	    default: '#003366',
+	    theme: 'nano',
+	    comparison: false,
+	    position: 'bottom-start',
+	    container: "#@{heatmap_id}_tabs-brush",
+	    components: {
+	    	preview: true, 
+	    	opacity: true,
+	    	hue: true
+	    }
+	});	
+
+	@{heatmap_id}_pickr1.on('change', (color, source, instance) => {
+		$('#@{heatmap_id}_heatmap_brush').css('border-color', color.toRGBA().toString());
+		$('#@{heatmap_id}_heatmap').mousedown(function() {
+			if($('#@{heatmap_id}_heatmap_brush').length > 0) {
+				$('#@{heatmap_id}_heatmap_brush').css('border-color', color.toRGBA().toString());
+			}
+		});
+	});
+
+	var @{heatmap_id}_pickr2 = Pickr.create({
+	    el: '#@{heatmap_id}_color_pickers_fill',
+	    default: '#99ccff',
+	    theme: 'nano',
+	    comparison: false,
+	    position: 'bottom-start',
+	    container: "#@{heatmap_id}_tabs-brush",
+	    components: {
+	    	preview: true, 
+	    	opacity: true,
+	    	hue: true
+	    }
+	});	
+
+	@{heatmap_id}_pickr2.on('change', (color, source, instance) => {
+		$('#@{heatmap_id}_heatmap_brush').css('background-color', color.toRGBA().toString());
+		$('#@{heatmap_id}_heatmap').mousedown(function() {
+			if($('#@{heatmap_id}_heatmap_brush').length > 0) {
+				$('#@{heatmap_id}_heatmap_brush').css('background-color', color.toRGBA().toString());
+			}
+		});
+	});
+}
