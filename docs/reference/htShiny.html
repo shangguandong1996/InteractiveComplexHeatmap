@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interactive heatmaps with a shiny app — htShiny • InteractiveComplexHeatmap</title>
+<title>Interactive heatmaps with a Shiny app — htShiny • InteractiveComplexHeatmap</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Interactive heatmaps with a shiny app — htShiny" />
-<meta property="og:description" content="Interactive heatmaps with a shiny app" />
+<meta property="og:title" content="Interactive heatmaps with a Shiny app — htShiny" />
+<meta property="og:description" content="Interactive heatmaps with a Shiny app" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5.1000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5.1001</span>
       </span>
     </div>
 
@@ -132,24 +132,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interactive heatmaps with a shiny app</h1>
+    <h1>Interactive heatmaps with a Shiny app</h1>
     
     <div class="hidden name"><code>htShiny.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Interactive heatmaps with a shiny app</p>
+    <p>Interactive heatmaps with a Shiny app</p>
     </div>
 
-    <pre class="usage"><span class='fu'>htShiny</span><span class='op'>(</span>ht_list <span class='op'>=</span> <span class='fu'>get_last_ht</span><span class='op'>(</span><span class='op'>)</span>, title <span class='op'>=</span> <span class='cn'>NULL</span>, description <span class='op'>=</span> <span class='cn'>NULL</span>,
-    hline <span class='op'>=</span> <span class='cn'>TRUE</span>, html <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>htShiny</span><span class='op'>(</span>ht_list <span class='op'>=</span> <span class='fu'>get_last_ht</span><span class='op'>(</span><span class='op'>)</span>, title <span class='op'>=</span> <span class='cn'>NULL</span>,
+    description <span class='op'>=</span> <span class='cn'>NULL</span>, hline <span class='op'>=</span> <span class='cn'>TRUE</span>, html <span class='op'>=</span> <span class='cn'>NULL</span>,
+    
+    <span class='co'># parameters passed to InteractiveComplexHeatmapOutput()</span>
+    heatmap_id <span class='op'>=</span> <span class='cn'>NULL</span>, title1 <span class='op'>=</span> <span class='st'>"Original heatmap"</span>, title2 <span class='op'>=</span> <span class='st'>"Selected sub-heatmap"</span>,
+    width1 <span class='op'>=</span> <span class='fl'>450</span>, height1 <span class='op'>=</span> <span class='fl'>350</span>, width2 <span class='op'>=</span> <span class='fl'>370</span>, height2 <span class='op'>=</span> <span class='fl'>350</span>, nrow <span class='op'>=</span> <span class='fl'>1</span>,
+    action <span class='op'>=</span> <span class='st'>"click"</span>, brush_opt <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>stroke <span class='op'>=</span> <span class='st'>"#f00"</span>, opacity <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>,
+    output_div <span class='op'>=</span> <span class='cn'>TRUE</span>
+    <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>ht_list</th>
-      <td><p>A <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap-class.html'>Heatmap-class</a></code> or a <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/HeatmapList-class.html'>HeatmapList-class</a></code> object. If it is not specified, a random heatmap is used. Better already updated by <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html'>draw()</a></code> function.</p></td>
+      <td><p>A <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap-class.html'>Heatmap-class</a></code> or a <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/HeatmapList-class.html'>HeatmapList-class</a></code> object. If it is not specified, the last generated heatmap is used. Better already updated by <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html'>draw()</a></code> function.</p></td>
     </tr>
     <tr>
       <th>title</th>
@@ -168,7 +175,47 @@
       <td><p>HTML fragment inserted below the heatmap.</p></td>
     </tr>
     <tr>
-      <th>...</th>
+      <th>heatmap_id</th>
+      <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>title1</th>
+      <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>title2</th>
+      <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>width1</th>
+      <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>height1</th>
+      <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>width2</th>
+      <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>height2</th>
+      <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>nrow</th>
+      <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>action</th>
+      <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>brush_opt</th>
+      <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>output_div</th>
       <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
     </tr>
     </table>
@@ -178,11 +225,13 @@
     <div class='dont-index'><p><a href='https://jokergoo.shinyapps.io/interactive_complexHeatmap/'>https://jokergoo.shinyapps.io/interactive_complexHeatmap/</a></p></div>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A shiny app object.</p>
+    <p>A Shiny app object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># use a random heatmap</span>
-<span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples"><div class='input'><span class='co'># use last generated heatmap</span>
+<span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/dev.interactive.html'>dev.interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>m</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>, <span class='fl'>10</span><span class='op'>)</span>
+    <span class='fu'><a href='https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html'>Heatmap</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
     <span class='fu'>htShiny</span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>}</span>
 

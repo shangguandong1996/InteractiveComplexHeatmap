@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5.1000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5.1001</span>
       </span>
     </div>
 
@@ -95,7 +95,7 @@
       <h1 data-toc-skip>How to visualize heatmaps interactively</h1>
                         <h4 class="author">Zuguang Gu ( <a href="mailto:z.gu@dkfz.de" class="email">z.gu@dkfz.de</a> )</h4>
             
-            <h4 class="date">2021-01-22</h4>
+            <h4 class="date">2021-01-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/blob/master/vignettes/InteractiveComplexHeatmap.Rmd"><code>vignettes/InteractiveComplexHeatmap.Rmd</code></a></small>
       <div class="hidden name"><code>InteractiveComplexHeatmap.Rmd</code></div>
@@ -203,6 +203,12 @@ p {
 <p><img src="https://jokergoo.github.io/images/signature_heatmap.png" width="100%" style="display: block; margin: auto;"></p>
 <p>Note the functionality of autonatically saving the last heatmap is only turned on when <strong>InteractiveComplexHeatmap</strong> packags is loaded, which means, <code><a href="https://github.com/jokergoo/InteractiveComplexHeatmap">library(InteractiveComplexHeatmap)</a></code> should be called before making the heatmap, or you need to explicitly set <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/ht_opt.html">ComplexHeatmap::ht_opt(save_last = TRUE)</a></code>.</p>
 <p>Nevertheless, if possible, I still suggest to explictly put the heatmap object in <code><a href="../reference/htShiny.html">htShiny()</a></code> which makes it clear which heatmap is becoming interactive.</p>
+</div>
+<div id="recursive-interactive-heatmap-widgets" class="section level2">
+<h2 class="hasAnchor">
+<a href="#recursive-interactive-heatmap-widgets" class="anchor"></a>Recursive interactive heatmap widgets</h2>
+<p>In the right panel there is the sub-heatmap that is selected from the left panel. When the original heatmap is very huge, even a tiny selection rectangle still generates a dense sub-heatmap where single cells are very hard to identify and read. In this case, the sub-heatmap can be continually exported as another independent interactive heatmap widget which is in a new layer above current one, just by clicking the button “Interactivate sub-heatmap” under the sub-heatmap. This process can be recursively applied untill you are satisfied with the details you can see in the sub-heatmap. An example is as follows:</p>
+<p><img src="https://jokergoo.github.io/images/recursive.gif?1" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="live-examples" class="section level2">
 <h2 class="hasAnchor">
@@ -421,7 +427,7 @@ p {
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] InteractiveComplexHeatmap_0.99.5.1000 knitr_1.30                           
+## [1] InteractiveComplexHeatmap_0.99.5.1001 knitr_1.30                           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] circlize_0.4.12           shape_1.4.5              

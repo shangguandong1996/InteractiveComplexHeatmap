@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5.1000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5.1001</span>
       </span>
     </div>
 
@@ -95,7 +95,7 @@
       <h1 data-toc-skip>Interactivate indirect use of pheatmap(), heatmap.2() and heatmap()</h1>
                         <h4 class="author">Zuguang Gu ( <a href="mailto:z.gu@dkfz.de" class="email">z.gu@dkfz.de</a> )</h4>
             
-            <h4 class="date">2021-01-22</h4>
+            <h4 class="date">2021-01-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/blob/master/vignettes/interactivate_indirect.Rmd"><code>vignettes/interactivate_indirect.Rmd</code></a></small>
       <div class="hidden name"><code>interactivate_indirect.Rmd</code></div>
@@ -136,7 +136,7 @@
 <span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SC3/man/sc3.html">sc3</a></span><span class="op">(</span><span class="va">sce</span>, ks <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, biology <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/SC3/man/sc3_plot_expression.html">sc3_plot_expression</a></span><span class="op">(</span><span class="va">sce</span>, k <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
-<p><img width="100%" src="https://user-images.githubusercontent.com/449218/105498918-0a871300-5cc1-11eb-92a6-ffed7460e4e1.png"></p>
+<p><img width="500px" src="https://user-images.githubusercontent.com/449218/105498918-0a871300-5cc1-11eb-92a6-ffed7460e4e1.png"></p>
 <p>To replace the internally use of <code><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap::pheatmap</a></code> with <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/pheatmap.html">ComplexHeatmap::pheatmap</a></code>, we can use <code><a href="https://rdrr.io/r/utils/getFromNamespace.html">assignInNamespace()</a></code> to directly change the value of <code>pheatmap</code> in <strong>pheatmap</strong> namespace. After that, recalling <code><a href="https://rdrr.io/pkg/SC3/man/sc3_plot_expression.html">sc3_plot_expression()</a></code> will directly use <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/pheatmap.html">ComplexHeatmap::pheatmap()</a></code> and now you can use <code><a href="../reference/htShiny.html">htShiny()</a></code> to export it as an interactive app. Of course, you need to regenerate the heatmap with the same code.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/getFromNamespace.html">assignInNamespace</a></span><span class="op">(</span><span class="st">"pheatmap"</span>, <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/pheatmap.html">pheatmap</a></span>, ns <span class="op">=</span> <span class="st">"pheatmap"</span><span class="op">)</span>
@@ -180,7 +180,7 @@
 ##             list(annotation_col = ann)[add_ann_col]))
 ##     }
 ## }
-## &lt;bytecode: 0x7fd0b5338ee0&gt;
+## &lt;bytecode: 0x7fa3872eace8&gt;
 ## &lt;environment: namespace:SC3&gt;
 ## 
 ## Signatures:
@@ -205,7 +205,7 @@
 <span class="fu"><a href="https://rdrr.io/pkg/GOexpress/man/heatmap_GO.html">heatmap_GO</a></span><span class="op">(</span>
     go_id <span class="op">=</span> <span class="st">"GO:0034142"</span>, result <span class="op">=</span> <span class="va">BP.5</span>, eSet<span class="op">=</span><span class="va">AlvMac</span>, cexRow<span class="op">=</span><span class="fl">0.4</span>,
     cexCol<span class="op">=</span><span class="fl">1</span>, cex.main<span class="op">=</span><span class="fl">1</span>, main.Lsplit<span class="op">=</span><span class="fl">30</span><span class="op">)</span></code></pre></div>
-<p><img width="100%" src="https://user-images.githubusercontent.com/449218/105498979-212d6a00-5cc1-11eb-9911-6409b699257b.png"></p>
+<p><img width="500px" src="https://user-images.githubusercontent.com/449218/105498979-212d6a00-5cc1-11eb-9911-6409b699257b.png"></p>
 <p>Now note in <code><a href="https://rdrr.io/pkg/GOexpress/man/heatmap_GO.html">heatmap_GO()</a></code> function, <code><a href="https://rdrr.io/pkg/gplots/man/heatmap.2.html">heatmap.2()</a></code> is used without <strong>gplots</strong> namespace (go to the end of the function definition listed below).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">heatmap_GO</span></code></pre></div>
@@ -271,7 +271,7 @@
 ##         trace = trace, RowSideColors = samples.col, col = expr.col, 
 ##         margins = margins, ...)
 ## }
-## &lt;bytecode: 0x7fd09f96ddf8&gt;
+## &lt;bytecode: 0x7fa376416860&gt;
 ## &lt;environment: namespace:GOexpress&gt;</code></pre>
 <p>In this case, the <strong>GOexpress</strong> namespace should firstly be removed by <code><a href="https://rdrr.io/r/base/detach.html">detach()</a></code>, or else <code><a href="https://rdrr.io/pkg/GOexpress/man/heatmap_GO.html">heatmap_GO()</a></code> will still use <code><a href="https://rdrr.io/pkg/gplots/man/heatmap.2.html">gplots::heatmap.2()</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
