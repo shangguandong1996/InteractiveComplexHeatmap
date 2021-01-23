@@ -3,9 +3,9 @@
 # Interactive complex heatmap modal
 #
 # == param
-# -input Passed from the shiny server function.
-# -output Passed from the shiny server function.
-# -session Passed from the shiny server function.
+# -input Passed from the Shiny server function.
+# -output Passed from the Shiny server function.
+# -session Passed from the Shiny server function.
 # -get_heatmap A `ComplexHeatmap::Heatmap-class` or a `ComplexHeatmap::HeatmapList-class` object. The value can also
 #           be a function with no argument that generates such object.
 # -heatmap_id ID of the plot. If it is not specified, an internal ID is assigned.
@@ -23,11 +23,11 @@
 # -brush_action Pass to `renderInteractiveComplexHeatmap`.
 # -default_click_action Pass to `renderInteractiveComplexHeatmap`.
 # -default_brush_action Pass to `renderInteractiveComplexHeatmap`.
-# -js_code Additional javascript code that is put after the interactive heatmap UI. The value can be a text or a function
-#       that takes "heatmap id" as the argument and returns the formatted javascript code.
+# -js_code Additional JavaScript code that is put after the interactive heatmap UI. The value can be a text or a function
+#       that takes "heatmap ID" as the argument and returns the formatted JavaScript code.
 # -close_button Whether to add a close button at the end of the widget. If it is ``FALSE``, the widget
-#      can be closed by click outside of the widget.
-# -cancel_action Whether to remove the UI or just hide it when the UI is closed.
+#      can be closed by clicking outside of the widget.
+# -cancel_action Whether to remove the UI from HTML or just hide it when the UI is closed.
 #
 # == details
 # It create an interactive heatmap "modal" according to a certain action.
@@ -59,14 +59,15 @@ InteractiveComplexHeatmapModal = function(
 	# parameters passed to InteractiveComplexHeatmapOutput()
 	title1 = "Original heatmap", title2 = "Selected sub-heatmap",
 	width1 = 450, height1 = 350, width2 = 370, height2 = 350, nrow = 1,
-	action = "click", brush_opt = list(), output_div = TRUE,
+	action = "click", brush_opt = list(stroke = "#f00", opacity = 0.6), 
+	output_div = TRUE,
 
 	# parameters passed to renderInteractiveComplexHeatmap()
 	click_action = NULL, brush_action = NULL, 
 	default_click_action = TRUE, default_brush_action = TRUE,
 
 	# other configurations
-	js_code = "", close_button = FALSE, cancel_action = c("remove", "hide")
+	js_code = "", close_button = TRUE, cancel_action = c("remove", "hide")
 	) {
 	
 	if(is.null(heatmap_id)) {
@@ -86,6 +87,10 @@ InteractiveComplexHeatmapModal = function(
 	output[[qq("@{heatmap_id}_heatmap_modal_ui")]] = renderUI({
 		div(id = qq("@{heatmap_id}_heatmap_modal_background"),
 			div(id = qq("@{heatmap_id}_heatmap_modal"),
+				class = "heatmap_modal",
+				span(id = qq("@{heatmap_id}_heatmap_modal_close_icon"),
+					HTML("<i class='fa fa-times'></i>")
+				),
 				InteractiveComplexHeatmapOutput(heatmap_id = heatmap_id, title1 = title1, title2 = title2,
 					width1 = width1, height1 = height1, width2 = width2, height2 = height2, nrow = nrow,
 					action = action, brush_opt = brush_opt, output_div = output_div),
@@ -123,11 +128,21 @@ InteractiveComplexHeatmapModal = function(
 					border-radius: 6px;
 					outline: 0;
 				}
+				#@{heatmap_id}_heatmap_modal_close_icon {
+					position: relative;
+					left: -10px;
+				    top: -15px;
+				    font-size: 1.5em;
+				    background-color: white;
+				    color: black;
+				}
+				#@{heatmap_id}_heatmap_modal_close_icon:hover {
+					cursor: pointer;
+				}
 			"))),
 			if(close_button) {
 				tags$script(HTML(qq("
 					$('#@{heatmap_id}_heatmap_modal_close').click(function() {
-	
 				        if('@{cancel_action}' == 'remove') {
 				        	Shiny.setInputValue('@{heatmap_id}_heatmap_modal_remove', Math.random());
 				        	$('#@{heatmap_id}_heatmap_modal_ui').remove();
@@ -141,7 +156,7 @@ InteractiveComplexHeatmapModal = function(
 					$(document).mouseup(function(e) {
 					    var container = $('#@{heatmap_id}_heatmap_modal');
 
-					    if(!container.is(e.target) && container.has(e.target).length === 0) {
+					    if(!container.is(e.target) && container.has(e.target).length === 0 && $('.heatmap_modal').length == 1) {
 					        $('#@{heatmap_id}_heatmap_modal_background').@{cancel_action}();
 					        if('@{cancel_action}' == 'remove') {
 					        	Shiny.setInputValue('@{heatmap_id}_heatmap_modal_remove', Math.random());
@@ -154,6 +169,15 @@ InteractiveComplexHeatmapModal = function(
 				")))
 			},
 			tags$script(HTML(qq("
+				$('#@{heatmap_id}_heatmap_modal_close_icon').click(function() {
+			        if('@{cancel_action}' == 'remove') {
+			        	Shiny.setInputValue('@{heatmap_id}_heatmap_modal_remove', Math.random());
+			        	$('#@{heatmap_id}_heatmap_modal_ui').remove();
+			        } else {
+			        	$('#@{heatmap_id}_heatmap_modal_background').@{cancel_action}();
+			        }
+				})
+
 				// code for pickr
 				// when parent element has 'position:fixed', the color picker is not correctly positioned
 				// following code manually adjust the positions of the color picker
@@ -200,9 +224,9 @@ InteractiveComplexHeatmapModal = function(
 # Interactive complex heatmap widget
 #
 # == param
-# -input Passed from the shiny server function.
-# -output Passed from the shiny server function.
-# -session Passed from the shiny server function.
+# -input Passed from the Shiny server function.
+# -output Passed from the Shiny server function.
+# -session Passed from the Shiny server function.
 # -get_heatmap A `ComplexHeatmap::Heatmap-class` or a `ComplexHeatmap::HeatmapList-class` object. The value can also
 #           be a function with no argument that generates such object.
 # -heatmap_id ID of the plot. If it is not specified, an internal ID is assigned.
@@ -221,13 +245,13 @@ InteractiveComplexHeatmapModal = function(
 # -brush_action Pass to `renderInteractiveComplexHeatmap`.
 # -default_click_action Pass to `renderInteractiveComplexHeatmap`.
 # -default_brush_action Pass to `renderInteractiveComplexHeatmap`.
-# -js_code Additional javascript code that is put after the interactive heatmap UI. The value can be a text or a function
-#       that takes "heatmap id" as the argument and returns the formatted javascript code.
+# -js_code Additional JavaScript code that is put after the interactive heatmap UI. The value can be a text or a function
+#       that takes "heatmap ID" as the argument and returns the formatted JavaScript code.
 # -close_button Whether to add a close button at the end of the widget.
-# -cancel_action Whether to remove the UI or just hide it when the UI is closed.
+# -cancel_action Whether to remove the UI from HTML or just hide it when the UI is closed.
 #
 # == details
-# It create an interactive heatmap widget according to a certain action. The UI is fit to the output ID user defined.
+# It create an interactive heatmap widget according to a certain action. The UI is placed to the output ID that user defined.
 #
 # == value
 # No value is returned.
@@ -258,14 +282,15 @@ InteractiveComplexHeatmapWidget = function(
 	# parameters passed to InteractiveComplexHeatmapOutput()
 	title1 = "Original heatmap", title2 = "Selected sub-heatmap",
 	width1 = 450, height1 = 350, width2 = 370, height2 = 350, nrow = 1,
-	action = "click", brush_opt = list(), output_div = TRUE,
+	action = "click", brush_opt = list(stroke = "#f00", opacity = 0.6), 
+	output_div = TRUE,
 
 	# parameters passed to renderInteractiveComplexHeatmap()
 	click_action = NULL, brush_action = NULL, 
 	default_click_action = TRUE, default_brush_action = TRUE,
 
 	# other configurations
-	js_code = "", close_button = FALSE, cancel_action = c("remove", "hide")
+	js_code = "", close_button = TRUE, cancel_action = c("remove", "hide")
 	) {
 	
 	if(is.null(heatmap_id)) {
@@ -279,21 +304,20 @@ InteractiveComplexHeatmapWidget = function(
 	cancel_action = match.arg(cancel_action)[1]
 
 	output[[output_id]] = renderUI({
-		div(id = qq("@{heatmap_id}_container"),
+		div(id = qq("@{heatmap_id}_heatmap_widget"),
 			InteractiveComplexHeatmapOutput(heatmap_id = heatmap_id, title1 = title1, title2 = title2,
 				width1 = width1, height1 = height1, width2 = width2, height2 = height2, nrow = nrow,
 				action = action, brush_opt = brush_opt, output_div = output_div),
 			if(close_button) {
 				tagList(
 					tags$hr(),
-					tags$button("Close widget", id = qq("@{heatmap_id}_heatmap_modal_close"), 
+					tags$button("Close widget", id = qq("@{heatmap_id}_heatmap_widget_close"), 
 						class = "btn btn-default"),
 					tags$script(HTML(qq("
-						$('#@{heatmap_id}_heatmap_modal_close').click(function() {
-							$('#@{heatmap_id}_heatmap_modal_background').@{cancel_action}();
+						$('#@{heatmap_id}_heatmap_widget_close').click(function() {
+							$('#@{heatmap_id}_heatmap_widget').@{cancel_action}();
 					        if('@{cancel_action}' == 'remove') {
-					        	Shiny.setInputValue('@{heatmap_id}_heatmap_modal_remove', Math.random());
-					        	$('#@{heatmap_id}_heatmap_modal_ui').remove();
+					        	Shiny.setInputValue('@{heatmap_id}_heatmap_widget_remove', Math.random());
 					        }
 						})
 					")))
@@ -301,13 +325,14 @@ InteractiveComplexHeatmapWidget = function(
 			} else {
 				NULL
 			},
-			tags$script(qq("Shiny.setInputValue('@{heatmap_id}_heatmap_modal_open', Math.random());
+			tags$script(qq("
+				Shiny.setInputValue('@{heatmap_id}_heatmap_widget_open', Math.random());
 				@{js_code}
 			"))
 		)
 	})
 	
-	observeEvent(input[[qq("@{heatmap_id}_heatmap_modal_open")]], {
+	observeEvent(input[[qq("@{heatmap_id}_heatmap_widget_open")]], {
 		if(is.function(get_heatmap)) {
 			ht = get_heatmap()
 		} else {
@@ -318,7 +343,7 @@ InteractiveComplexHeatmapWidget = function(
 			default_click_action = default_click_action, default_brush_action = default_brush_action)
 	})
 
-	observeEvent(input[[qq("@{heatmap_id}_heatmap_modal_remove")]], {
-		removeUI(qq("#@{heatmap_id}_heatmap_modal_background"))
+	observeEvent(input[[qq("@{heatmap_id}_heatmap_widget_remove")]], {
+		removeUI(qq("#@{heatmap_id}_widget"))
 	})
 }
