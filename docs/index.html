@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5.1001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.6</span>
       </span>
     </div>
 
@@ -137,8 +137,11 @@
 <code><a href="reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap()</a></code>: for processing on the sever side.</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ht</span> <span class="op">=</span> <span class="fu">Heatmap</span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
-<span class="va">ht</span> <span class="op">=</span> <span class="fu">draw</span><span class="op">(</span><span class="va">ht</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/InteractiveComplexHeatmap">InteractiveComplexHeatmap</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/ComplexHeatmap">ComplexHeatmap</a></span><span class="op">)</span>
+
+<span class="va">ht</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html">Heatmap</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
+<span class="va">ht</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html">draw</a></span><span class="op">(</span><span class="va">ht</span><span class="op">)</span>
 
 <span class="va">ui</span> <span class="op">=</span> <span class="fu">fluidPage</span><span class="op">(</span>
     <span class="fu"><a href="reference/InteractiveComplexHeatmapOutput.html">InteractiveComplexHeatmapOutput</a></span><span class="op">(</span><span class="op">)</span>
@@ -151,10 +154,10 @@
 <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 <p>You can also put multiple interactive heatmaps widgets in the same Shiny app:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ht1</span> <span class="op">=</span> <span class="fu">Heatmap</span><span class="op">(</span><span class="va">m</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"blue"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">ht1</span> <span class="op">=</span> <span class="fu">draw</span><span class="op">(</span><span class="va">ht1</span><span class="op">)</span>
-<span class="va">ht2</span> <span class="op">=</span> <span class="fu">Heatmap</span><span class="op">(</span><span class="va">m</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">ht2</span> <span class="op">=</span> <span class="fu">draw</span><span class="op">(</span><span class="va">ht2</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ht1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html">Heatmap</a></span><span class="op">(</span><span class="va">m</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"blue"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ht1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html">draw</a></span><span class="op">(</span><span class="va">ht1</span><span class="op">)</span>
+<span class="va">ht2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html">Heatmap</a></span><span class="op">(</span><span class="va">m</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ht2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html">draw</a></span><span class="op">(</span><span class="va">ht2</span><span class="op">)</span>
 
 <span class="va">ui</span> <span class="op">=</span> <span class="fu">fluidPage</span><span class="op">(</span>
     <span class="fu">h3</span><span class="op">(</span><span class="st">"The first heatmap"</span><span class="op">)</span>,
@@ -178,16 +181,30 @@
 <code><a href="reference/InteractiveComplexHeatmapWidget.html">InteractiveComplexHeatmapWidget()</a></code>: The interactive heatmap widget is inserted into a place defined by users.</li>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ui</span> <span class="op">=</span> <span class="fu">fluidPage</span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">m</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span>
+<span class="va">ht</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html">Heatmap</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
+    
+<span class="va">ui</span> <span class="op">=</span> <span class="fu">fluidPage</span><span class="op">(</span>
     <span class="fu">actionButton</span><span class="op">(</span><span class="st">"show_heatmap"</span>, <span class="st">"Generate_heatmap"</span><span class="op">)</span>,
 <span class="op">)</span>
 
 <span class="va">server</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">m</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span>
-    <span class="va">ht</span> <span class="op">=</span> <span class="fu">Heatmap</span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
-
     <span class="fu">observeEvent</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">show_heatmap</span>, <span class="op">{</span>
         <span class="fu"><a href="reference/InteractiveComplexHeatmapModal.html">InteractiveComplexHeatmapModal</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht</span><span class="op">)</span>
+    <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span>
+
+<span class="co"># or use InteractiveComplexHeatmapWidget()</span>
+<span class="va">ui</span> <span class="op">=</span> <span class="fu">fluidPage</span><span class="op">(</span>
+    <span class="fu">actionButton</span><span class="op">(</span><span class="st">"show_heatmap"</span>, <span class="st">"Generate_heatmap"</span><span class="op">)</span>,
+    <span class="fu">htmlOutput</span><span class="op">(</span><span class="st">"heatmap_output"</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="va">server</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu">observeEvent</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">show_heatmap</span>, <span class="op">{</span>
+        <span class="fu"><a href="reference/InteractiveComplexHeatmapWidget.html">InteractiveComplexHeatmapWidget</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht</span>,
+            output_id <span class="op">=</span> <span class="st">"heatmap_output"</span><span class="op">)</span>
     <span class="op">}</span><span class="op">)</span>
 <span class="op">}</span>
 <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
@@ -217,65 +234,66 @@
 <p>There are also many other examples provided in the package.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/htShinyExample.html">htShinyExample</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## There are following examples. Individual example can be run by e.g. htShinyExample(1).
+<pre><code>## There are following examples. Individual example can be run by e.g. htShinyExample(1.1).
 ## 
-## ──────── Simple examples ───────────────────────────────────────────────────────── 
-##   1. A single heatmap with minimal arguments.
-##   2. A single heatmap from a character matrix.
-##   3. A single heatmap with annotations on both rows and columns.
-##   4. A single heatmap where rows and columns are split.
-##   5. A list of two heatmaps.
+## ──────── 1. Simple examples ───────────────────────────────────────────────────────── 
+##  1.1 A single heatmap with minimal arguments.
+##  1.2 A single heatmap from a character matrix.
+##  1.3 A single heatmap with annotations on both rows and columns.
+##  1.4 A single heatmap where rows and columns are split.
+##  1.5 A list of two heatmaps.
 ## 
-## ──────── On other plots and packages ───────────────────────────────────────────── 
-##   6. A density heatmap.
-##   7. An oncoPrint.
-##   8. A UpSet plot.
-##   9. An interactive heatmap from pheatmap().
-##  10. An interactive heatmap from heatmap().
-##  11. An interactive heatmap from heatmap.2().
-##  12. A heatmap produced from tidyHeatmap package.
-##  13. Genome-scale heatmap.
+## ──────── 2. On other plots and packages ───────────────────────────────────────────── 
+##  2.1 A density heatmap.
+##  2.2 An oncoPrint.
+##  2.3 A UpSet plot.
+##  2.4 An interactive heatmap from pheatmap().
+##  2.5 An interactive heatmap from heatmap().
+##  2.6 An interactive heatmap from heatmap.2().
+##  2.7 A heatmap produced from tidyHeatmap package.
+##  2.8 Genome-scale heatmap.
 ## 
-## ──────── Enriched heatmaps ─────────────────────────────────────────────────────── 
-##  14. An enriched heatmap.
-##  15. A list of enriched heatmaps.
-##  16. An enriched heatmap with discrete signals.
+## ──────── 3. Enriched heatmaps ─────────────────────────────────────────────────────── 
+##  3.1 An enriched heatmap.
+##  3.2 A list of enriched heatmaps.
+##  3.3 An enriched heatmap with discrete signals.
 ## 
-## ──────── On public datasets ────────────────────────────────────────────────────── 
-##  17. An example from Lewis et al 2019. GitHub repo:
+## ──────── 4. On public datasets ────────────────────────────────────────────────────── 
+##  4.1 An example from Lewis et al 2019. GitHub repo:
 ##      https://github.com/kevinblighe/E-MTAB-6141
-##  18. Visualize cell heterogeneity from single cell RNASeq. It is from
+##  4.2 Visualize cell heterogeneity from single cell RNASeq. It is from
 ##      Supplementary S2 of the ComplexHeatmap paper.
 ##      https://github.com/jokergoo/supplementary
-##  19. Correlations between methylation, expression and other genomic features.
+##  4.3 Correlations between methylation, expression and other genomic features.
 ##      It is from Supplementary S3 of the ComplexHeatmap paper.
 ##      https://github.com/jokergoo/supplementary
 ## 
-## ──────── Shiny app development ─────────────────────────────────────────────────── 
-##  20. A single Shiny app with two interactive heatmap widgets.
-##  21. Self-define the output. The selected sub-matrix is shown as a text table.
-##  22. Self-define the output. Additional annotations for the selected gene are
+## ──────── 5. Shiny app development ─────────────────────────────────────────────────── 
+##  5.1 A single Shiny app with two interactive heatmap widgets.
+##  5.2 Self-define the output. The selected sub-matrix is shown as a text table.
+##  5.3 Self-define the output. Additional annotations for the selected gene are
 ##      shown.
-##  23. Visualize Gene Ontology similarities. A list of selected GO IDs as well as
+##  5.4 Visualize Gene Ontology similarities. A list of selected GO IDs as well as
 ##      their descriptions are shown in the output.
 ## 
-## ──────── Dynamicly generate heatmap widget in Shiny app ────────────────────────── 
-##  24. Dynamically generate the widget with InteractiveComplexHeatmapOutput() and
+## ──────── 6. Dynamicly generate heatmap widget in Shiny app ────────────────────────── 
+##  6.1 Dynamically generate the widget with InteractiveComplexHeatmapOutput() and
 ##      renderInteractiveComplexHeatmap().
-##  25. Dynamically generate the widget with InteractiveComplexHeatmapModal(). The
+##  6.2 Dynamically generate the widget with InteractiveComplexHeatmapModal(). The
 ##      modal is triggered by an action button.
-##  26. Dynamically select interactive heatmaps. The modal is triggered by radio
+##  6.3 Dynamically select interactive heatmaps. The modal is triggered by radio
 ##      buttons.
-##  27. Dynamically generate the widget. A customized Javascript code is inserted
+##  6.4 Dynamically generate the widget. A customized Javascript code is inserted
 ##      after the UI to change the default behavior of the action button.
-##  28. The widget is generated by InteractiveComplexHeatmapWidget() where the UI
+##  6.5 The widget is generated by InteractiveComplexHeatmapWidget() where the UI
 ##      is directly put in the place defined by htmlOutput().
-##  29. The widget is generated by InteractiveComplexHeatmapWidget() and a
+##  6.6 The widget is generated by InteractiveComplexHeatmapWidget() and a
 ##      customized Javascript code is inserted after the UI.
+##  6.7 The matrix is dynamicly generated.
 ## 
-## ──────── Interactive R markdown document ───────────────────────────────────────── 
-##  30. Integrate in interactive R Markdown document.
-##  31. Integrate in interactive R Markdown document where the heatmap widgets are
+## ──────── 7. Interactive R markdown document ───────────────────────────────────────── 
+##  7.1 Integrate in interactive R Markdown document.
+##  7.2 Integrate in interactive R Markdown document where the heatmap widgets are
 ##      dynamically generated.</code></pre>
 </div>
 <div id="license" class="section level2">
@@ -290,6 +308,8 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from BIOC at <br><a href="https://www.bioconductor.org/packages/InteractiveComplexHeatmap">https://​www.bioconductor.org/​packages/​InteractiveComplexHeatmap</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/jokergoo/InteractiveComplexHeatmap/">https://​github.com/​jokergoo/​InteractiveComplexHeatmap/​</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/jokergoo/InteractiveComplexHeatmap/issues">https://​github.com/​jokergoo/​InteractiveComplexHeatmap/​issues</a>
