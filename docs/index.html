@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.7.1001</span>
       </span>
     </div>
 
@@ -134,7 +134,7 @@
 <li>
 <code><a href="reference/InteractiveComplexHeatmapOutput.html">InteractiveComplexHeatmapOutput()</a></code>: for the UI on the client side.</li>
 <li>
-<code><a href="reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap()</a></code>: for processing on the sever side.</li>
+<code><a href="reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap()</a></code>: for processing on the sever side.</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/InteractiveComplexHeatmap">InteractiveComplexHeatmap</a></span><span class="op">)</span>
@@ -148,7 +148,7 @@
 <span class="op">)</span>
 
 <span class="va">server</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht</span><span class="op">)</span>
+    <span class="fu"><a href="reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
@@ -168,8 +168,8 @@
 <span class="op">)</span>
 
 <span class="va">server</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht1</span>, <span class="st">"ht1"</span><span class="op">)</span>
-    <span class="fu"><a href="reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht2</span>, <span class="st">"ht2"</span><span class="op">)</span>
+    <span class="fu"><a href="reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht1</span>, <span class="st">"ht1"</span><span class="op">)</span>
+    <span class="fu"><a href="reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht2</span>, <span class="st">"ht2"</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
@@ -278,7 +278,7 @@
 ## 
 ## ──────── 6. Dynamicly generate heatmap widget in Shiny app ────────────────────────── 
 ##  6.1 Dynamically generate the widget with InteractiveComplexHeatmapOutput() and
-##      renderInteractiveComplexHeatmap().
+##      makeInteractiveComplexHeatmap().
 ##  6.2 Dynamically generate the widget with InteractiveComplexHeatmapModal(). The
 ##      modal is triggered by an action button.
 ##  6.3 Dynamically select interactive heatmaps. The modal is triggered by radio

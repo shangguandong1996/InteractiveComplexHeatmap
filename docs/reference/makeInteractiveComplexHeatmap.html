@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select a position in the heatmap — selectPosition • InteractiveComplexHeatmap</title>
+<title>Process the heatmaps on the sever side — makeInteractiveComplexHeatmap • InteractiveComplexHeatmap</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Select a position in the heatmap — selectPosition" />
-<meta property="og:description" content="Select a position in the heatmap" />
+<meta property="og:title" content="Process the heatmaps on the sever side — makeInteractiveComplexHeatmap" />
+<meta property="og:description" content="Process the heatmaps on the sever side" />
 
 
 
@@ -132,60 +132,79 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select a position in the heatmap</h1>
+    <h1>Process the heatmaps on the sever side</h1>
     
-    <div class="hidden name"><code>selectPosition.Rd</code></div>
+    <div class="hidden name"><code>makeInteractiveComplexHeatmap.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Select a position in the heatmap</p>
+    <p>Process the heatmaps on the sever side</p>
     </div>
 
-    <pre class="usage"><span class='fu'>selectPosition</span><span class='op'>(</span>ht_list <span class='op'>=</span> <span class='fu'>get_last_ht</span><span class='op'>(</span><span class='op'>)</span>, pos <span class='op'>=</span> <span class='cn'>NULL</span>, mark <span class='op'>=</span> <span class='cn'>TRUE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
-    ht_pos <span class='op'>=</span> <span class='cn'>NULL</span>, calibrate <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>makeInteractiveComplexHeatmap</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>ht_list</span>,
+    heatmap_id <span class='op'>=</span> <span class='va'>shiny_env</span><span class='op'>$</span><span class='va'>current_heatmap_id</span>,
+    click_action <span class='op'>=</span> <span class='cn'>NULL</span>, brush_action <span class='op'>=</span> <span class='cn'>NULL</span>,
+    default_click_action <span class='op'>=</span> <span class='cn'>TRUE</span>, default_brush_action <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>input</th>
+      <td><p>Passed from the Shiny server function.</p></td>
+    </tr>
+    <tr>
+      <th>output</th>
+      <td><p>Passed from the Shiny server function.</p></td>
+    </tr>
+    <tr>
+      <th>session</th>
+      <td><p>Passed from the Shiny server function.</p></td>
+    </tr>
+    <tr>
       <th>ht_list</th>
-      <td><p>A <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/HeatmapList-class.html'>HeatmapList-class</a></code> object returned by <code>draw,Heatmap-method</code> or <code>draw,HeatmapList-method</code>.</p></td>
+      <td><p>A <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap-class.html'>Heatmap-class</a></code> or a <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/HeatmapList-class.html'>HeatmapList-class</a></code> object.</p></td>
     </tr>
     <tr>
-      <th>mark</th>
-      <td><p>Whether to mark the selected position as a point.</p></td>
+      <th>heatmap_id</th>
+      <td><p>The corresponding heatmap ID from the UI. If there is only one interactive heatmap in the app,  this argument does not need to be specified and it will use the current one specified in <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
     </tr>
     <tr>
-      <th>pos</th>
-      <td><p>If the value is <code>NULL</code>, it can be selected by click on the heatmap (of cource, the heatmap should be on the interactive graphic device). If it is set, it must be a <code><a href='https://rdrr.io/r/grid/unit.html'>unit</a></code> object with length two which corresponds to the x and y position of the point.</p></td>
+      <th>click_action</th>
+      <td><p>Additional action at the sever side when receiving a click event on the UI. If <code>action</code> is selected as <code>hover</code> or <code>dblclick</code> in <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>, then this argument controls the action for the hover or dblclick event.</p></td>
     </tr>
     <tr>
-      <th>verbose</th>
-      <td><p>Whether to print messages.</p></td>
+      <th>brush_action</th>
+      <td><p>Additional action at the sever side when receiving a brush event on the UI.</p></td>
     </tr>
     <tr>
-      <th>ht_pos</th>
-      <td><p>A value returned by <code><a href='htPositionsOnDevice.html'>htPositionsOnDevice</a></code>.</p></td>
+      <th>default_click_action</th>
+      <td><p>Whether to apply the default click action on the sever side.</p></td>
     </tr>
     <tr>
-      <th>calibrate</th>
-      <td><p>Internally used.</p></td>
+      <th>default_brush_action</th>
+      <td><p>Whether to apply the default brush action on the sever side. There are two default brush actions on the server side. One is to draw the sub-heatmap, and the second is to print text messages. This argument only controls the second default brush action.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code><a href='https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html'>DataFrame</a></code> object with row indices and column indices corresponding to the selected position.</p>
+    <p>No value is returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/grDevices/dev.interactive.html'>dev.interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='va'>m</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>, <span class='fl'>10</span><span class='op'>)</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>
-
+    <pre class="examples"><div class='input'><span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='va'>ht</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html'>Heatmap</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
     <span class='va'>ht</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html'>draw</a></span><span class='op'>(</span><span class='va'>ht</span><span class='op'>)</span>
-    <span class='fu'>selectPosition</span><span class='op'>(</span><span class='va'>ht</span><span class='op'>)</span>
+
+    <span class='va'>ui</span> <span class='op'>=</span> <span class='fu'>fluidPage</span><span class='op'>(</span>
+        <span class='fu'><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></span><span class='op'>(</span><span class='op'>)</span>
+    <span class='op'>)</span>
+
+    <span class='va'>server</span> <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span><span class='op'>)</span> <span class='op'>{</span>
+        <span class='fu'>makeInteractiveComplexHeatmap</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>ht</span><span class='op'>)</span>
+    <span class='op'>}</span>
+
+    <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html'>shinyApp</a></span><span class='op'>(</span><span class='va'>ui</span>, <span class='va'>server</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>

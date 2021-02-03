@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.7.1001</span>
       </span>
     </div>
 
@@ -95,7 +95,7 @@
       <h1 data-toc-skip>Functions for Shiny app development</h1>
                         <h4 class="author">Zuguang Gu ( <a href="mailto:z.gu@dkfz.de" class="email">z.gu@dkfz.de</a> )</h4>
             
-            <h4 class="date">2021-01-27</h4>
+            <h4 class="date">2021-02-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/blob/master/vignettes/shiny_dev.Rmd"><code>vignettes/shiny_dev.Rmd</code></a></small>
       <div class="hidden name"><code>shiny_dev.Rmd</code></div>
@@ -117,7 +117,7 @@ p {
 <li>
 <code><a href="../reference/InteractiveComplexHeatmapOutput.html">InteractiveComplexHeatmapOutput()</a></code>: for building UI on the client side.</li>
 <li>
-<code><a href="../reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap()</a></code>: for processing on the sever side.</li>
+<code><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap()</a></code>: for processing on the sever side.</li>
 </ul>
 <p>The usage is simple. Following is an example that you can directly copy and paste to your R session.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -135,12 +135,12 @@ p {
 <span class="op">)</span>
 
 <span class="va">server</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="../reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht</span><span class="op">)</span>
+    <span class="fu"><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 <p><img src="https://jokergoo.github.io/images/app_demo1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>You can also put multiple interactive heatmaps widgets in a single Shiny app, but this time you must assign a “<strong>heatmap ID</strong>” for each one, so that <code><a href="../reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap()</a></code> can find the correct heatmap to response. The heatmap ID should start with letters.</p>
+<p>You can also put multiple interactive heatmaps widgets in a single Shiny app, but this time you must assign a “<strong>heatmap ID</strong>” for each one, so that <code><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap()</a></code> can find the correct heatmap to response. The heatmap ID should start with letters.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ht1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html">Heatmap</a></span><span class="op">(</span><span class="va">m</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"blue"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">ht1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html">draw</a></span><span class="op">(</span><span class="va">ht1</span><span class="op">)</span>
@@ -156,8 +156,8 @@ p {
 <span class="op">)</span>
 
 <span class="va">server</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="../reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht1</span>, <span class="st">"heatmap_1"</span><span class="op">)</span>
-    <span class="fu"><a href="../reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht2</span>, <span class="st">"heatmap_2"</span><span class="op">)</span>
+    <span class="fu"><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht1</span>, <span class="st">"heatmap_1"</span><span class="op">)</span>
+    <span class="fu"><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht2</span>, <span class="st">"heatmap_2"</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
@@ -196,7 +196,7 @@ p {
 <span id="cb3-20"><a href="#cb3-20"></a><span class="in">)</span></span>
 <span id="cb3-21"><a href="#cb3-21"></a></span>
 <span id="cb3-22"><a href="#cb3-22"></a><span class="in">server = function(input, output, session) {</span></span>
-<span id="cb3-23"><a href="#cb3-23"></a><span class="in">    renderInteractiveComplexHeatmap(input, output, session, ht)</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a><span class="in">    makeInteractiveComplexHeatmap(input, output, session, ht)</span></span>
 <span id="cb3-24"><a href="#cb3-24"></a><span class="in">}</span></span>
 <span id="cb3-25"><a href="#cb3-25"></a></span>
 <span id="cb3-26"><a href="#cb3-26"></a><span class="in">shiny::shinyApp(ui, server)</span></span>
@@ -207,7 +207,7 @@ p {
 <h2 class="hasAnchor">
 <a href="#self-define-the-output" class="anchor"></a>Self-define the output</h2>
 <p>Both the click and brush actions on the heatmap trigger an output below the heatmaps. The output gives the information of which row(s) and columns(s) are selected by users. The reponse for the two actions can be self-defined.</p>
-<p>In <code><a href="../reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap()</a></code>, there are two arguments <code>click_action</code> and <code>brush_action</code> which accept self-defined functions and define how to response after the heatmap is clicked or brushed. The input for the two functions should accept two argumnts, one is a <code>DataFrame</code> object which contains the information of which row(s) and columns(s) are selected by users, and the second argument should always be <code>output</code> which is used in the Shiny app.</p>
+<p>In <code><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap()</a></code>, there are two arguments <code>click_action</code> and <code>brush_action</code> which accept self-defined functions and define how to response after the heatmap is clicked or brushed. The input for the two functions should accept two argumnts, one is a <code>DataFrame</code> object which contains the information of which row(s) and columns(s) are selected by users, and the second argument should always be <code>output</code> which is used in the Shiny app.</p>
 <p>To use <code>click_action</code> or <code>brush_action</code>, a <code>htmlOutput</code> (or other similar <code>*Output</code>) should be first setup in the UI, then the Shiny app knows where to update the output.</p>
 <p>The <code>click_action</code> or <code>brush_action</code> is basically defined as follows (assume the ID set in <code><a href="https://shiny.rstudio.com/reference/shiny/latest/htmlOutput.html">htmlOutput()</a></code> is <code>"info"</code>):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -243,7 +243,7 @@ p {
 ## 2     2,4,1,...
 ## 3     1,2,3,...
 ## 4     1,2,3,...</code></pre>
-<p>In the following example, in the UI, I add a new <code>htmlOutput</code> with ID <code>info</code>. On the sever side, I define <code>click_action</code> to print a styled text and define <code>brush_action</code> to print the table of the selected rows and columns from the heatmap. Note I also set <code>default_click_action = FALSE, default_brush_action = FALSE</code> in <code><a href="../reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap()</a></code> to turn off the default responses.</p>
+<p>In the following example, in the UI, I add a new <code>htmlOutput</code> with ID <code>info</code>. On the sever side, I define <code>click_action</code> to print a styled text and define <code>brush_action</code> to print the table of the selected rows and columns from the heatmap. Note I also set <code>default_click_action = FALSE, default_brush_action = FALSE</code> in <code><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap()</a></code> to turn off the default responses.</p>
 <p>You can also run the following example simply by <code><a href="../reference/htShinyExample.html">htShinyExample(5.2)</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jokergoo/GetoptLong">GetoptLong</a></span><span class="op">)</span>  <span class="co"># for the qq() function which does variable intepolation</span>
@@ -278,7 +278,7 @@ p {
 <span class="op">}</span>
 
 <span class="va">server</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="../reference/renderInteractiveComplexHeatmap.html">renderInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht</span>,
+    <span class="fu"><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht</span>,
         click_action <span class="op">=</span> <span class="va">click_action</span>, brush_action <span class="op">=</span> <span class="va">brush_action</span>,
         default_click_action <span class="op">=</span> <span class="cn">FALSE</span>, default_brush_action <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="op">}</span>
