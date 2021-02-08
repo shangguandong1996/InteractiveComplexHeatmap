@@ -12,9 +12,6 @@
 # -click_action Additional action at the sever side when receiving a click event on the UI. If ``action`` is selected as ``hover``
 #        or ``dblclick`` in `InteractiveComplexHeatmapOutput`, then this argument controls the action for the hover or dblclick event.
 # -brush_action Additional action at the sever side when receiving a brush event on the UI.
-# -default_click_action Whether to apply the default click action on the sever side.
-# -default_brush_action Whether to apply the default brush action on the sever side. There are two default brush actions on the server side.
-#       One is to draw the sub-heatmap, and the second is to print text messages. This argument only controls the second default brush action.
 #
 # == value
 # No value is returned.
@@ -36,8 +33,10 @@
 # }
 makeInteractiveComplexHeatmap = function(input, output, session, ht_list, 
 	heatmap_id = shiny_env$current_heatmap_id,
-	click_action = NULL, brush_action = NULL, 
-	default_click_action = TRUE, default_brush_action = TRUE) {
+	click_action = NULL, brush_action = NULL) {
+
+	do_default_click_action = shiny_env[[heatmap_id]]$default_output_ui
+	do_default_brush_action = shiny_env[[heatmap_id]]$default_output_ui
 
 	if(inherits(ht_list, "Heatmap")) {
 		message("The heatmap is suggested to be updated by e.g. `ht = draw(ht)` before sending to the Shiny app.")
@@ -74,19 +73,24 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 
 	# initialize heatmaps
 	ht_list = reactiveVal({
-		if(inherits(ht_list, "Heatmap")) {
-    		ht_list = make_layout(ht_list + NULL)
-    	} else {
-    		if(!ht_list@layout$initialized) {
-    			ht_list = make_layout(ht_list)
-    		}
-    	}
+		tryCatch({
+			dev.null()
+			if(inherits(ht_list, "Heatmap")) {
+	    		ht_list = make_layout(ht_list + NULL)
+	    	} else {
+	    		if(!ht_list@layout$initialized) {
+	    			ht_list = make_layout(ht_list)
+	    		}
+	    	}
+	    }, finally = dev.off2())
+	    
     	ht_list
 	})
 
 	##### variables shared between actions
 	ht_pos = reactiveVal(NULL)
 	selected = reactiveVal(NULL)
+	selected_copy = reactiveVal(NULL)
 	heatmap_first_check = reactiveVal(1)
 	heatmap_initialized = reactiveVal(1)
 
@@ -96,7 +100,6 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 	##                 The default actions
 	###############################################################
 	output[[qq("@{heatmap_id}_heatmap")]] = renderPlot({
-		
     	showNotification("Initialize the original heatmap.", duration = 2, type = "message")
 
     	ht_list( draw(ht_list()) )
@@ -104,7 +107,7 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 		ht_pos( htPositionsOnDevice(ht_list(), include_annotation = TRUE, calibrate = FALSE) )
 		selected( NULL )
 
-		if(default_click_action || default_brush_action) {
+		if(do_default_click_action || do_default_brush_action) {
 			output[[qq("@{heatmap_id}_info")]] = renderUI({
 				HTML("<h5>Output</h5>\n<p>No position is selected.</p>")
 			})
@@ -171,7 +174,7 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 		message(qq("[@{Sys.time()}] no area on the heatmap is selected, Do not make the sub-heatmap."))
 	})
 
-	if(default_click_action || default_brush_action) {
+	if(do_default_click_action || do_default_brush_action) {
 		output[[qq("@{heatmap_id}_info")]] = renderUI({
 			HTML("<h5>Output</h5>\n<p>No position is selected.</p>")
 		})
@@ -265,6 +268,7 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 
 		if(is.null(input[[qq("@{heatmap_id}_heatmap_brush")]])) {
 			selected( NULL )
+			selected_copy( selected() )
 		} else {
 			lt = get_pos_from_brush(input[[qq("@{heatmap_id}_heatmap_brush")]])
 		  	pos1 = lt[[1]]
@@ -272,6 +276,7 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 		    
 		    dev.null()
 		    selected( selectArea(ht_list(), mark = FALSE, pos1 = pos1, pos2 = pos2, verbose = FALSE, ht_pos = ht_pos(), include_annotation = TRUE, calibrate = FALSE) )
+		    selected_copy( selected() )
 		    dev.off2()
 		}
 
@@ -287,12 +292,77 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 			}
 		})
 	
-		if(default_brush_action) {
+		if(do_default_brush_action) {
 			default_brush_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
 		}
 
 		if(!is.null(brush_action)) {
-			brush_action(selected(), output)
+			if(identical(brush_action, default_brush_action)) {
+				default_brush_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
+			} else {
+				brush_action(selected(), output)
+			}
+		}
+
+		session$sendCustomMessage(qq("@{heatmap_id}_sub_initialized"), "on")
+	})
+
+	observeEvent(input[[qq("@{heatmap_id}_post_remove_submit")]], {
+
+		new_selected = adjust_df(selected(), n_remove = input[[qq("@{heatmap_id}_post_remove")]], 
+			where = input[[qq("@{heatmap_id}_post_remove_dimension")]])
+
+		selected(new_selected)
+
+		output[[qq("@{heatmap_id}_sub_heatmap")]] = renderPlot({
+			
+    		if(nrow( selected() ) == 0) {
+    			grid.newpage()
+				grid.text("No row/column is left.\nPlease change to a smaller number to remove.", 0.5, 0.5, gp = gpar(fontsize = 14))
+    		} else {
+    			sub_ht_list( make_sub_heatmap(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list()) )
+			}
+		})
+	
+		if(do_default_brush_action) {
+			default_brush_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
+		}
+
+		if(!is.null(brush_action)) {
+			if(identical(brush_action, default_brush_action)) {
+				default_brush_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
+			} else {
+				brush_action(selected(), output)
+			}
+		}
+
+		session$sendCustomMessage(qq("@{heatmap_id}_sub_initialized"), "on")
+	})
+
+	observeEvent(input[[qq("@{heatmap_id}_post_remove_reset")]], {
+
+		selected( selected_copy() )
+
+		output[[qq("@{heatmap_id}_sub_heatmap")]] = renderPlot({
+			
+    		if(is.null( selected() )) {
+    			grid.newpage()
+				grid.text("No area on the heatmap is selected.", 0.5, 0.5, gp = gpar(fontsize = 14))
+    		} else {
+    			sub_ht_list( make_sub_heatmap(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list()) )
+			}
+		})
+	
+		if(do_default_brush_action) {
+			default_brush_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
+		}
+
+		if(!is.null(brush_action)) {
+			if(identical(brush_action, default_brush_action)) {
+				default_brush_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
+			} else {
+				brush_action(selected(), output)
+			}
 		}
 
 		session$sendCustomMessage(qq("@{heatmap_id}_sub_initialized"), "on")
@@ -309,12 +379,16 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 				grid.text("Query keyword is empty.", 0.5, 0.5, gp = gpar(fontsize = 14, col = "red"))
 			})
 
-			if(default_brush_action) {
+			if(do_default_brush_action) {
 				default_brush_action(input, output, session, heatmap_id, "Query keyword is empty.", selected = selected(), ht_list = ht_list())
 			}
 
 			if(!is.null(brush_action)) {
-				brush_action(selected(), output)
+				if(identical(brush_action, default_brush_action)) {
+					default_brush_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
+				} else {
+					brush_action(selected(), output)
+				}
 			}
 
 			session$sendCustomMessage(qq("@{heatmap_id}_sub_initialized"), "off")
@@ -335,12 +409,16 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 				grid.text("No heatmap is selected for searching.", 0.5, 0.5, gp = gpar(fontsize = 14, col = "red"))
 			})
 
-			if(default_brush_action) {
+			if(do_default_brush_action) {
 				default_brush_action(input, output, session, heatmap_id, "No heatmap is selected for searching.", selected = selected(), ht_list = ht_list())
 			}
 
 			if(!is.null(brush_action)) {
-				brush_action(selected(), output)
+				if(identical(brush_action, default_brush_action)) {
+					default_brush_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
+				} else {
+					brush_action(selected(), output)
+				}
 			}
 			return(invisible(NULL))
 		}
@@ -366,6 +444,7 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 		} else {
 			selected( selectByLabels(hl, row_keywords = keywords, column_keywords = keywords, keyword_is_regexpr = is_regexpr, include_annotation = TRUE, heatmap = sht, all = length(extend)) )
 		}
+		selected_copy( selected() )
 
 		output[[qq("@{heatmap_id}_sub_heatmap")]] = renderPlot({
 			
@@ -373,7 +452,7 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
     			grid.newpage()
 				grid.text(paste(strwrap(qq("Found nothing from heatmaps with keywords '@{keywords2}'."), width = 60), collapse = "\n"), 0.5, 0.5, gp = gpar(fontsize = 14, col = "red"))
 
-				if(default_brush_action) {
+				if(do_default_brush_action) {
 					default_brush_action(input, output, session, heatmap_id, qq("Found nothing from heatmaps with keywords '@{keywords2}'."), selected = selected(), ht_list = ht_list())
 				}
 
@@ -386,12 +465,16 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 			}
 		})
 
-		if(default_brush_action) {
+		if(do_default_brush_action) {
 			default_brush_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
 		}
 
 		if(!is.null(brush_action)) {
-			brush_action(selected(), output)
+			if(identical(brush_action, default_brush_action)) {
+				default_brush_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
+			} else {
+				brush_action(selected(), output)
+			}
 		}
 
 		session$sendCustomMessage(qq("@{heatmap_id}_sub_initialized"), "on")
@@ -510,7 +593,6 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 	##      A click on the heatmap
 	###############################################################
 	observeEvent(input[[qq("@{heatmap_id}_heatmap_click")]], {
-		
 		pos1 = get_pos_from_click(input[[qq("@{heatmap_id}_heatmap_click")]])
 		  
 		if(is.null(pos1)) {
@@ -521,12 +603,16 @@ makeInteractiveComplexHeatmap = function(input, output, session, ht_list,
 			dev.off2()
 		}
 
-		if(default_click_action) {
+		if(do_default_click_action) {
 			default_click_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
 		}
 
 		if(!is.null(click_action)) {
-			click_action(selected(), output)
+			if(identical(click_action, default_click_action)) {
+				default_click_action(input, output, session, heatmap_id, selected = selected(), ht_list = ht_list())
+			} else {
+				click_action(selected(), output)
+			}
 		}
 
 		output[[qq("@{heatmap_id}_sub_heatmap")]] = renderPlot({
@@ -1223,16 +1309,18 @@ default_click_action = function(input, output, session, heatmap_id, selected = N
 			} else {
 				ht_name = pos[1, "heatmap"]
 				slice_name = pos[1, "slice"]
+
+				ht = ht_list@ht_list[[ht_name]]
 		
 				row_index = pos[1, "row_index"][[1]]
 			    column_index = pos[1, "column_index"][[1]]
-			    m = ht_list@ht_list[[ht_name]]@matrix
+			    m = ht@matrix
 			    v = m[row_index, column_index]
 
-			    if(is.null(ht_list@ht_list[[ht_name]]@heatmap_param$oncoprint_env)) {
-			    	col = map_to_colors(ht_list@ht_list[[ht_name]]@matrix_color_mapping, v)
+			    if(is.null(ht@heatmap_param$oncoprint_env)) {
+			    	col = map_to_colors(ht@matrix_color_mapping, v)
 			    } else {
-			    	col = NA
+			    	col = "#FFFFFF00"
 			    }
 			    if(is.na(v)) v = "NA"
 			    row_label = rownames(m)[row_index]
@@ -1250,20 +1338,82 @@ default_click_action = function(input, output, session, heatmap_id, selected = N
 
 			    message(qq("[@{Sys.time()}] click on the heatmap @{slice_name}."))
 				
-				HTML(paste("<h5>Output</h5>\n<p>Information of the clicked cell:</p>",
-					  "<pre>",
-					  qq("heatmap: @{ht_name}"),
-					  qq("heatmap slice: @{slice_name}"),
-					  qq("row index: @{row_index}"),
-					  qq("row label: @{row_label}"),
-					  qq("column index: @{column_index}"),
-					  qq("column_label: @{column_label}"),
-					  ifelse(is.na(col), qq("value: @{v}"), qq("value: @{v} <span style='background-color:@{col};width=10px;'>    </span>")),
-					  "</pre>",
-					  sep = "\n"))
+				html = qq("
+<h5>Output</h5>
+<p>Information of the clicked cell</p>
+<pre>
+heatmap: @{ht_name}
+heatmap slice: @{slice_name}
+row index: @{row_index}
+row label: @{row_label}
+column index: @{column_index}
+column_label: @{column_label}
+value: @{v} <span style='background-color:@{col};width=10px;'>    </span></pre>")
+
+				value_txt = NULL
+				if(!is.null(ht@top_annotation)) {
+					value_txt = c(value_txt, get_anno_value(ht@top_annotation, column_index))
+				}
+				if(!is.null(ht@bottom_annotation)) {
+					value_txt = c(value_txt, get_anno_value(ht@bottom_annotation, column_index))
+				}
+				if(!is.null(ht@left_annotation)) {
+					value_txt = c(value_txt, get_anno_value(ht@left_annotation, row_index))
+				}
+				if(!is.null(ht@right_annotation)) {
+					value_txt = c(value_txt, get_anno_value(ht@right_annotation, row_index))
+				}
+
+				if(length(value_txt)) {
+					html = qq("@{html}
+<p>Information of the associated annotations</p>
+<pre>
+@{paste(value_txt, collapse = '\n')}</pre>")
+				}
+
+				HTML(html)
 			}
 		}
 	})
+}
+
+get_anno_value = function(ha, ind) {
+	fun_name = sapply(ha@anno_list, function(anno) anno@fun@fun_name)
+
+	l = fun_name %in% c("anno_points", "anno_simple", "anno_lines", "anno_barplot")
+
+	if(sum(l) > 0) {
+
+		ha = ha[l]
+		txt = NULL
+		for(i in seq_len(length(ha))) {
+			anno = ha@anno_list[[i]]
+			x = anno@fun@var_env$value
+			if(anno@fun@fun_name == "anno_simple") {
+				cm = anno@color_mapping
+
+				if(is.matrix(x)) {
+					vstr = qq("@{paste0(x[ind, ], '')} <span style='background-color:@{map_to_colors(cm, x[ind, ])};width=10px;'>    </span>", collapse = FALSE)
+					vstr = qq(vstr, collapse = ", ")
+					txt[i] = qq("@{anon@name}: @{vstr}")
+				} else {
+					txt[i] = qq("@{anno@name}: @{paste0(x[ind], '')} <span style='background-color:@{map_to_colors(cm, x[ind])};width=10px;'>    </span>")
+				}
+
+			} else {
+				if(is.matrix(x)) {
+					txt[i] = qq("@{anon@name}: @{paste(x[ind, ], collapse = ', ')}")
+				} else {
+					txt[i] = qq("@{anno@name}: @{paste0(x[ind], '')}")
+				}
+			}
+
+		}
+
+		return(txt)
+	} else {
+		return(NULL)
+	}
 }
 
 

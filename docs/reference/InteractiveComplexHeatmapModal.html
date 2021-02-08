@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.7.1001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.8.1002</span>
       </span>
     </div>
 
@@ -142,18 +142,21 @@
     </div>
 
     <pre class="usage"><span class='fu'>InteractiveComplexHeatmapModal</span><span class='op'>(</span>
-    <span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>get_heatmap</span>, heatmap_id <span class='op'>=</span> <span class='cn'>NULL</span>,
+    <span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>ht_list</span>, heatmap_id <span class='op'>=</span> <span class='cn'>NULL</span>,
     
     <span class='co'># parameters passed to InteractiveComplexHeatmapOutput()</span>
     title1 <span class='op'>=</span> <span class='st'>"Original heatmap"</span>, title2 <span class='op'>=</span> <span class='st'>"Selected sub-heatmap"</span>,
-    width1 <span class='op'>=</span> <span class='fl'>450</span>, height1 <span class='op'>=</span> <span class='fl'>350</span>, width2 <span class='op'>=</span> <span class='fl'>370</span>, height2 <span class='op'>=</span> <span class='fl'>350</span>,
-    width3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>==</span> <span class='st'>"12|3"</span>, <span class='fl'>800</span>, <span class='fl'>500</span><span class='op'>)</span>, layout <span class='op'>=</span> <span class='st'>"12|3"</span>,
+    width1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1|(2+3)"</span>, <span class='st'>"1|23"</span><span class='op'>)</span>, <span class='fl'>800</span>, <span class='fl'>450</span><span class='op'>)</span>,
+    height1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1+(2|3)"</span><span class='op'>)</span>, <span class='fl'>700</span>, <span class='fl'>350</span><span class='op'>)</span>,
+    width2 <span class='op'>=</span> <span class='fl'>370</span>,
+    height2 <span class='op'>=</span> <span class='fl'>350</span>,
+    width3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"(1+2)|3"</span>, <span class='st'>"12|3"</span><span class='op'>)</span>, <span class='fl'>800</span>, <span class='fl'>370</span><span class='op'>)</span>,
+    layout <span class='op'>=</span> <span class='st'>"(1+2)|3"</span>,
     action <span class='op'>=</span> <span class='st'>"click"</span>, brush_opt <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>stroke <span class='op'>=</span> <span class='st'>"#f00"</span>, opacity <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>,
-    output_div <span class='op'>=</span> <span class='cn'>TRUE</span>,
+    output_ui <span class='op'>=</span> <span class='cn'>TRUE</span>,
     
     <span class='co'># parameters passed to makeInteractiveComplexHeatmap()</span>
     click_action <span class='op'>=</span> <span class='cn'>NULL</span>, brush_action <span class='op'>=</span> <span class='cn'>NULL</span>,
-    default_click_action <span class='op'>=</span> <span class='cn'>TRUE</span>, default_brush_action <span class='op'>=</span> <span class='cn'>TRUE</span>,
     
     <span class='co'># other configurations</span>
     js_code <span class='op'>=</span> <span class='st'>""</span>, close_button <span class='op'>=</span> <span class='cn'>TRUE</span>, cancel_action <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"remove"</span>, <span class='st'>"hide"</span><span class='op'>)</span><span class='op'>)</span></pre>
@@ -174,8 +177,8 @@
       <td><p>Passed from the Shiny server function.</p></td>
     </tr>
     <tr>
-      <th>get_heatmap</th>
-      <td><p>A <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap-class.html'>Heatmap-class</a></code> or a <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/HeatmapList-class.html'>HeatmapList-class</a></code> object. The value can also be a function with no argument that generates such object.</p></td>
+      <th>ht_list</th>
+      <td><p>A <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap-class.html'>Heatmap-class</a></code> or a <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/HeatmapList-class.html'>HeatmapList-class</a></code> object.</p></td>
     </tr>
     <tr>
       <th>heatmap_id</th>
@@ -222,7 +225,7 @@
       <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
     </tr>
     <tr>
-      <th>output_div</th>
+      <th>output_ui</th>
       <td><p>Pass to <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
     </tr>
     <tr>
@@ -231,14 +234,6 @@
     </tr>
     <tr>
       <th>brush_action</th>
-      <td><p>Pass to <code><a href='makeInteractiveComplexHeatmap.html'>makeInteractiveComplexHeatmap</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>default_click_action</th>
-      <td><p>Pass to <code><a href='makeInteractiveComplexHeatmap.html'>makeInteractiveComplexHeatmap</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>default_brush_action</th>
       <td><p>Pass to <code><a href='makeInteractiveComplexHeatmap.html'>makeInteractiveComplexHeatmap</a></code>.</p></td>
     </tr>
     <tr>

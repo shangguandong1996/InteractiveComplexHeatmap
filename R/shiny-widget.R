@@ -6,8 +6,7 @@
 # -input Passed from the Shiny server function.
 # -output Passed from the Shiny server function.
 # -session Passed from the Shiny server function.
-# -get_heatmap A `ComplexHeatmap::Heatmap-class` or a `ComplexHeatmap::HeatmapList-class` object. The value can also
-#           be a function with no argument that generates such object.
+# -ht_list A `ComplexHeatmap::Heatmap-class` or a `ComplexHeatmap::HeatmapList-class` object.
 # -heatmap_id ID of the plot. If it is not specified, an internal ID is assigned.
 # -title1 Pass to `InteractiveComplexHeatmapOutput`.
 # -title2 Pass to `InteractiveComplexHeatmapOutput`.
@@ -19,11 +18,9 @@
 # -layout Pass to `InteractiveComplexHeatmapOutput`.
 # -action Pass to `InteractiveComplexHeatmapOutput`.
 # -brush_opt Pass to `InteractiveComplexHeatmapOutput`.
-# -output_div Pass to `InteractiveComplexHeatmapOutput`.
+# -output_ui Pass to `InteractiveComplexHeatmapOutput`.
 # -click_action Pass to `makeInteractiveComplexHeatmap`.
 # -brush_action Pass to `makeInteractiveComplexHeatmap`.
-# -default_click_action Pass to `makeInteractiveComplexHeatmap`.
-# -default_brush_action Pass to `makeInteractiveComplexHeatmap`.
 # -js_code Additional JavaScript code that is put after the interactive heatmap UI. The value can be a text or a function
 #       that takes "heatmap ID" as the argument and returns the formatted JavaScript code.
 # -close_button Whether to add a close button at the end of the widget. If it is ``FALSE``, the widget
@@ -55,18 +52,21 @@
 #     shiny::shinyApp(ui, server)
 # }
 InteractiveComplexHeatmapModal = function(
-	input, output, session, get_heatmap, heatmap_id = NULL,
+	input, output, session, ht_list, heatmap_id = NULL,
 
 	# parameters passed to InteractiveComplexHeatmapOutput()
 	title1 = "Original heatmap", title2 = "Selected sub-heatmap",
-	width1 = 450, height1 = 350, width2 = 370, height2 = 350, 
-	width3 = ifelse(layout == "12|3", 800, 500), layout = "12|3",
+	width1 = ifelse(layout %in% c("1|(2+3)", "1|23"), 800, 450), 
+	height1 = ifelse(layout %in% c("1+(2|3)"), 700, 350), 
+	width2 = 370, 
+	height2 = 350, 
+	width3 = ifelse(layout %in% c("(1+2)|3", "12|3"), 800, 370),
+	layout = "(1+2)|3",
 	action = "click", brush_opt = list(stroke = "#f00", opacity = 0.6), 
-	output_div = TRUE,
+	output_ui = TRUE,
 
 	# parameters passed to makeInteractiveComplexHeatmap()
 	click_action = NULL, brush_action = NULL, 
-	default_click_action = TRUE, default_brush_action = TRUE,
 
 	# other configurations
 	js_code = "", close_button = TRUE, cancel_action = c("remove", "hide")
@@ -95,7 +95,7 @@ InteractiveComplexHeatmapModal = function(
 				),
 				InteractiveComplexHeatmapOutput(heatmap_id = heatmap_id, title1 = title1, title2 = title2,
 					width1 = width1, height1 = height1, width2 = width2, height2 = height2, width3 = width3, layout = layout,
-					action = action, brush_opt = brush_opt, output_div = output_div),
+					action = action, brush_opt = brush_opt, output_ui = output_ui),
 				if(close_button) {
 					tagList(
 						tags$hr(),
@@ -207,14 +207,8 @@ InteractiveComplexHeatmapModal = function(
 	})
 
 	observeEvent(input[[qq("@{heatmap_id}_heatmap_modal_open")]], {
-		if(is.function(get_heatmap)) {
-			ht = get_heatmap()
-		} else {
-			ht = get_heatmap
-		}
-		makeInteractiveComplexHeatmap(input, output, session, ht, heatmap_id = heatmap_id,
-			click_action = click_action, brush_action = brush_action,
-			default_click_action = default_click_action, default_brush_action = default_brush_action)
+		makeInteractiveComplexHeatmap(input, output, session, ht_list, heatmap_id = heatmap_id,
+			click_action = click_action, brush_action = brush_action)
 	})
 
 	observeEvent(input[[qq("@{heatmap_id}_heatmap_modal_remove")]], {
@@ -229,8 +223,7 @@ InteractiveComplexHeatmapModal = function(
 # -input Passed from the Shiny server function.
 # -output Passed from the Shiny server function.
 # -session Passed from the Shiny server function.
-# -get_heatmap A `ComplexHeatmap::Heatmap-class` or a `ComplexHeatmap::HeatmapList-class` object. The value can also
-#           be a function with no argument that generates such object.
+# -ht_list A `ComplexHeatmap::Heatmap-class` or a `ComplexHeatmap::HeatmapList-class` object.
 # -heatmap_id ID of the plot. If it is not specified, an internal ID is assigned.
 # -output_id Where the heatmap is put.
 # -title1 Pass to `InteractiveComplexHeatmapOutput`.
@@ -243,11 +236,9 @@ InteractiveComplexHeatmapModal = function(
 # -layout Pass to `InteractiveComplexHeatmapOutput`.
 # -action Pass to `InteractiveComplexHeatmapOutput`.
 # -brush_opt Pass to `InteractiveComplexHeatmapOutput`.
-# -output_div Pass to `InteractiveComplexHeatmapOutput`.
+# -output_ui Pass to `InteractiveComplexHeatmapOutput`.
 # -click_action Pass to `makeInteractiveComplexHeatmap`.
 # -brush_action Pass to `makeInteractiveComplexHeatmap`.
-# -default_click_action Pass to `makeInteractiveComplexHeatmap`.
-# -default_brush_action Pass to `makeInteractiveComplexHeatmap`.
 # -js_code Additional JavaScript code that is put after the interactive heatmap UI. The value can be a text or a function
 #       that takes "heatmap ID" as the argument and returns the formatted JavaScript code.
 # -close_button Whether to add a close button at the end of the widget.
@@ -280,18 +271,21 @@ InteractiveComplexHeatmapModal = function(
 #     shiny::shinyApp(ui, server)
 # }
 InteractiveComplexHeatmapWidget = function(
-	input, output, session, get_heatmap, heatmap_id = NULL, output_id,
+	input, output, session, ht_list, heatmap_id = NULL, output_id,
 
 	# parameters passed to InteractiveComplexHeatmapOutput()
 	title1 = "Original heatmap", title2 = "Selected sub-heatmap",
-	width1 = 450, height1 = 350, width2 = 370, height2 = 350, 
-	width3 = ifelse(layout == "12|3", 800, 500), layout = "12|3",
+	width1 = ifelse(layout %in% c("1|(2+3)", "1|23"), 800, 450), 
+	height1 = ifelse(layout %in% c("1+(2|3)"), 700, 350), 
+	width2 = 370, 
+	height2 = 350, 
+	width3 = ifelse(layout %in% c("(1+2)|3", "12|3"), 800, 370),
+	layout = "(1+2)|3",
 	action = "click", brush_opt = list(stroke = "#f00", opacity = 0.6), 
-	output_div = TRUE,
+	output_ui = TRUE,
 
 	# parameters passed to makeInteractiveComplexHeatmap()
 	click_action = NULL, brush_action = NULL, 
-	default_click_action = TRUE, default_brush_action = TRUE,
 
 	# other configurations
 	js_code = "", close_button = TRUE, cancel_action = c("remove", "hide")
@@ -311,7 +305,7 @@ InteractiveComplexHeatmapWidget = function(
 		div(id = qq("@{heatmap_id}_heatmap_widget"),
 			InteractiveComplexHeatmapOutput(heatmap_id = heatmap_id, title1 = title1, title2 = title2,
 				width1 = width1, height1 = height1, width2 = width2, height2 = height2, width3 = width3, layout = layout,
-				action = action, brush_opt = brush_opt, output_div = output_div),
+				action = action, brush_opt = brush_opt, output_ui = output_ui),
 			if(close_button) {
 				tagList(
 					tags$hr(),
@@ -337,14 +331,8 @@ InteractiveComplexHeatmapWidget = function(
 	})
 	
 	observeEvent(input[[qq("@{heatmap_id}_heatmap_widget_open")]], {
-		if(is.function(get_heatmap)) {
-			ht = get_heatmap()
-		} else {
-			ht = get_heatmap
-		}
-		makeInteractiveComplexHeatmap(input, output, session, ht, heatmap_id = heatmap_id,
-			click_action = click_action, brush_action = brush_action,
-			default_click_action = default_click_action, default_brush_action = default_brush_action)
+		makeInteractiveComplexHeatmap(input, output, session, ht_list, heatmap_id = heatmap_id,
+			click_action = click_action, brush_action = brush_action)
 	})
 
 	observeEvent(input[[qq("@{heatmap_id}_heatmap_widget_remove")]], {
