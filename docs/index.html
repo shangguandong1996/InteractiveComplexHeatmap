@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.8.1004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1001</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#make-interactive-complex-heatmaps" class="anchor"></a>Make Interactive Complex Heatmaps</h1></div>
 
-<p><strong>InteractiveComplexHeatmap</strong> is an R package that converts static heatmaps produced from <a href="https://github.com/jokergoo/ComplexHeatmap"><strong>ComplexHeatmap</strong></a> package into an interactive Shiny app with zero effort.</p>
+<p><strong>InteractiveComplexHeatmap</strong> is an R package that converts static heatmaps produced from <a href="https://github.com/jokergoo/ComplexHeatmap"><strong>ComplexHeatmap</strong></a> package into an interactive Shiny app with one extra line of code.</p>
 <p><img src="https://user-images.githubusercontent.com/449218/104457409-542d7a80-55aa-11eb-8cf6-34775e49535c.gif" width="700" border="black"></p>
 <div id="install" class="section level2">
 <h2 class="hasAnchor">
@@ -212,7 +212,7 @@
 </div>
 <div id="interactivate-pheatmap-heatmap2-and-heatmap" class="section level2">
 <h2 class="hasAnchor">
-<a href="#interactivate-pheatmap-heatmap2-and-heatmap" class="anchor"></a>Interactivate pheatmap(), heatmap.2() and heatmap().</h2>
+<a href="#interactivate-pheatmap-heatmap2-and-heatmap" class="anchor"></a>Interactivate pheatmap(), heatmap.2() and heatmap()</h2>
 <p>If you directly use these three funtions, simply replace them with <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/pheatmap.html">ComplexHeatmap::pheatmap()</a></code>, <code>ComplexHeatmap:::heatmap.2()</code> and <code>ComplexHeatmap:::heatmap()</code>. If the three functions are used indirectly, e.g. a function <code>foo()</code> (maybe from another packages or other people’s functions) which internally uses these three heatmap functions, check the vignette <a href="https://jokergoo.github.io/InteractiveComplexHeatmap/articles/interactivate_indirect.html">“Interactivate indirect use of pheatmap(), heatmap.2() and heatmap()”</a> to find out how.</p>
 </div>
 <div id="live-examples" class="section level2">

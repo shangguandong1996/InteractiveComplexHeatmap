@@ -8,8 +8,15 @@ $(function() {
 		stop: function( event, ui ) {
 			document.getElementById("@{heatmap_id}_mask").remove();
 			$("#@{heatmap_id}_heatmap_brush").remove();
-			$("#@{heatmap_id}_heatmap").height(ui.size.height-4);
-			$("#@{heatmap_id}_heatmap").width(ui.size.width-4);
+			$("#@{heatmap_id}_heatmap").height(ui.size.height - 4);
+			$("#@{heatmap_id}_heatmap").width(ui.size.width - 4);
+			$("#@{heatmap_id}_heatmap img").width(ui.size.width - 4);  // img has 4px margin
+			$("#@{heatmap_id}_heatmap img").height(ui.size.height - 4);
+			
+			Shiny.setInputValue("@{heatmap_id}_heatmap_resize_width", ui.size.width - 4);
+			Shiny.setInputValue("@{heatmap_id}_heatmap_resize_height", ui.size.height - 4);
+			Shiny.setInputValue("@{heatmap_id}_heatmap_do_resize", Math.random());
+			
 		},
 		start: function(event, ui) {
 			var mask = document.createElement("div");
@@ -20,19 +27,19 @@ $(function() {
 		resize: function(event, ui) {
 			$("#@{heatmap_id}_mask").width(ui.size.width);
 			$("#@{heatmap_id}_mask").height(ui.size.height);
-			$("#@{heatmap_id}_heatmap").width(ui.size.width);
-			$("#@{heatmap_id}_heatmap").height(ui.size.height);
+			$("#@{heatmap_id}_heatmap").width(ui.size.width - 4);
+			$("#@{heatmap_id}_heatmap").height(ui.size.height - 4);
 			$("#@{heatmap_id}_heatmap img").width(ui.size.width - 4);  // img has 4px margin
 			$("#@{heatmap_id}_heatmap img").height(ui.size.height - 4);
 
 			$("#@{heatmap_id}_heatmap_control").width(ui.size.width);
 
-			$('#@{heatmap_id}_heatmap_input_width').val(ui.size.width);
-			$('#@{heatmap_id}_heatmap_input_height').val(ui.size.height);
+			$('#@{heatmap_id}_heatmap_input_width').val(ui.size.width - 4);
+			$('#@{heatmap_id}_heatmap_input_height').val(ui.size.height - 4);
 
 			if(parseInt($('#@{heatmap_id}_heatmap_download_format').find('input').filter(':checked').val()) == 2) {
-				width_in_inch = Math.round(ui.size.width*10/100*4/3)/10;
-				height_in_inch = Math.round(ui.size.height*10/100*4/3)/10;
+				width_in_inch = Math.round((ui.size.width - 4)*10/100*4/3)/10;
+				height_in_inch = Math.round((ui.size.height - 4)*10/100*4/3)/10;
 				$('#@{heatmap_id}_heatmap_download_image_width').val(width_in_inch);
 				$('#@{heatmap_id}_heatmap_download_image_height').val(height_in_inch);
 			} else {
@@ -47,6 +54,8 @@ $(function() {
 			document.getElementById("@{heatmap_id}_mask2").remove();
 			$("#@{heatmap_id}_sub_heatmap").height(ui.size.height - 4);
 			$("#@{heatmap_id}_sub_heatmap").width(ui.size.width - 4);
+			$("#@{heatmap_id}_sub_heatmap img").width(ui.size.width - 4);
+			$("#@{heatmap_id}_sub_heatmap img").height(ui.size.height - 4);
 		},
 		start: function(event, ui) {
 			var mask = document.createElement("div");
@@ -57,8 +66,8 @@ $(function() {
 		resize: function(event, ui) {
 			$("#@{heatmap_id}_mask2").width(ui.size.width);
 			$("#@{heatmap_id}_mask2").height(ui.size.height);
-			$("#@{heatmap_id}_sub_heatmap").width(ui.size.width);
-			$("#@{heatmap_id}_sub_heatmap").height(ui.size.height);
+			$("#@{heatmap_id}_sub_heatmap").width(ui.size.width - 4);
+			$("#@{heatmap_id}_sub_heatmap").height(ui.size.height - 4);
 
 			$("#@{heatmap_id}_sub_heatmap img").width(ui.size.width - 4);
 			$("#@{heatmap_id}_sub_heatmap img").height(ui.size.height - 4);
@@ -86,14 +95,20 @@ $(function() {
 		width = parseInt(width);
 		var height = $('#@{heatmap_id}_heatmap_input_height').val();
 		height = parseInt(height);
-		$('#@{heatmap_id}_heatmap_resize').width(width+4);
+		$('#@{heatmap_id}_heatmap_resize').width(width + 4);
 		$('#@{heatmap_id}_heatmap').width(width);
 		$('#@{heatmap_id}_heatmap img').width(width);
-		$('#@{heatmap_id}_heatmap_resize').height(height+4);
+		$('#@{heatmap_id}_heatmap_resize').height(height + 4);
 		$('#@{heatmap_id}_heatmap').height(height);
 		$('#@{heatmap_id}_heatmap img').height(height);
 		$('#@{heatmap_id}_heatmap_download_image_width').val(width);
 		$('#@{heatmap_id}_heatmap_download_image_height').val(height);
+
+		$("#@{heatmap_id}_heatmap_control").width(width);
+
+		Shiny.resetBrush("@{heatmap_id}_heatmap_brush");
+
+		Shiny.setInputValue("@{heatmap_id}_heatmap_resize_button", Math.random());
 	});
 
 	$('#@{heatmap_id}_heatmap_download_format').change( function() {
@@ -142,14 +157,15 @@ $(function() {
 		width = parseInt(width);
 		var height = $('#@{heatmap_id}_sub_heatmap_input_height').val();
 		height = parseInt(height);
-		$('#@{heatmap_id}_sub_heatmap_resize').width(width+4);
+		$('#@{heatmap_id}_sub_heatmap_resize').width(width + 4);
 		$('#@{heatmap_id}_sub_heatmap').width(width);
 		$('#@{heatmap_id}_sub_heatmap img').width(width);
-		$('#@{heatmap_id}_sub_heatmap_resize').height(height+4);
+		$('#@{heatmap_id}_sub_heatmap_resize').height(height + 4);
 		$('#@{heatmap_id}_sub_heatmap').height(height);
 		$('#@{heatmap_id}_sub_heatmap img').height(height);
 		$('#@{heatmap_id}_sub_heatmap_download_image_width').val(width);
 		$('#@{heatmap_id}_sub_heatmap_download_image_height').val(height);
+		$("#@{heatmap_id}_sub_heatmap_control").width(width);
 	});
 
 	$('#@{heatmap_id}_sub_heatmap_download_format').change(function() {
@@ -190,9 +206,14 @@ $(function() {
 		}
 	});
 
+	Shiny.addCustomMessageHandler('@{heatmap_id}_remove_brush', function(message) {
+		$("#@{heatmap_id}_heatmap_brush").remove();
+		Shiny.setInputValue("@{heatmap_id}_heatmap_brush", null);
+	})
+
 	// similar function as "jquery ui tabs"
 	var objs = $('#@{heatmap_id}_heatmap_control li a');
-	$(objs[0]).attr("title", "Search in heatmaps");
+	$(objs[0]).attr("title", "Search heatmap");
 	$(objs[1]).attr("title", "Configure brush");
 	$(objs[2]).attr("title", "Save image");
 	$(objs[3]).attr("title", "Resize heatmap");
@@ -393,4 +414,39 @@ function @{heatmap_id}_create_color_picker() {
 			}
 		});
 	});
+
+	if('@{shiny_env[[heatmap_id]]$action}' == 'click') {
+		var @{heatmap_id}_brush_x1;
+		var @{heatmap_id}_brush_x2;
+		var @{heatmap_id}_brush_y1;
+		var @{heatmap_id}_brush_y2;
+		$('#@{heatmap_id}_heatmap').mousedown(function(e) {
+			var parentOffset = $(this).offset();
+			@{heatmap_id}_brush_x1 = e.pageX - parentOffset.left;
+			@{heatmap_id}_brush_y1 = e.pageY - parentOffset.top;
+		}).mouseup(function(e) {
+			var parentOffset = $(this).offset();
+			@{heatmap_id}_brush_x2 = e.pageX - parentOffset.left;
+			@{heatmap_id}_brush_y2 = e.pageY - parentOffset.top;
+			if(@{heatmap_id}_brush_x1 == @{heatmap_id}_brush_x2 && @{heatmap_id}_brush_y1 == @{heatmap_id}_brush_y2) {
+				Shiny.setInputValue('@{heatmap_id}_heatmap_mouse_action', Math.random());
+			}
+		});
+	}
+
+	if('@{shiny_env[[heatmap_id]]$action}' == 'hover') {
+		var @{heatmap_id}_relX = -1;
+        var @{heatmap_id}_relY = -1;
+        $('#@{heatmap_id}_heatmap').mousemove(function(e) {
+            var parentOffset = $(this).offset();
+            @{heatmap_id}_relX = e.pageX - parentOffset.left;
+            @{heatmap_id}_relY = e.pageY - parentOffset.top;
+        }).mousestop(function() {
+        	var h = $(this).height();
+            if($('#@{heatmap_id}_heatmap_brush').length == 0) {
+                Shiny.setInputValue('@{heatmap_id}_heatmap_hover', {x: @{heatmap_id}_relX, y: h - @{heatmap_id}_relY});
+                Shiny.setInputValue('@{heatmap_id}_heatmap_mouse_action', Math.random());
+            } 
+        })
+	}
 }

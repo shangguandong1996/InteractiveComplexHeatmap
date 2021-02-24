@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.8.1004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1001</span>
       </span>
     </div>
 
@@ -169,6 +169,9 @@
 #&gt;  1.3 A single heatmap with annotations on both rows and columns.
 #&gt;  1.4 A single heatmap where rows and columns are split.
 #&gt;  1.5 A list of two heatmaps.
+#&gt;  1.6 Use last generated heatmap, an example from cola package.
+#&gt;  1.7 Use last generated heatmap, an app with three interactive heatmaps
+#&gt;  1.8 Demonstrate hover, click and dblclick actions.
 #&gt; 
 #&gt; ──────── 2. On other plots and packages ───────────────────────────────────────────── 
 #&gt;  2.1 A density heatmap.
@@ -204,6 +207,8 @@
 #&gt;      their descriptions are shown in the output.
 #&gt;  5.5 Visualize a DESeq2 results. The selected genes are highlighted in an
 #&gt;      associated MA plot.
+#&gt;  5.6 Interactive correlation heatmap. Clicking on the cell generates a
+#&gt;      scatterplot of the two corresponding variables.
 #&gt; 
 #&gt; ──────── 6. Dynamically generate heatmap widget in Shiny app ──────────────────────── 
 #&gt;  6.1 The matrix is dynamically generated.
@@ -227,6 +232,7 @@
 #&gt; ──────── 8. Interactivate indirect use of pheatmap(), heatmap.2() and heatmap() ───── 
 #&gt;  8.1 Indirect use of pheatmap().
 #&gt;  8.2 Indirect use of heatmap.2().
+#&gt;  8.3 Two interactive heatmap widgets from indirect use of pheatmap().
 #&gt; </div><div class='input'><span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='fu'>htShinyExample</span><span class='op'>(</span><span class='fl'>4.2</span><span class='op'>)</span>
 <span class='op'>}</span>

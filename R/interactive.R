@@ -5,6 +5,7 @@
 #
 # == param
 # -ht_list A `ComplexHeatmap::HeatmapList-class` object returned by `ComplexHeatmap::draw,Heatmap-method` or `ComplexHeatmap::draw,HeatmapList-method`.
+#         If it is omitted, it uses the last generated heatmap.
 # -mark Whether to mark the selected area as a rectangle.
 # -pos1 If the value is ``NULL``, it can be selected by click on the heatmap (of cource, the heatmap should be on
 #       the interactive graphic device). If it is set, it must be a `grid::unit` object with length two which
@@ -286,17 +287,19 @@ selectArea = function(ht_list = get_last_ht(), pos1 = NULL, pos2 = NULL, mark = 
 	}
 	if(verbose) cat("\n")
 
-	if(mark) {
-		for(i in seq_len(nrow(ht_pos))) {
-		    x_min = ht_pos[i, "x_min"]
-		    x_max = ht_pos[i, "x_max"]
-		    y_min = ht_pos[i, "y_min"]
-		    y_max = ht_pos[i, "y_max"]
-		    grid.rect(x = x_min, y = y_min,
-		        width = x_max - x_min, height = y_max - y_min, gp = gpar(fill = "transparent"),
-		        just = c("left", "bottom"))
-		}
-	}
+	# if(mark) {
+	# 	for(i in seq_len(nrow(ht_pos))) {
+	# 	    x_min = ht_pos[i, "x_min"]
+	# 	    x_max = ht_pos[i, "x_max"]
+	# 	    y_min = ht_pos[i, "y_min"]
+	# 	    y_max = ht_pos[i, "y_max"]
+	# 	    grid.rect(x = x_min, y = y_min,
+	# 	        width = x_max - x_min, height = y_max - y_min, 
+	# 	        default.units = unit,
+	# 	        gp = gpar(fill = "transparent"),
+	# 	        just = c("left", "bottom"))
+	# 	}
+	# }
 
 	if(overlap_to_heatmap) {
 		return(df)
@@ -311,6 +314,7 @@ selectArea = function(ht_list = get_last_ht(), pos1 = NULL, pos2 = NULL, mark = 
 #
 # == param
 # -ht_list A `ComplexHeatmap::HeatmapList-class` object returned by `ComplexHeatmap::draw,Heatmap-method` or `ComplexHeatmap::draw,HeatmapList-method`.
+#       If it is omitted, it uses the last generated heatmap.
 # -mark Whether to mark the selected position as a point.
 # -pos If the value is ``NULL``, it can be selected by click on the heatmap (of cource, the heatmap should be on
 #       the interactive graphic device). If it is set, it must be a `grid::unit` object with length two which
@@ -509,6 +513,7 @@ selectPosition = function(ht_list = get_last_ht(), pos = NULL, mark = TRUE, verb
 #
 # == param
 # -ht_list A `ComplexHeatmap::HeatmapList-class` object returned by `ComplexHeatmap::draw,Heatmap-method` or `ComplexHeatmap::draw,HeatmapList-method`.
+#          If it is omitted, it uses the last generated heatmap.
 # -unit The unit.
 # -valueOnly Whether only return the numeric values.
 # -include_annotation Internally used.

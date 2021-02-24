@@ -3,6 +3,7 @@
 ##############################################################
 # title: A single Shiny app with two interactive heatmap widgets.
 
+set.seed(8)
 m1 = matrix(rnorm(100*100), 100)
 ht1 = Heatmap(m1)
 ht1 = draw(ht1)
@@ -12,10 +13,10 @@ ht2 = draw(ht2)
 
 ui = fluidPage(
     h3("The first heatmap"),
-    InteractiveComplexHeatmapOutput("heatmap_1", height1 = 200, height2 = 200),
+    InteractiveComplexHeatmapOutput("heatmap_1", height1 = 300, height2 = 300),
     hr(),
     h3("The second heatmap"),
-    InteractiveComplexHeatmapOutput("heatmap_2", height1 = 200, height2 = 200)
+    InteractiveComplexHeatmapOutput("heatmap_2", height1 = 300, height2 = 300)
 )
 
 server = function(input, output, session) {
@@ -37,7 +38,6 @@ ht = draw(ht)
 
 ui = fluidPage(
     InteractiveComplexHeatmapOutput(output_ui = htmlOutput("info")),
-    
 )
 
 click_action = function(df, output) {
@@ -70,7 +70,6 @@ shinyApp(ui, server)
 # title: Self-define the output. Additional annotations for the selected gene are shown.
 
 library(GetoptLong)
-suppressPackageStartupMessages(library(EnrichedHeatmap))
 load(system.file("extdata", "chr21_test_data.RData", package = "EnrichedHeatmap"))
 
 gene_id = names(rpkm)[1:100]
@@ -197,6 +196,7 @@ shinyApp(ui, server)
 
 ##########################################################################
 # title: Visualize a DESeq2 results. The selected genes are highlighted in an associated MA plot.
+
 library(airway)
 data(airway)
 se <- airway
@@ -210,17 +210,30 @@ dds$dex <- relevel(dds$dex, ref = "untrt")
 dds <- DESeq(dds)
 res <- results(dds)
 res = as.data.frame(res)
+res = res[, c("baseMean", "log2FoldChange", "padj")]
 
 m = counts(dds, normalized = TRUE)
 
 l = res$padj < 0.01; l[is.na(l)] = FALSE
 m = m[l, ]
 
+library(ComplexHeatmap)
+library(circlize)
+
 ht = Heatmap(t(scale(t(m))), name = "z-score",
-    top_annotation = HeatmapAnnotation(df = colData(dds)[, c("dex")]),
+    top_annotation = HeatmapAnnotation(
+        dex = colData(dds)$dex,
+        sizeFactor = anno_points(colData(dds)$sizeFactor)
+    ),
     show_row_names = FALSE, show_column_names = FALSE, row_km = 2,
-    column_title = paste0(sum(l), " significant genes with fdr < 0.01"),
-    show_row_dend = FALSE)
+    column_title = paste0(sum(l), " significant genes with FDR < 0.01"),
+    show_row_dend = FALSE) + 
+    Heatmap(log10(res$baseMean[l]+1), show_row_names = FALSE, width = unit(5, "mm"),
+        name = "log10(baseMean+1)", show_column_names = FALSE) +
+    Heatmap(res$log2FoldChange[l], show_row_names = FALSE, width = unit(5, "mm"),
+        name = "log2FoldChange", show_column_names = FALSE,
+        col = colorRamp2(c(-2, 0, 2), c("green", "white", "red")))
+ht = draw(ht, merge_legend = TRUE)
 
 make_maplot = function(res, highlight = NULL) {
     col = rep("#00000020", nrow(res))
@@ -229,16 +242,18 @@ make_maplot = function(res, highlight = NULL) {
     names(cex) = rownames(res)
     if(is.null(highlight)) {
         l = res$padj < 0.01; l[is.na(l)] = FALSE
-        col[l] = "orange"
+        col[l] = "red"
     } else {
-        col[highlight] = "orange"
-        cex[highlight] = 0.7
+        col[highlight] = "red"
+        cex[highlight] = 1
     }
     x = res$baseMean
     y = res$log2FoldChange
     y[y > 2] = 2
     y[y < -2] = -2
-    col[col == "orange" & y < 0] = "darkgreen"
+    col[col == "red" & y < 0] = "darkgreen"
+    par(mar = c(4, 4, 1, 1))
+
     suppressWarnings(
         plot(x, y, col = col, 
             pch = ifelse(res$log2FoldChange > 2 | res$log2FoldChange < -2, 1, 16), 
@@ -247,37 +262,106 @@ make_maplot = function(res, highlight = NULL) {
     )
 }
 
+
 library(shiny)
 ui = fluidPage(
-    InteractiveComplexHeatmapOutput(output_ui = uiOutput("maplot_ui"))
+    div(
+        InteractiveComplexHeatmapOutput(layout = "1-(2|3)",
+            width1 = 400, height1 = 800, width2 = 300, height2 = 300,
+            style = "float: left;"),
+        div(
+            uiOutput("maplot_ui"),
+            uiOutput("res_table_ui"),
+            style = "float: left;"
+        ),
+        div(style = "clear: both;")
+    )
 )
 
-click_action = function(df, output) {
-    output[["maplot_ui"]] = renderUI({
-           
-        output[["maplot"]] = renderPlot({
-            plot.new()
-        })
-
-        plotOutput("maplot", width = 400)
-    })
-}
-
+library(DT)
 brush_action = function(df, output) {
-    output[["maplot_ui"]] = renderUI({
-           
+    
+    row_index = unique(unlist(df$row_index))
+    selected = rownames(m)[row_index]
+        
+    output[["maplot_ui"]] = renderUI({   
         output[["maplot"]] = renderPlot({
-            row_index = unique(unlist(df$row_index))
-            make_maplot(res, rownames(m)[row_index])
+            make_maplot(res, selected)
         })
 
-        plotOutput("maplot", width = 400)
+        div(
+            h5("MA-plot"),
+            div(
+                plotOutput("maplot", width = 400), 
+                style = "border: 1px solid grey; padding: 4px;"
+            )
+        )
+    })
+
+    output[["res_table_ui"]] = renderUI({
+        output[["res_table"]] = renderDT(
+            formatRound(datatable(res[selected, ], rownames = TRUE), columns = 1:ncol(res), digits = 3)
+        )
+
+        div(
+            h5("Result table of the selected genes"),
+            div(
+                DTOutput("res_table"),
+                style = "font-size:80%"
+            )
+        )
     })
 }
 
 server = function(input, output, session) {
     makeInteractiveComplexHeatmap(input, output, session, ht,
-        click_action = click_action, brush_action = brush_action)
+        brush_action = brush_action)
+}
+
+shinyApp(ui, server)
+
+
+#########################################################################################################
+# title: Interactive correlation heatmap. Clicking on the cell generates a scatterplot of the two corresponding variables.
+
+data(mtcars)
+cor_mat = cor(mtcars)
+
+library(circlize)
+col_fun = colorRamp2(c(-1, 0, 1), c("darkgreen", "white", "red"))
+ht = Heatmap(cor_mat, name = "Correlation",
+    col = col_fun, rect_gp = gpar(type = "none"),
+    cell_fun = function(j, i, x, y, w, h, fill) {
+        grid.rect(x, y, w, h, gp = gpar(fill = "transparent", col = "grey"))
+        grid.circle(x = x, y = y, r = abs(cor_mat[i, j])/2 * min(unit.c(w, h)), 
+            gp = gpar(fill = col_fun(cor_mat[i, j]), col = NA))
+    },
+    show_row_dend = FALSE, show_column_dend = FALSE)
+
+
+ui = fluidPage(
+    InteractiveComplexHeatmapOutput(),
+    plotOutput("scatterplot", width = 400, height = 400)
+)
+
+click_action = function(df, output) {
+    output$scatterplot = renderPlot({
+        nm = colnames(mtcars)
+        i1 = df$row_index
+        i2 = df$column_index
+
+        x = mtcars[, nm[i1]]
+        y = mtcars[, nm[i2]]
+
+        plot(x, y, xlab = nm[i1], ylab = nm[i2],
+            main = paste0("Correlation = ", sprintf('%.3f', cor(x, y))))
+    })
+}
+
+
+server = function(input, output, session) {
+    makeInteractiveComplexHeatmap(input, output, session, ht,
+        click_action = click_action)
 }
 
 shinyApp(ui, server)

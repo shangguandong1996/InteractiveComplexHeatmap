@@ -11,29 +11,39 @@
 # -width2 Width of the sub-heatmap.
 # -height2 Height of the sub-heatmap.
 # -width3 Width of the output div.
-# -layout One of ``12|3`` or ``1|23``. ``12|3`` means the div of original heatmap and sub-heatmap are in a same row. 
-#         ``1|23`` means the div of sub-heatmap and the output are in a same row.
+# -layout One of ``(1|2)-3``, ``1-(2|3)``, ``1-2-3``, ``1|2|3``, ``1|(2-3)``.
 # -action Which action for selecting single cell on the heatmap? Value should be ``click``, ``hover`` or ``dblclick``.
-# -brush_opt A list of parameters passed to `shiny::brushOpts`.
+# -brush_opt A list of parameters passed to `shiny::brushOpts`. Do not set an ID for the brush. An internal brush ID is automatically set.
 # -output_ui Whether to add the output ``div``.
 # -css Self-defined CSS code.
+# -... Pass to the UI container which is wrapped by `shiny::fluidPage`.
 #
 # == details
 # This function generates HTML fragment for the interactive UI. See the example from `makeInteractiveComplexHeatmap` page.
+#
+# ``layout`` is defined as follows:
+#
+# - `"(1-2)|3"`: Heatmap and sub-heatmap are in a same row, and output is in a second row. This is the default layout.
+# - `"1|(2-3)"`: Heatmap is in a single row, while sub-heatmap and output are in a second row.
+# - `"1-2-3"`: All three components are in a same row.
+# - `"1|2|3"`: Each component is in a single row.
+# - `"1-(2|3)"`: Being different from the other four layouts, this is a two-column layout. Heatmap is in a sigle column. Sub-heatmap and output are vertically aligned and the two are in the second column. 
+#
+# The hover event is implemented with https://github.com/websanova/mousestop .
 #
 # == value
 # A UI that can be used in shiny.
 InteractiveComplexHeatmapOutput = function(heatmap_id = NULL, 
 	title1 = "Original heatmap", title2 = "Selected sub-heatmap",
-	width1 = ifelse(layout %in% c("1|(2+3)", "1|23"), 800, 450), 
-	height1 = ifelse(layout %in% c("1+(2|3)"), 700, 350), 
+	width1 = ifelse(layout == "1|(2-3)", 800, 450), 
+	height1 = ifelse(layout == "1-(2|3)", 700, 350), 
 	width2 = 370, 
 	height2 = 350, 
-	width3 = ifelse(layout %in% c("(1+2)|3", "12|3"), 800, 370),
-	layout = "(1+2)|3",
+	width3 = ifelse(layout == "(1-2)|3", 800, 370),
+	layout = "(1-2)|3",
 	action = "click", 
 	brush_opt = list(stroke = "#f00", opacity = 0.6), 
-	output_ui = default_output_ui(), css = "") {
+	output_ui = default_output_ui(), css = "", ...) {
 
 	if(is.null(heatmap_id)) {
 		increase_widget_index()
@@ -50,19 +60,23 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 	shiny_env[[heatmap_id]] = list()
 	shiny_env$current_heatmap_id = heatmap_id
 
-	action = match.arg(action)[1]
-	if(action == "dblclick") {
+	shiny_env[[heatmap_id]]$action = action
+
+	if(action %in% c("dblclick", "dbclick")) {
 		click = NULL
 		dblclick = qq("@{heatmap_id}_heatmap_click")
 		hover = NULL
+		action = "dblclick"
 	} else if(action == "hover") {
 		click = NULL
 		dblclick = NULL
-		hover = qq("@{heatmap_id}_heatmap_click")
-	} else {
+		hover = NULL
+	} else if(action == "click") {
 		click = qq("@{heatmap_id}_heatmap_click")
 		dblclick = NULL
 		hover = NULL
+	} else {
+		stop_wrap("`action` can only be one of `click`, `hover` and `dblclick`.")
 	}
 
 	if(is.null(css)) {css = ""}
@@ -99,6 +113,14 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 		src        = "www/shared/fontawesome/css",
 		stylesheet = c("all.min.css", "v4-shims.min.css")
     )
+
+    mousestop_dep = htmltools::htmlDependency(
+		name       = "mousestop",
+		version    = "3.0.1",
+		package    = "InteractiveComplexHeatmap",
+		src        = "www",
+		script     = c("mousestop.min.js")
+	)
 
     if(is.null(brush_opt$fill)) {
     	pickr_fill = "#003366"
@@ -297,9 +319,9 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 	}
 
 	if(is.null(output_ui)) {
-		shiny_env[[heatmap_id]] = list(default_output_ui = FALSE)
+		shiny_env[[heatmap_id]]$default_output_ui = FALSE
 	}  else {
-		shiny_env[[heatmap_id]] = list(default_output_ui = identical(output_ui, default_output_ui()))
+		shiny_env[[heatmap_id]]$default_output_ui = identical(output_ui, default_output_ui())
 	}
 
 	output_ui = div(
@@ -308,7 +330,7 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 		style = qq("width: @{width3}px;")
 	)
 
-	if(layout %in% c("(1+2)|3", "12|3")) {
+	if(layout %in% c("(1-2)|3", "12|3")) {
 		layout_css = qq("
 			.@{heatmap_id}_widget #@{heatmap_id}_heatmap_group {
 				float:left;
@@ -324,7 +346,7 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 			div(style = "clear: both;"),
 			output_ui
 		)
-	} else if(layout %in% c("1|(2+3)", "1|23")) {
+	} else if(layout %in% c("1|(2-3)", "1|23")) {
 		layout_css = qq("
 			.@{heatmap_id}_widget #@{heatmap_id}_sub_heatmap_group {
 				float:left;
@@ -339,7 +361,7 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 			sub_heatmap_ui,
 			output_ui
 		)
-	} else if(layout %in% c("1+2+3", "123")) {
+	} else if(layout %in% c("1-2-3", "123")) {
 		layout_css = qq("
 			.@{heatmap_id}_widget #@{heatmap_id}_heatmap_group {
 				float:left;
@@ -364,7 +386,7 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 			sub_heatmap_ui,
 			output_ui
 		)
-	} else if(layout %in% c("1+(2|3)")) {
+	} else if(layout %in% c("1-(2|3)")) {
 		layout_css = qq("
 			.@{heatmap_id}_widget #@{heatmap_id}_heatmap_group {
 				float:left;
@@ -376,21 +398,22 @@ InteractiveComplexHeatmapOutput = function(heatmap_id = NULL,
 			div( 
 				sub_heatmap_ui,
 				output_ui,
-				style = "float: left"
+				style = "float:left;"
 			)
 		)
+	} else {
+		stop_wrap("Value of `layout` can only be one of '(1|2)-3', '1-(2|3)', '1-2-3', '1|2|3', '1|(2-3)'.")
 	}
 
 	fluidPage(class = qq("@{heatmap_id}_widget"),
 
-		list(jqueryui_dep, pickr_dep, fontawesome_dep, ht_js_dep),
+		list(jqueryui_dep, pickr_dep, fontawesome_dep, mousestop_dep, ht_js_dep),
 
 		htmlOutput(qq("@{heatmap_id}_warning")),
 		tl,
 		div(style = "clear: both;"),
-		tags$style(HTML(layout_css))
+		tags$style(HTML(layout_css)),
+		...
 	)
 }
-
-
 

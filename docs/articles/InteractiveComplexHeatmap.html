@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.8.1004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1001</span>
       </span>
     </div>
 
@@ -95,7 +95,7 @@
       <h1 data-toc-skip>How to visualize heatmaps interactively</h1>
                         <h4 class="author">Zuguang Gu ( <a href="mailto:z.gu@dkfz.de" class="email">z.gu@dkfz.de</a> )</h4>
             
-            <h4 class="date">2021-02-08</h4>
+            <h4 class="date">2021-02-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/blob/master/vignettes/InteractiveComplexHeatmap.Rmd"><code>vignettes/InteractiveComplexHeatmap.Rmd</code></a></small>
       <div class="hidden name"><code>InteractiveComplexHeatmap.Rmd</code></div>
@@ -143,12 +143,12 @@ p {
 <img width="100%" style="border:1px solid grey;padding: 4px;" src="https://jokergoo.github.io/images/example3.gif"></p>
 <p>There are several tools under both heatmaps. For the original heatmap, there are following tools:</p>
 <ol style="list-style-type: decimal">
-<li><em>Search in heatmaps</em></li>
+<li><em>Search heatmap</em></li>
 </ol>
 <p>It allows to search the heatmap labels to obtain a subset of rows and columns. Once rows or columns are found in the heatmaps, the sub-heatmaps will be drawn in the right panel.</p>
 <p><img src="https://jokergoo.github.io/images/tool_search.png" width="100%" style="display: block; margin: auto;"></p>
 <ol start="2" style="list-style-type: decimal">
-<li><em>Config brush</em></li>
+<li><em>Configure brush</em></li>
 </ol>
 <p>Border and backgroud of the brush can be configured here:</p>
 <p><img src="https://jokergoo.github.io/images/tool_brush.png" width="100%" style="display: block; margin: auto;"></p>
@@ -164,7 +164,7 @@ p {
 <p><img src="https://jokergoo.github.io/images/tool_resize.png" width="60%" style="display: block; margin: auto;"></p>
 <p>For the sub-heatmap, there are following tools:</p>
 <ol style="list-style-type: decimal">
-<li><em>Configure sub-heatmaps</em></li>
+<li><em>Configure sub-heatmap</em></li>
 </ol>
 <p>You can control whether to show row/column names in the sub-heatmaps, and whether to show the annotations as well.</p>
 <p>The sub-heatmap can be fine-turned by removing a certain number of rows/columns from the four dimensions.</p>
@@ -180,7 +180,7 @@ p {
 </ol>
 <p>Similar as in the main heatmap.</p>
 <ol start="4" style="list-style-type: decimal">
-<li><em>Resize sub-heatmaps</em></li>
+<li><em>Resize sub-heatmap</em></li>
 </ol>
 <p>Similar as in the main heatmap.</p>
 <p>There are other vignettes focusing on more specific topics:</p>
@@ -351,6 +351,9 @@ p {
 ##  1.3 A single heatmap with annotations on both rows and columns.
 ##  1.4 A single heatmap where rows and columns are split.
 ##  1.5 A list of two heatmaps.
+##  1.6 Use last generated heatmap, an example from cola package.
+##  1.7 Use last generated heatmap, an app with three interactive heatmaps
+##  1.8 Demonstrate hover, click and dblclick actions.
 ## 
 ## ──────── 2. On other plots and packages ───────────────────────────────────────────── 
 ##  2.1 A density heatmap.
@@ -386,6 +389,8 @@ p {
 ##      their descriptions are shown in the output.
 ##  5.5 Visualize a DESeq2 results. The selected genes are highlighted in an
 ##      associated MA plot.
+##  5.6 Interactive correlation heatmap. Clicking on the cell generates a
+##      scatterplot of the two corresponding variables.
 ## 
 ## ──────── 6. Dynamically generate heatmap widget in Shiny app ──────────────────────── 
 ##  6.1 The matrix is dynamically generated.
@@ -408,7 +413,8 @@ p {
 ## 
 ## ──────── 8. Interactivate indirect use of pheatmap(), heatmap.2() and heatmap() ───── 
 ##  8.1 Indirect use of pheatmap().
-##  8.2 Indirect use of heatmap.2().</code></pre>
+##  8.2 Indirect use of heatmap.2().
+##  8.3 Two interactive heatmap widgets from indirect use of pheatmap().</code></pre>
 <p>You can select one specific example by sending the corresponding index to <code><a href="../reference/htShinyExample.html">htShinyExample()</a></code>, e.g. to run the example “4. A single heatmap where rows and columns are split.”, simply run:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/htShinyExample.html">htShinyExample</a></span><span class="op">(</span><span class="fl">1.4</span><span class="op">)</span></code></pre></div>
@@ -435,42 +441,32 @@ p {
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] InteractiveComplexHeatmap_0.99.8.1004 knitr_1.30                           
+## [1] InteractiveComplexHeatmap_0.99.9.1001 knitr_1.30                           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] circlize_0.4.13.1001      shape_1.4.5              
-##  [3] clisymbols_1.2.0          GetoptLong_1.0.3         
-##  [5] xfun_0.19                 colorspace_2.0-0         
-##  [7] viridisLite_0.3.0         htmltools_0.5.1.1        
-##  [9] stats4_4.0.2              yaml_2.2.1               
-## [11] rlang_0.4.8               pkgdown_1.6.1            
-## [13] later_1.1.0.1             glue_1.4.2               
-## [15] gdtools_0.2.2             BiocGenerics_0.34.0      
-## [17] RColorBrewer_1.1-2        lifecycle_0.2.0          
-## [19] matrixStats_0.57.0        stringr_1.4.0            
-## [21] munsell_0.5.0             ragg_0.4.0               
-## [23] rvest_0.3.6               GlobalOptions_0.1.2      
-## [25] kableExtra_1.3.1          memoise_1.1.0            
-## [27] evaluate_0.14             ComplexHeatmap_2.7.6.1004
-## [29] IRanges_2.22.2            fastmap_1.0.1            
-## [31] Cairo_1.5-12.2            httpuv_1.5.4             
-## [33] parallel_4.0.2            Rcpp_1.0.5               
-## [35] xtable_1.8-4              scales_1.1.1             
-## [37] backports_1.2.0           promises_1.1.1           
-## [39] S4Vectors_0.26.1          desc_1.2.0               
-## [41] webshot_0.5.2             mime_0.9                 
-## [43] systemfonts_0.3.2         fs_1.5.0                 
-## [45] textshaping_0.2.1         rjson_0.2.20             
-## [47] png_0.1-7                 digest_0.6.27            
-## [49] stringi_1.5.3             shiny_1.5.0              
-## [51] grid_4.0.2                rprojroot_1.3-2          
-## [53] clue_0.3-57               tools_4.0.2              
-## [55] magrittr_2.0.1            cluster_2.1.0            
-## [57] crayon_1.3.4              xml2_1.3.2               
-## [59] assertthat_0.2.1          rmarkdown_2.5            
-## [61] svglite_1.2.3.2           httr_1.4.2               
-## [63] rstudioapi_0.13           R6_2.5.0                 
-## [65] compiler_4.0.2</code></pre>
+##  [1] circlize_0.4.13.1001 shape_1.4.5          clisymbols_1.2.0    
+##  [4] GetoptLong_1.0.5     xfun_0.19            colorspace_2.0-0    
+##  [7] viridisLite_0.3.0    htmltools_0.5.1.1    stats4_4.0.2        
+## [10] yaml_2.2.1           rlang_0.4.8          pkgdown_1.6.1       
+## [13] later_1.1.0.1        glue_1.4.2           gdtools_0.2.2       
+## [16] BiocGenerics_0.34.0  RColorBrewer_1.1-2   lifecycle_0.2.0     
+## [19] matrixStats_0.57.0   foreach_1.5.1        stringr_1.4.0       
+## [22] munsell_0.5.0        rvest_0.3.6          ragg_0.4.0          
+## [25] GlobalOptions_0.1.2  kableExtra_1.3.1     codetools_0.2-18    
+## [28] memoise_1.1.0        evaluate_0.14        ComplexHeatmap_2.7.7
+## [31] IRanges_2.22.2       fastmap_1.0.1        Cairo_1.5-12.2      
+## [34] doParallel_1.0.16    httpuv_1.5.4         parallel_4.0.2      
+## [37] Rcpp_1.0.5           xtable_1.8-4         scales_1.1.1        
+## [40] backports_1.2.0      promises_1.1.1       S4Vectors_0.26.1    
+## [43] desc_1.2.0           webshot_0.5.2        mime_0.9            
+## [46] systemfonts_0.3.2    fs_1.5.0             textshaping_0.2.1   
+## [49] rjson_0.2.20         png_0.1-7            digest_0.6.27       
+## [52] stringi_1.5.3        shiny_1.5.0          grid_4.0.2          
+## [55] rprojroot_1.3-2      clue_0.3-57          tools_4.0.2         
+## [58] magrittr_2.0.1       cluster_2.1.0        crayon_1.3.4        
+## [61] xml2_1.3.2           httr_1.4.2           rstudioapi_0.13     
+## [64] assertthat_0.2.1     rmarkdown_2.5        svglite_1.2.3.2     
+## [67] iterators_1.0.13     R6_2.5.0             compiler_4.0.2</code></pre>
 </div>
   </div>
 

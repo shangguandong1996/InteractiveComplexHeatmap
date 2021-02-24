@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.8.1004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1001</span>
       </span>
     </div>
 
@@ -146,12 +146,12 @@
     
     <span class='co'># parameters passed to InteractiveComplexHeatmapOutput()</span>
     heatmap_id <span class='op'>=</span> <span class='cn'>NULL</span>, title1 <span class='op'>=</span> <span class='st'>"Original heatmap"</span>, title2 <span class='op'>=</span> <span class='st'>"Selected sub-heatmap"</span>,
-    width1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1|(2+3)"</span>, <span class='st'>"1|23"</span><span class='op'>)</span>, <span class='fl'>800</span>, <span class='fl'>450</span><span class='op'>)</span>,
-    height1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1+(2|3)"</span><span class='op'>)</span>, <span class='fl'>700</span>, <span class='fl'>350</span><span class='op'>)</span>,
+    width1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>==</span> <span class='st'>"1|(2-3)"</span>, <span class='fl'>800</span>, <span class='fl'>450</span><span class='op'>)</span>,
+    height1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>==</span> <span class='st'>"1-(2|3)"</span>, <span class='fl'>700</span>, <span class='fl'>350</span><span class='op'>)</span>,
     width2 <span class='op'>=</span> <span class='fl'>370</span>,
     height2 <span class='op'>=</span> <span class='fl'>350</span>,
-    width3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"(1+2)|3"</span>, <span class='st'>"12|3"</span><span class='op'>)</span>, <span class='fl'>800</span>, <span class='fl'>370</span><span class='op'>)</span>,
-    layout <span class='op'>=</span> <span class='st'>"(1+2)|3"</span>,
+    width3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>==</span> <span class='st'>"(1-2)|3"</span>, <span class='fl'>800</span>, <span class='fl'>370</span><span class='op'>)</span>,
+    layout <span class='op'>=</span> <span class='st'>"(1-2)|3"</span>,
     action <span class='op'>=</span> <span class='st'>"click"</span>, brush_opt <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>stroke <span class='op'>=</span> <span class='st'>"#f00"</span>, opacity <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>
     <span class='op'>)</span></pre>
 

@@ -66,12 +66,12 @@ htShiny = function(ht_list = get_last_ht(), title = NULL,
 
 	# parameters passed to InteractiveComplexHeatmapOutput()
 	heatmap_id = NULL, title1 = "Original heatmap", title2 = "Selected sub-heatmap",
-	width1 = ifelse(layout %in% c("1|(2+3)", "1|23"), 800, 450), 
-	height1 = ifelse(layout %in% c("1+(2|3)"), 700, 350), 
+	width1 = ifelse(layout == "1|(2-3)", 800, 450), 
+	height1 = ifelse(layout == "1-(2|3)", 700, 350), 
 	width2 = 370, 
 	height2 = 350, 
-	width3 = ifelse(layout %in% c("(1+2)|3", "12|3"), 800, 370),
-	layout = "(1+2)|3",
+	width3 = ifelse(layout == "(1-2)|3", 800, 370),
+	layout = "(1-2)|3",
 	action = "click", brush_opt = list(stroke = "#f00", opacity = 0.6)
 
 	) {
@@ -85,8 +85,8 @@ htShiny = function(ht_list = get_last_ht(), title = NULL,
 	} else if(inherits(ht_list, "InputHeatmap")) {
 		ht_list = show(ht_list)
 	} else {
-		if(is.numeric(ht_list)) {
-			stop_wrap("Maybe you are looking for `ht_shiny_example()`?")
+		if(is.numeric(ht_list) && length(ht_list) == 1) {
+			stop_wrap("Maybe you want to use the function `htShinyExample()`?")
 		}
 	}
 
@@ -142,7 +142,7 @@ ht_shiny = function(...) {
 # Examples of the interactive complex heatmaps
 #
 # == param
-# -which An integer of which example to use. The list of all examples can be obtained by executing `htShinyExample` with no argument.
+# -which An index of which example to use. The list of all examples can be obtained by executing `htShinyExample` with no argument.
 #
 # == value
 # A Shiny app object.
@@ -216,7 +216,7 @@ htShinyExample = function(which) {
 			original_htShiny = htShiny
 
 			htShiny = function(ht, ...) {
-			html = qq("
+				html = qq("
 <hr />
 <div>
 <h3>Information of this Shiny app<h3>
@@ -239,7 +239,7 @@ htShinyExample = function(which) {
 			code2[i] = qq("
 ui = fluidPage(
     ui,
-HTML('<hr /><div>
+HTML('<hr /><div style=\"clear:both;\">
 <h3>Information of this Shiny app<h3>
 <h5>Description</h5>
 <pre>@{title}</pre>
