@@ -12,10 +12,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Make Interactive Complex Heatmaps">
-<meta property="og:description" content="This package can easily make interactive heatmaps which are produced 
-    by the ComplexHeatmap package. It provides two types of interactivities: 
+<meta property="og:description" content="This package can easily make heatmaps which are produced 
+    by the ComplexHeatmap package into interactive applications. It provides two types of interactivities: 
     1. on the interactive graphics device, and 2. on a Shiny app. It also provides 
-    functions for integrating the interactive heatmap widgets into other Shiny apps.">
+    functions for integrating the interactive heatmap widgets for more complex Shiny app development.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1004</span>
       </span>
     </div>
 
@@ -42,7 +42,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -77,7 +77,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,7 +151,7 @@
     <span class="fu"><a href="reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht</span><span class="op">)</span>
 <span class="op">}</span>
 
-<span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
+<span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 <p>You can also put multiple interactive heatmaps widgets in the same Shiny app:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ht1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html">Heatmap</a></span><span class="op">(</span><span class="va">m</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"blue"</span><span class="op">)</span><span class="op">)</span>
@@ -172,7 +172,7 @@
     <span class="fu"><a href="reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht2</span>, <span class="st">"ht2"</span><span class="op">)</span>
 <span class="op">}</span>
 
-<span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
+<span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 <p>Two additional functions to let you dynamically load interactive heatmap widgets:</p>
 <ul>
 <li>
@@ -193,7 +193,7 @@
         <span class="fu"><a href="reference/InteractiveComplexHeatmapModal.html">InteractiveComplexHeatmapModal</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht</span><span class="op">)</span>
     <span class="op">}</span><span class="op">)</span>
 <span class="op">}</span>
-<span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span>
+<span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span>
 
 <span class="co"># or use InteractiveComplexHeatmapWidget()</span>
 <span class="va">ui</span> <span class="op">=</span> <span class="fu">fluidPage</span><span class="op">(</span>
@@ -207,7 +207,7 @@
             output_id <span class="op">=</span> <span class="st">"heatmap_output"</span><span class="op">)</span>
     <span class="op">}</span><span class="op">)</span>
 <span class="op">}</span>
-<span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
+<span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="interactivate-pheatmap-heatmap2-and-heatmap" class="section level2">
@@ -236,14 +236,17 @@
 <code class="sourceCode R"><span class="fu"><a href="reference/htShinyExample.html">htShinyExample</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## There are following examples. Individual example can be run by e.g. htShinyExample(1.1).
 ## 
-## ──────── 1. Simple examples ───────────────────────────────────────────────────────── 
+## ──────── 1. Simple examples ─────────────────────────────────────────────────────────
 ##  1.1 A single heatmap with minimal arguments.
 ##  1.2 A single heatmap from a character matrix.
 ##  1.3 A single heatmap with annotations on both rows and columns.
 ##  1.4 A single heatmap where rows and columns are split.
 ##  1.5 A list of two heatmaps.
+##  1.6 Use last generated heatmap, an example from cola package.
+##  1.7 Use last generated heatmap, an app with three interactive heatmaps
+##  1.8 Demonstrate hover, click and dblclick actions.
 ## 
-## ──────── 2. On other plots and packages ───────────────────────────────────────────── 
+## ──────── 2. On other plots and packages ─────────────────────────────────────────────
 ##  2.1 A density heatmap.
 ##  2.2 An oncoPrint.
 ##  2.3 A UpSet plot.
@@ -253,12 +256,12 @@
 ##  2.7 A heatmap produced from tidyHeatmap package.
 ##  2.8 Genome-scale heatmap.
 ## 
-## ──────── 3. Enriched heatmaps ─────────────────────────────────────────────────────── 
+## ──────── 3. Enriched heatmaps ───────────────────────────────────────────────────────
 ##  3.1 An enriched heatmap.
 ##  3.2 A list of enriched heatmaps.
 ##  3.3 An enriched heatmap with discrete signals.
 ## 
-## ──────── 4. On public datasets ────────────────────────────────────────────────────── 
+## ──────── 4. On public datasets ──────────────────────────────────────────────────────
 ##  4.1 An example from Lewis et al 2019. GitHub repo:
 ##      https://github.com/kevinblighe/E-MTAB-6141
 ##  4.2 Visualize cell heterogeneity from single cell RNASeq. It is from
@@ -268,7 +271,7 @@
 ##      It is from Supplementary S3 of the ComplexHeatmap paper.
 ##      https://github.com/jokergoo/supplementary
 ## 
-## ──────── 5. Shiny app development ─────────────────────────────────────────────────── 
+## ──────── 5. Shiny app development ───────────────────────────────────────────────────
 ##  5.1 A single Shiny app with two interactive heatmap widgets.
 ##  5.2 Self-define the output. The selected sub-matrix is shown as a text table.
 ##  5.3 Self-define the output. Additional annotations for the selected gene are
@@ -277,30 +280,38 @@
 ##      their descriptions are shown in the output.
 ##  5.5 Visualize a DESeq2 results. The selected genes are highlighted in an
 ##      associated MA plot.
+##  5.6 Interactive correlation heatmap. Clicking on the cell generates a
+##      scatterplot of the two corresponding variables.
 ## 
-## ──────── 6. Dynamicly generate heatmap widget in Shiny app ────────────────────────── 
-## 6.1 The matrix is dynamically generated.
-## 6.2 Reorder by a column that is specified by user.
-## 6.3 Dynamically generate the widget with InteractiveComplexHeatmapModal(). The
-##     modal is triggered by an action button.
-## 6.4 Dynamically select interactive heatmaps. The modal is triggered by radio
-##     buttons.
-## 6.5 Dynamically generate the widget. A customized Javascript code is inserted
-##     after the UI to change the default behavior of the action button.
-## 6.6 The widget is generated by InteractiveComplexHeatmapWidget() where the UI
-##     is directly put in the place defined by htmlOutput().
-## 6.7 The widget is generated by InteractiveComplexHeatmapWidget() and a
-##     customized Javascript code is inserted after the UI.
+## ──────── 6. Dynamically generate heatmap widget in Shiny app ────────────────────────
+##  6.1 The matrix is dynamically generated.
+##  6.2 Reorder by a column that is specified by user.
+##  6.3 Dynamically generate the widget with InteractiveComplexHeatmapModal(). The
+##      modal is triggered by an action button.
+##  6.4 Dynamically select interactive heatmaps. The modal is triggered by radio
+##      buttons.
+##  6.5 Dynamically generate the widget. A customized Javascript code is inserted
+##      after the UI to change the default behavior of the action button.
+##  6.6 The widget is generated by InteractiveComplexHeatmapWidget() where the UI
+##      is directly put in the place defined by htmlOutput().
+##  6.7 The widget is generated by InteractiveComplexHeatmapWidget() and a
+##      customized Javascript code is inserted after the UI.
 ## 
-## ──────── 7. Interactive R markdown document ───────────────────────────────────────── 
-## 7.1 Integrate in interactive R Markdown document.
-## 7.2 Integrate in interactive R Markdown document where the heatmap widgets are
-##     dynamically generated.
-##
-## ──────── 8. Interactivate indirect use of pheatmap(), heatmap.2() and heatmap() ───── 
-## 8.1 Indirect use of pheatmap().
-## 8.2 Indirect use of heatmap.2().
-##</code></pre>
+## ──────── 7. Interactive R markdown document ─────────────────────────────────────────
+##  7.1 Integrate in interactive R Markdown document.
+##  7.2 Integrate in interactive R Markdown document where the heatmap widgets are
+##      dynamically generated.
+## 
+## ──────── 8. Interactivate indirect use of pheatmap(), heatmap.2() and heatmap() ─────
+##  8.1 Indirect use of pheatmap().
+##  8.2 Indirect use of heatmap.2().
+##  8.3 Two interactive heatmap widgets from indirect use of pheatmap().
+## 
+## ──────── 9. Float output UI along with mouse positions ──────────────────────────────
+##  9.1 A simple example that demonstrates output UI floating with the three
+##      actions: hover, click and dblclick.
+##  9.2 floating self-defined outputs.
+## </code></pre>
 </div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">

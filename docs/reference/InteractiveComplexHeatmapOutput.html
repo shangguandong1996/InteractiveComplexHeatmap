@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>UI for the interactive ComplexHeatmap — InteractiveComplexHeatmapOutput • InteractiveComplexHeatmap</title>
+<title>UI for the interactive complex heatmaps — InteractiveComplexHeatmapOutput • InteractiveComplexHeatmap</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="UI for the interactive ComplexHeatmap — InteractiveComplexHeatmapOutput" />
-<meta property="og:description" content="UI for the interactive ComplexHeatmap" />
+<meta property="og:title" content="UI for the interactive complex heatmaps — InteractiveComplexHeatmapOutput" />
+<meta property="og:description" content="UI for the interactive complex heatmaps" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1004</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -115,7 +115,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -132,13 +132,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>UI for the interactive ComplexHeatmap</h1>
+    <h1>UI for the interactive complex heatmaps</h1>
     
     <div class="hidden name"><code>InteractiveComplexHeatmapOutput.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>UI for the interactive ComplexHeatmap</p>
+    <p>UI for the interactive complex heatmaps</p>
     </div>
 
     <pre class="usage"><span class='fu'>InteractiveComplexHeatmapOutput</span><span class='op'>(</span>heatmap_id <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -147,11 +147,13 @@
     height1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>==</span> <span class='st'>"1-(2|3)"</span>, <span class='fl'>700</span>, <span class='fl'>350</span><span class='op'>)</span>,
     width2 <span class='op'>=</span> <span class='fl'>370</span>,
     height2 <span class='op'>=</span> <span class='fl'>350</span>,
-    width3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>==</span> <span class='st'>"(1-2)|3"</span>, <span class='fl'>800</span>, <span class='fl'>370</span><span class='op'>)</span>,
+    width3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>default_output_ui_float</span>, <span class='fl'>370</span>, <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>==</span> <span class='st'>"(1-2)|3"</span>, <span class='fl'>800</span>, <span class='fl'>370</span><span class='op'>)</span><span class='op'>)</span>,
     layout <span class='op'>=</span> <span class='st'>"(1-2)|3"</span>,
     action <span class='op'>=</span> <span class='st'>"click"</span>,
     brush_opt <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>stroke <span class='op'>=</span> <span class='st'>"#f00"</span>, opacity <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>,
-    output_ui <span class='op'>=</span> <span class='fu'>default_output_ui</span><span class='op'>(</span><span class='op'>)</span>, css <span class='op'>=</span> <span class='st'>""</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    output_ui <span class='op'>=</span> <span class='fu'>default_output_ui</span><span class='op'>(</span><span class='op'>)</span>,
+    output_ui_float <span class='op'>=</span> <span class='cn'>FALSE</span>,
+    css <span class='op'>=</span> <span class='st'>""</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,7 +192,7 @@
     </tr>
     <tr>
       <th>layout</th>
-      <td><p>One of <code>(1|2)-3</code>, <code>1-(2|3)</code>, <code>1-2-3</code>, <code>1|2|3</code>, <code>1|(2-3)</code>.</p></td>
+      <td><p>One of <code>"(1|2)-3"</code>, <code>"1-(2|3)"</code>, <code>"1-2-3"</code>, <code>"1|2|3"</code>, <code>"1|(2-3)"</code>.</p></td>
     </tr>
     <tr>
       <th>action</th>
@@ -198,11 +200,15 @@
     </tr>
     <tr>
       <th>brush_opt</th>
-      <td><p>A list of parameters passed to <code><a href='https://shiny.rstudio.com/reference/shiny/latest/brushOpts.html'>brushOpts</a></code>.</p></td>
+      <td><p>A list of parameters passed to <code><a href='https://rdrr.io/pkg/shiny/man/brushOpts.html'>brushOpts</a></code>. Do not set an ID for the brush. An internal brush ID is automatically set.</p></td>
     </tr>
     <tr>
       <th>output_ui</th>
-      <td><p>Whether to add the output <code>div</code>.</p></td>
+      <td><p>A <code><a href='https://rdrr.io/pkg/shiny/man/htmlOutput.html'>htmlOutput</a></code> or other output object. If it is set to <code>NULL</code>, there is no output in the app. If it is not set, default response in server side on user's actions (i.e. click, hover or double click) is used, i.e. to print the value of the clicked/hovered cell when it is a click/hover/double click action or a runnable code to get the information of the sub-heatmap that was selected from heatmap when it is a brush action.</p></td>
+    </tr>
+    <tr>
+      <th>output_ui_float</th>
+      <td><p>Whether the UI defined by <code>output_ui</code> floats at the mouse positions.</p></td>
     </tr>
     <tr>
       <th>css</th>
@@ -210,16 +216,26 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Pass to the ui container.</p></td>
+      <td><p>Pass to the UI container which is wrapped by <code><a href='https://rdrr.io/pkg/shiny/man/fluidPage.html'>fluidPage</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function generates HTML fragment for the interactive UI. See the example from <code><a href='makeInteractiveComplexHeatmap.html'>makeInteractiveComplexHeatmap</a></code> page.</p>
+    <p>This function generates HTML fragment for the interactive UI. See the example in <code><a href='makeInteractiveComplexHeatmap.html'>makeInteractiveComplexHeatmap</a></code> page.</p>
+<p><code>layout</code> is defined as follows (<code>1</code> for the original heatmap, <code>2</code> for the selected sub-heatmap and <code>3</code> is for the output:</p>
+<ul>
+<li><p><code>"(1-2)|3"</code>: Heatmap and sub-heatmap are in a same row, and output is in a second row. This is the default layout.</p></li>
+<li><p><code>"1|(2-3)"</code>: Heatmap is in a single row, while sub-heatmap and output are in a second row.</p></li>
+<li><p><code>"1-2-3"</code>: All three components are in a same row.</p></li>
+<li><p><code>"1|2|3"</code>: Each component is in a single row.</p></li>
+<li><p><code>"1-(2|3)"</code>: Being different from the other four layouts, this is a two-column layout. Heatmap is in a sigle column. Sub-heatmap and output are vertically aligned and the two are in the second column.</p></li>
+</ul>
+
+<p>The hover event is implemented with <a href='https://github.com/websanova/mousestop'>https://github.com/websanova/mousestop</a> .</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A UI that can be used in shiny.</p>
+    <p>A UI that can be used in Shiny.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># There is no example</span>

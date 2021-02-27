@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Examples of the interactive complex heatmaps — htShinyExample • InteractiveComplexHeatmap</title>
+<title>Examples of interactive complex heatmaps — htShinyExample • InteractiveComplexHeatmap</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Examples of the interactive complex heatmaps — htShinyExample" />
-<meta property="og:description" content="Examples of the interactive complex heatmaps" />
+<meta property="og:title" content="Examples of interactive complex heatmaps — htShinyExample" />
+<meta property="og:description" content="Examples of interactive complex heatmaps" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1004</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -115,7 +115,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -132,13 +132,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Examples of the interactive complex heatmaps</h1>
+    <h1>Examples of interactive complex heatmaps</h1>
     
     <div class="hidden name"><code>htShinyExample.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Examples of the interactive complex heatmaps</p>
+    <p>Examples of interactive complex heatmaps</p>
     </div>
 
     <pre class="usage"><span class='fu'>htShinyExample</span><span class='op'>(</span><span class='va'>which</span><span class='op'>)</span></pre>
@@ -148,19 +148,20 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>which</th>
-      <td><p>An integer of which example to use. The list of all examples can be obtained by executing <code>htShinyExample</code> with no argument.</p></td>
+      <td><p>An index of which example to use. The list of all examples can be obtained by executing <code>htShinyExample</code> with no argument.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The source code of all examples are in <code>systm.file("examples", "examples.R")</code>.</p>
+    <p>In every example, there is a Shiny app opened, also including source code that generates this app.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A Shiny app object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>htShinyExample</span><span class='op'>(</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='co'># list all examples</span>
+<span class='fu'>htShinyExample</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; There are following examples. Individual example can be run by e.g. htShinyExample(1.1).
 #&gt; 
 #&gt; ──────── 1. Simple examples ───────────────────────────────────────────────────────── 
@@ -171,7 +172,7 @@
 #&gt;  1.5 A list of two heatmaps.
 #&gt;  1.6 Use last generated heatmap, an example from cola package.
 #&gt;  1.7 Use last generated heatmap, an app with three interactive heatmaps
-#&gt;  1.8 Demonstrate hover, click and dblclick actions.
+#&gt;  1.8 Demonstrate hover, click and dblclick actions to select cells.
 #&gt; 
 #&gt; ──────── 2. On other plots and packages ───────────────────────────────────────────── 
 #&gt;  2.1 A density heatmap.
@@ -184,7 +185,7 @@
 #&gt;  2.8 Genome-scale heatmap.
 #&gt; 
 #&gt; ──────── 3. Enriched heatmaps ─────────────────────────────────────────────────────── 
-#&gt;  3.1 An enriched heatmap.
+#&gt;  3.1 A single enriched heatmap.
 #&gt;  3.2 A list of enriched heatmaps.
 #&gt;  3.3 An enriched heatmap with discrete signals.
 #&gt; 
@@ -233,7 +234,13 @@
 #&gt;  8.1 Indirect use of pheatmap().
 #&gt;  8.2 Indirect use of heatmap.2().
 #&gt;  8.3 Two interactive heatmap widgets from indirect use of pheatmap().
-#&gt; </div><div class='input'><span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+#&gt; 
+#&gt; ──────── 9. Float output UI along with mouse positions ────────────────────────────── 
+#&gt;  9.1 A simple example that demonstrates output UI floating with the three
+#&gt;      actions: hover, click and dblclick.
+#&gt;  9.2 floating self-defined outputs.
+#&gt; </div><div class='input'>
+<span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='fu'>htShinyExample</span><span class='op'>(</span><span class='fl'>4.2</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>

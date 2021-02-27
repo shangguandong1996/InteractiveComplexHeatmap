@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1004</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -74,7 +74,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -88,14 +88,13 @@
 
       
 
-      </header><script src="InteractiveComplexHeatmap_files/header-attrs-2.5/header-attrs.js"></script><script src="InteractiveComplexHeatmap_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="InteractiveComplexHeatmap_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="InteractiveComplexHeatmap_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="InteractiveComplexHeatmap_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>How to visualize heatmaps interactively</h1>
                         <h4 class="author">Zuguang Gu ( <a href="mailto:z.gu@dkfz.de" class="email">z.gu@dkfz.de</a> )</h4>
             
-            <h4 class="date">2021-02-24</h4>
+            <h4 class="date">2021-02-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/blob/master/vignettes/InteractiveComplexHeatmap.Rmd"><code>vignettes/InteractiveComplexHeatmap.Rmd</code></a></small>
       <div class="hidden name"><code>InteractiveComplexHeatmap.Rmd</code></div>
@@ -353,7 +352,7 @@ p {
 ##  1.5 A list of two heatmaps.
 ##  1.6 Use last generated heatmap, an example from cola package.
 ##  1.7 Use last generated heatmap, an app with three interactive heatmaps
-##  1.8 Demonstrate hover, click and dblclick actions.
+##  1.8 Demonstrate hover, click and dblclick actions to select cells.
 ## 
 ## ──────── 2. On other plots and packages ───────────────────────────────────────────── 
 ##  2.1 A density heatmap.
@@ -366,7 +365,7 @@ p {
 ##  2.8 Genome-scale heatmap.
 ## 
 ## ──────── 3. Enriched heatmaps ─────────────────────────────────────────────────────── 
-##  3.1 An enriched heatmap.
+##  3.1 A single enriched heatmap.
 ##  3.2 A list of enriched heatmaps.
 ##  3.3 An enriched heatmap with discrete signals.
 ## 
@@ -414,7 +413,12 @@ p {
 ## ──────── 8. Interactivate indirect use of pheatmap(), heatmap.2() and heatmap() ───── 
 ##  8.1 Indirect use of pheatmap().
 ##  8.2 Indirect use of heatmap.2().
-##  8.3 Two interactive heatmap widgets from indirect use of pheatmap().</code></pre>
+##  8.3 Two interactive heatmap widgets from indirect use of pheatmap().
+## 
+## ──────── 9. Float output UI along with mouse positions ────────────────────────────── 
+##  9.1 A simple example that demonstrates output UI floating with the three
+##      actions: hover, click and dblclick.
+##  9.2 floating self-defined outputs.</code></pre>
 <p>You can select one specific example by sending the corresponding index to <code><a href="../reference/htShinyExample.html">htShinyExample()</a></code>, e.g. to run the example “4. A single heatmap where rows and columns are split.”, simply run:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/htShinyExample.html">htShinyExample</a></span><span class="op">(</span><span class="fl">1.4</span><span class="op">)</span></code></pre></div>
@@ -426,47 +430,61 @@ p {
 <a href="#sessioninfo" class="anchor"></a>SessionInfo</h2>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R version 4.0.2 (2020-06-22)
+<pre><code>## R version 4.0.4 (2021-02-15)
 ## Platform: x86_64-apple-darwin17.0 (64-bit)
-## Running under: macOS Catalina 10.15.5
+## Running under: macOS Big Sur 10.16
 ## 
 ## Matrix products: default
 ## BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
 ## LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
 ## 
 ## locale:
-## [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+## [1] C/UTF-8/C/C/C/C
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] InteractiveComplexHeatmap_0.99.9.1001 knitr_1.30                           
+## [1] InteractiveComplexHeatmap_0.99.9.1004 knitr_1.31                           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] circlize_0.4.13.1001 shape_1.4.5          clisymbols_1.2.0    
-##  [4] GetoptLong_1.0.5     xfun_0.19            colorspace_2.0-0    
-##  [7] viridisLite_0.3.0    htmltools_0.5.1.1    stats4_4.0.2        
-## [10] yaml_2.2.1           rlang_0.4.8          pkgdown_1.6.1       
-## [13] later_1.1.0.1        glue_1.4.2           gdtools_0.2.2       
-## [16] BiocGenerics_0.34.0  RColorBrewer_1.1-2   lifecycle_0.2.0     
-## [19] matrixStats_0.57.0   foreach_1.5.1        stringr_1.4.0       
-## [22] munsell_0.5.0        rvest_0.3.6          ragg_0.4.0          
-## [25] GlobalOptions_0.1.2  kableExtra_1.3.1     codetools_0.2-18    
-## [28] memoise_1.1.0        evaluate_0.14        ComplexHeatmap_2.7.7
-## [31] IRanges_2.22.2       fastmap_1.0.1        Cairo_1.5-12.2      
-## [34] doParallel_1.0.16    httpuv_1.5.4         parallel_4.0.2      
-## [37] Rcpp_1.0.5           xtable_1.8-4         scales_1.1.1        
-## [40] backports_1.2.0      promises_1.1.1       S4Vectors_0.26.1    
-## [43] desc_1.2.0           webshot_0.5.2        mime_0.9            
-## [46] systemfonts_0.3.2    fs_1.5.0             textshaping_0.2.1   
-## [49] rjson_0.2.20         png_0.1-7            digest_0.6.27       
-## [52] stringi_1.5.3        shiny_1.5.0          grid_4.0.2          
-## [55] rprojroot_1.3-2      clue_0.3-57          tools_4.0.2         
-## [58] magrittr_2.0.1       cluster_2.1.0        crayon_1.3.4        
-## [61] xml2_1.3.2           httr_1.4.2           rstudioapi_0.13     
-## [64] assertthat_0.2.1     rmarkdown_2.5        svglite_1.2.3.2     
-## [67] iterators_1.0.13     R6_2.5.0             compiler_4.0.2</code></pre>
+##  [1] Rcpp_1.0.6                svglite_2.0.0            
+##  [3] circlize_0.4.12           png_0.1-7                
+##  [5] clisymbols_1.2.0          assertthat_0.2.1         
+##  [7] rprojroot_2.0.2           digest_0.6.27            
+##  [9] foreach_1.5.1             mime_0.10                
+## [11] R6_2.5.0                  stats4_4.0.4             
+## [13] evaluate_0.14             highr_0.8                
+## [15] httr_1.4.2                GlobalOptions_0.1.2      
+## [17] rlang_0.4.10              rstudioapi_0.13          
+## [19] jquerylib_0.1.3           S4Vectors_0.28.1         
+## [21] GetoptLong_1.0.5          rmarkdown_2.7            
+## [23] pkgdown_1.6.1             textshaping_0.3.1        
+## [25] desc_1.2.0                webshot_0.5.2            
+## [27] stringr_1.4.0             munsell_0.5.0            
+## [29] shiny_1.6.0               compiler_4.0.4           
+## [31] httpuv_1.5.5              xfun_0.21                
+## [33] systemfonts_1.0.1         BiocGenerics_0.36.0      
+## [35] shape_1.4.5               htmltools_0.5.1.1        
+## [37] IRanges_2.24.1            codetools_0.2-18         
+## [39] matrixStats_0.58.0        viridisLite_0.3.0        
+## [41] crayon_1.4.1              later_1.1.0.1            
+## [43] grid_4.0.4                jsonlite_1.7.2           
+## [45] xtable_1.8-4              lifecycle_1.0.0          
+## [47] magrittr_2.0.1            scales_1.1.1             
+## [49] stringi_1.5.3             cachem_1.0.4             
+## [51] fs_1.5.0                  promises_1.2.0.1         
+## [53] doParallel_1.0.16         xml2_1.3.2               
+## [55] bslib_0.2.4               ellipsis_0.3.1           
+## [57] ragg_1.1.1                kableExtra_1.3.4         
+## [59] rjson_0.2.20              RColorBrewer_1.1-2       
+## [61] iterators_1.0.13          tools_4.0.4              
+## [63] Cairo_1.5-12.2            glue_1.4.2               
+## [65] parallel_4.0.4            fastmap_1.1.0            
+## [67] yaml_2.2.1                clue_0.3-58              
+## [69] colorspace_2.0-0          cluster_2.1.1            
+## [71] ComplexHeatmap_2.7.8.1000 rvest_0.3.6              
+## [73] memoise_2.0.0             sass_0.3.1</code></pre>
 </div>
   </div>
 
