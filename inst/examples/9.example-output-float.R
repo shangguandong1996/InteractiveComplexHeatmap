@@ -32,7 +32,7 @@ server = function(input, output, session) {
 shinyApp(ui, server)
 
 ########################################################
-# title: floating self-defined outputs.
+# title: Floating self-defined outputs.
 
 library(GetoptLong)
 suppressPackageStartupMessages(library(simplifyEnrichment))
@@ -101,4 +101,33 @@ server = function(input, output, session) {
 }
 
 shinyApp(ui, server)
+
+
+########################################################################
+# title: Floating output only from one event.
+
+m = matrix(rnorm(10*10), 10)
+ht = Heatmap(m)
+ht = draw(ht)
+
+ui = tabsetPanel(
+    tabPanel("hover",  InteractiveComplexHeatmapOutput("heatmap_1", action = "hover", 
+        response = "hover", output_ui_float = TRUE)),
+    tabPanel("click", InteractiveComplexHeatmapOutput("heatmap_2", action = "click", 
+        response = "click", output_ui_float = TRUE)),
+    tabPanel("dblclick", InteractiveComplexHeatmapOutput("heatmap_3", action = "dblclick", 
+        response = "dblclick", output_ui_float = TRUE)),
+    tabPanel("brush",  InteractiveComplexHeatmapOutput("heatmap_4", 
+        response = "brush", output_ui_float = TRUE))
+)
+
+server = function(input, output, session) {
+    makeInteractiveComplexHeatmap(input, output, session, ht, "heatmap_1")
+    makeInteractiveComplexHeatmap(input, output, session, ht, "heatmap_2")
+    makeInteractiveComplexHeatmap(input, output, session, ht, "heatmap_3")
+    makeInteractiveComplexHeatmap(input, output, session, ht, "heatmap_4")
+}
+
+shinyApp(ui, server)
+
 
