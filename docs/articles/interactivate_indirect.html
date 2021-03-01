@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.10.1000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.10.1001</span>
       </span>
     </div>
 
@@ -179,7 +179,7 @@
 ##             list(annotation_col = ann)[add_ann_col]))
 ##     }
 ## }
-## &lt;bytecode: 0x7f904e520d18&gt;
+## &lt;bytecode: 0x7fb97ed06e40&gt;
 ## &lt;environment: namespace:SC3&gt;
 ## 
 ## Signatures:
@@ -270,7 +270,7 @@
 ##         trace = trace, RowSideColors = samples.col, col = expr.col, 
 ##         margins = margins, ...)
 ## }
-## &lt;bytecode: 0x7f9069137e78&gt;
+## &lt;bytecode: 0x7fb97a50e3e0&gt;
 ## &lt;environment: namespace:GOexpress&gt;</code></pre>
 <p>In this case, the <strong>GOexpress</strong> namespace should firstly be removed by <code><a href="https://rdrr.io/r/base/detach.html">detach()</a></code>, or else <code><a href="https://rdrr.io/pkg/GOexpress/man/heatmap_GO.html">heatmap_GO()</a></code> will still use <code><a href="https://rdrr.io/pkg/gplots/man/heatmap.2.html">gplots::heatmap.2()</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
