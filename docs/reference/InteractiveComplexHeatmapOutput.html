@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.10.1000</span>
       </span>
     </div>
 
@@ -98,10 +98,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/decoration.html">Decorations on the heatmaps</a>
+      <a href="../articles/decoration.html">Decorations on heatmaps</a>
     </li>
     <li>
-      <a href="../articles/implementation.html">How interactive ComplexHeatmap is implemented</a>
+      <a href="../articles/implementation.html">How interactive complex heatmap is implemented</a>
     </li>
     <li>
       <a href="../articles/interactivate_indirect.html">Interactivate indirect use of pheatmap(), heatmap.2() and heatmap()</a>
@@ -148,8 +148,9 @@
     width2 <span class='op'>=</span> <span class='fl'>370</span>,
     height2 <span class='op'>=</span> <span class='fl'>350</span>,
     width3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>default_output_ui_float</span>, <span class='fl'>370</span>, <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>layout</span> <span class='op'>==</span> <span class='st'>"(1-2)|3"</span>, <span class='fl'>800</span>, <span class='fl'>370</span><span class='op'>)</span><span class='op'>)</span>,
-    layout <span class='op'>=</span> <span class='st'>"(1-2)|3"</span>,
+    layout <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='st'>"brush"</span> <span class='op'>%in%</span> <span class='va'>response</span>, <span class='st'>"(1-2)|3"</span>, <span class='st'>"1-3"</span><span class='op'>)</span>,
     action <span class='op'>=</span> <span class='st'>"click"</span>,
+    response <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>action</span>, <span class='st'>"brush"</span><span class='op'>)</span>,
     brush_opt <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>stroke <span class='op'>=</span> <span class='st'>"#f00"</span>, opacity <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>,
     output_ui <span class='op'>=</span> <span class='fu'>default_output_ui</span><span class='op'>(</span><span class='op'>)</span>,
     output_ui_float <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -192,11 +193,15 @@
     </tr>
     <tr>
       <th>layout</th>
-      <td><p>One of <code>"(1|2)-3"</code>, <code>"1-(2|3)"</code>, <code>"1-2-3"</code>, <code>"1|2|3"</code>, <code>"1|(2-3)"</code>.</p></td>
+      <td><p>One of <code>"(1|2)-3"</code>, <code>"1-(2|3)"</code>, <code>"1-2-3"</code>, <code>"1|2|3"</code>, <code>"1|(2-3)"</code>. If there is no response to <code>brush</code> which is set with the <code>response</code> argument, the code <code>2</code> can be omitted.</p></td>
     </tr>
     <tr>
       <th>action</th>
       <td><p>Which action for selecting single cell on the heatmap? Value should be <code>click</code>, <code>hover</code> or <code>dblclick</code>.</p></td>
+    </tr>
+    <tr>
+      <th>response</th>
+      <td><p>Which action needs to be respond on the server side. Value should be in <code>click</code>/<code>hover</code>/<code>dblclick</code> and <code>brush</code>. Please note, if <code>brush</code> is not selected, there is no "search tool" in the main heatmap.</p></td>
     </tr>
     <tr>
       <th>brush_opt</th>

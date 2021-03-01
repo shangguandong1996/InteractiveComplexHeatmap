@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9.1004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.10.1000</span>
       </span>
     </div>
 
@@ -98,10 +98,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/decoration.html">Decorations on the heatmaps</a>
+      <a href="../articles/decoration.html">Decorations on heatmaps</a>
     </li>
     <li>
-      <a href="../articles/implementation.html">How interactive ComplexHeatmap is implemented</a>
+      <a href="../articles/implementation.html">How interactive complex heatmap is implemented</a>
     </li>
     <li>
       <a href="../articles/interactivate_indirect.html">Interactivate indirect use of pheatmap(), heatmap.2() and heatmap()</a>
@@ -173,6 +173,7 @@
 #&gt;  1.6 Use last generated heatmap, an example from cola package.
 #&gt;  1.7 Use last generated heatmap, an app with three interactive heatmaps
 #&gt;  1.8 Demonstrate hover, click and dblclick actions to select cells.
+#&gt;  1.9 Only response to one of click/hover/dblclick/hover events.
 #&gt; 
 #&gt; ──────── 2. On other plots and packages ───────────────────────────────────────────── 
 #&gt;  2.1 A density heatmap.
@@ -238,7 +239,8 @@
 #&gt; ──────── 9. Float output UI along with mouse positions ────────────────────────────── 
 #&gt;  9.1 A simple example that demonstrates output UI floating with the three
 #&gt;      actions: hover, click and dblclick.
-#&gt;  9.2 floating self-defined outputs.
+#&gt;  9.2 Floating self-defined outputs.
+#&gt;  9.3 Floating output only from one event.
 #&gt; </div><div class='input'>
 <span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='fu'>htShinyExample</span><span class='op'>(</span><span class='fl'>4.2</span><span class='op'>)</span>
