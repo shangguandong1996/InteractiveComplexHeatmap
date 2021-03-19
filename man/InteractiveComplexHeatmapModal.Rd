@@ -1,10 +1,10 @@
 \name{InteractiveComplexHeatmapModal}
 \alias{InteractiveComplexHeatmapModal}
 \title{
-Interactive complex heatmap modal
+Interactive complex heatmap modal dialog
 }
 \description{
-Interactive complex heatmap modal
+Interactive complex heatmap modal dialog
 }
 \usage{
 InteractiveComplexHeatmapModal(
@@ -17,8 +17,8 @@ InteractiveComplexHeatmapModal(
     width2 = 370,
     height2 = 350,
     width3 = ifelse(layout == "(1-2)|3", 800, 370),
-    layout = ifelse("brush" \%in\% response, "(1-2)|3", "1-3"),
-    action = "click", response = c(action, "brush"),
+    layout = ifelse("brush" \%in\% response, "(1-2)|3", "1-3"), compact = FALSE,
+    action = "click", cursor = TRUE, response = c(action, "brush"),
     brush_opt = list(stroke = "#f00", opacity = 0.6),
     output_ui = TRUE, output_ui_float = FALSE,
     
@@ -43,7 +43,9 @@ InteractiveComplexHeatmapModal(
   \item{height2}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{width3}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{layout}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
+  \item{compact}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{action}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
+  \item{cursor}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{response}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{brush_opt}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{output_ui}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
@@ -56,7 +58,9 @@ InteractiveComplexHeatmapModal(
 
 }
 \details{
-It create an interactive heatmap "modal" according to a certain action.
+It creates an interactive heatmap "modal dialog" according to a certain action.
+
+The function is normally put inside \code{\link[shiny]{observe}} or \code{\link[shiny]{observeEvent}}.
 }
 \value{
 No value is returned.

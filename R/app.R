@@ -4,11 +4,11 @@
 #
 # == param
 # -ht_list A `ComplexHeatmap::Heatmap-class` or a `ComplexHeatmap::HeatmapList-class` object. If it is not specified, the last generated heatmap is used.
-#     Better already updated by ``draw()`` function.
+#     The heatmap object should better be already updated by ``draw()`` function.
 # -title Title of the app.
 # -description Description of the app. The content will be wrapped by a ``p`` tag and inserted before the interactive heatmap widget.
 # -hline Whether to add the horizontal line (by ``hr`` tag) after ``description``.
-# -html HTML fragment inserted below the heatmap.
+# -html HTML fragment inserted below the heatmap. The value can be a string or be wrapped by `shiny::HTML`.
 # -heatmap_id Pass to `InteractiveComplexHeatmapOutput`.
 # -title1 Pass to `InteractiveComplexHeatmapOutput`.
 # -title2 Pass to `InteractiveComplexHeatmapOutput`.
@@ -18,10 +18,22 @@
 # -height2 Pass to `InteractiveComplexHeatmapOutput`.
 # -width3 Pass to `InteractiveComplexHeatmapOutput`.
 # -layout Pass to `InteractiveComplexHeatmapOutput`.
+# -compact Pass to `InteractiveComplexHeatmapOutput`.
 # -action Pass to `InteractiveComplexHeatmapOutput`.
+# -cursor Pass to `InteractiveComplexHeatmapOutput`.
 # -response Pass to `InteractiveComplexHeatmapOutput`.
 # -brush_opt Pass to `InteractiveComplexHeatmapOutput`.
 # -output_ui_float Pass to `InteractiveComplexHeatmapOutput`.
+#
+# == details
+# With any ``Heatmap``/``HeatmapList`` object, directly send to ``htShiny()`` to create a Shiny app for the heatmap(s):
+#
+#     htShiny(ht_list)
+#
+# If the heatmaps are already drawn, ``ht_list`` can be omitted and the last heatmap object is retrieved automatically:
+#
+#     Heatmap(...) + other_heatmaps_or_annotations # or other functions that internally use Heatmap()
+#     htShiny()
 #
 # == seealso
 # - https://jokergoo.shinyapps.io/interactive_complexheatmap/
@@ -35,7 +47,7 @@
 # - https://jokergooo.shinyapps.io/interactive_heatmap_2/
 # - https://jokergooo.shinyapps.io/interactive_tidyheatmap/
 #
-# There are also many examples with `htShinyExample`.
+# There are also many examples that can be get with `htShinyExample`.
 #
 # == value
 # A Shiny app object.
@@ -59,6 +71,7 @@
 #     htShiny(ht)
 # }
 #
+# # vertical heatmap list
 # if(interactive()) {
 #     m1 = matrix(rnorm(100), 10)
 #     rownames(m1) = 1:10
@@ -74,6 +87,13 @@
 #     ht_list = ht1 \%v\% ht2
 #     htShiny(ht_list)
 # }
+#
+# # compact mode
+# if(interactive()) {
+#     m = matrix(rnorm(100), 10)
+#     Heatmap(m)
+#     htShiny(compact = TRUE)
+# }
 htShiny = function(ht_list = get_last_ht(), title = NULL, 
 	description = NULL, hline = TRUE, html = NULL, 
 
@@ -81,11 +101,11 @@ htShiny = function(ht_list = get_last_ht(), title = NULL,
 	heatmap_id = NULL, title1 = "Original heatmap", title2 = "Selected sub-heatmap",
 	width1 = ifelse(layout == "1|(2-3)", 800, 450), 
 	height1 = ifelse(layout == "1-(2|3)", 700, 350), 
-	width2 = 370, 
+	width2 = 400, 
 	height2 = 350, 
-	width3 = ifelse(layout == "(1-2)|3", 800, 370),
-	layout = ifelse("brush" %in% response, "(1-2)|3", "1-3"),
-	action = "click", response = c(action, "brush"),
+	width3 = ifelse(layout == "(1-2)|3", 800, 400),
+	layout = ifelse("brush" %in% response, "(1-2)|3", "1-3"), compact = FALSE,
+	action = "click", cursor = TRUE, response = c(action, "brush"),
 	brush_opt = list(stroke = "#f00", opacity = 0.6),
 	output_ui_float = FALSE
 
@@ -93,7 +113,7 @@ htShiny = function(ht_list = get_last_ht(), title = NULL,
 
 	if(is.null(ht_list)) {
 		if(length(dev.list())) {
-			stop_wrap("No heatmap is detected. Detected there is opened graphics device. If the heatmap was already made in that device, enter `ComplexHeatmap::ht_opt(save_last = TRUE)` and run `htShiny()` again.")
+			stop_wrap("No heatmap is detected. Detected there is opened graphics device. If the heatmap was already made in that device, enter `ComplexHeatmap::ht_opt(save_last = TRUE)`, regenerate the heatmap and run `htShiny()` again.")
 		} else {
 			stop_wrap("No heatmap is detected.")
 		}
@@ -106,14 +126,14 @@ htShiny = function(ht_list = get_last_ht(), title = NULL,
 	}
 
 	if(is.null(title)) {
-		title = "ComplexHeatmap Shiny App"
+		title = "InteractiveComplexHeatmap Shiny App"
 	}
 	if(is.character(title)) {
 		title = titlePanel(title)
 	}
 	
 	if(is.null(description)) {
-		description = "You can click a position or select an area from the heatmap. The original heatmap and the selected sub-heatmap can be resized by dragging from the bottom right of the box. "
+		description = "You can click a position or select an area from the heatmap. The original heatmap and the selected sub-heatmap can be resized by dragging from the bottom right of the box."
 	}
 	if(is.character(description)) {
 		description = p(description)
@@ -123,13 +143,31 @@ htShiny = function(ht_list = get_last_ht(), title = NULL,
 		html = HTML(html)
 	}
 
+	if(missing(width1) && missing(height1)) {
+		if(inherits(ht_list, "HeatmapList")) {
+			if(ht_list@layout$initialized) {
+				
+				width_ht = ComplexHeatmap:::width(ht_list)	
+				height_ht = ComplexHeatmap:::height(ht_list)
+
+			    if(is_abs_unit(width_ht) && is_abs_unit(height_ht)) {
+		    		width_ht = ceiling(convertWidth(width_ht, "bigpts", valueOnly = TRUE))
+		    		height_ht = ceiling(convertHeight(height_ht, "bigpts", valueOnly = TRUE))
+
+		    		width1 = width_ht
+		    		height1 = height_ht
+		    	}
+		    }
+		} 
+	}
+
 	ui = fluidPage(
 		title,
 		description,
 		if(hline) hr() else NULL,
 		InteractiveComplexHeatmapOutput(heatmap_id = heatmap_id, title1 = title1, title2 = title2,
-			width1 = width1, height1 = height1, width2 = width2, height2 = height2, layout = layout,
-			action = action, response = response, brush_opt = brush_opt, output_ui_float = output_ui_float), 
+			width1 = width1, height1 = height1, width2 = width2, height2 = height2, layout = layout, compact = compact,
+			action = action, cursor = cursor, response = response, brush_opt = brush_opt, output_ui_float = output_ui_float), 
 		html
 	)
 
@@ -160,7 +198,7 @@ ht_shiny = function(...) {
 # -which An index of which example to use. The list of all examples can be obtained by executing `htShinyExample` with no argument.
 #
 # == details
-# In every example, there is a Shiny app opened, also including source code that generates this app.
+# In every example, there is a Shiny app opened, which also includes source code that generates this app.
 #
 # == value
 # A Shiny app object.
@@ -177,14 +215,14 @@ htShinyExample = function(which) {
 		cat("There are following examples. Individual example can be run by e.g. htShinyExample(1.1).\n\n")
 		for(i_cate in seq_along(examples)) {
 			category = examples[[i_cate]]$category
-			cat(strrep(clisymbols::symbol$line, 8), paste0(i_cate, "."), category, strrep(clisymbols::symbol$line, getOption("width") - 8 - nchar(category)), "\n")
+			cat(strrep(clisymbols::symbol$line, 8), paste0(i_cate, "."), category, strrep(clisymbols::symbol$line, max(0, getOption("width") - 8 - nchar(category))), "\n")
 
 			e = examples[[i_cate]]$example
 			title = vapply(e, function(x) x$title, "")
 			for(i in seq_along(title)) {
 				lines = strwrap(title[i], width = getOption("width") - 5)
 				lines[1] = paste0(" ", i_cate, ".", i, " ", lines[1])
-				lines[-1] = paste0(strrep(" ", 5), lines[-1])
+				lines[-1] = paste0(strrep(" ", 1 + nchar(i_cate) + 1 + nchar(i) + 1), lines[-1])
 				cat(paste(lines, collapse = "\n"))
 				cat("\n")
 			}
@@ -207,6 +245,8 @@ htShinyExample = function(which) {
 			eval(parse(text = code[k]))
 			return(invisible(NULL))
 		}
+		
+		version = packageDescription('InteractiveComplexHeatmap', fields = "Version")
 
 		library_calls = code[grepl("(library|require)\\(.*?\\)", code)]
 		if(length(library_calls)) {
@@ -243,9 +283,14 @@ htShinyExample = function(which) {
 <h5>Description</h5>
 <pre>@{title}</pre>
 <h5>Source code</h5>
-<pre>
+<pre id=\"code\">
 @{code2}
 </pre>
+<script>
+create_clipboard(\"code\");
+</script>
+<hr />
+<p>Generated by <a href=\"https://github.com/jokergoo/InteractiveComplexHeatmap\" target=\"_blank\">InteractiveComplexHeatmap</a> version @{version}</p>
 </div>")
 				original_htShiny(ht, ..., html = HTML(html))
 			}
@@ -264,9 +309,14 @@ HTML('<hr /><div style=\"clear:both;\">
 <h5>Description</h5>
 <pre>@{title}</pre>
 <h5>Source code</h5>
-<pre>
+<pre id=\"code\">
 @{code_line}
 </pre>
+<script>
+create_clipboard(\"code\");
+</script>
+<hr />
+<p>Generated by <a href=\"https://github.com/jokergoo/InteractiveComplexHeatmap\" target=\"_blank\">InteractiveComplexHeatmap</a> version @{version}</p>
 </div>')
 )
 ")			

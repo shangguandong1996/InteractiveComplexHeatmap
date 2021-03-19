@@ -1,6 +1,6 @@
 
 # == title
-# Interactive complex heatmap modal
+# Interactive complex heatmap modal dialog
 #
 # == param
 # -input Passed from the Shiny server function.
@@ -16,7 +16,9 @@
 # -height2 Pass to `InteractiveComplexHeatmapOutput`.
 # -width3 Pass to `InteractiveComplexHeatmapOutput`.
 # -layout Pass to `InteractiveComplexHeatmapOutput`.
+# -compact Pass to `InteractiveComplexHeatmapOutput`.
 # -action Pass to `InteractiveComplexHeatmapOutput`.
+# -cursor Pass to `InteractiveComplexHeatmapOutput`.
 # -response Pass to `InteractiveComplexHeatmapOutput`.
 # -brush_opt Pass to `InteractiveComplexHeatmapOutput`.
 # -output_ui Pass to `InteractiveComplexHeatmapOutput`.
@@ -30,7 +32,9 @@
 # -cancel_action Whether to remove the UI from HTML or just hide it when the UI is closed.
 #
 # == details
-# It create an interactive heatmap "modal" according to a certain action.
+# It creates an interactive heatmap "modal dialog" according to a certain action.
+#
+# The function is normally put inside `shiny::observe` or `shiny::observeEvent`.
 #
 # == value
 # No value is returned.
@@ -63,8 +67,8 @@ InteractiveComplexHeatmapModal = function(
 	width2 = 370, 
 	height2 = 350, 
 	width3 = ifelse(layout == "(1-2)|3", 800, 370),
-	layout = ifelse("brush" %in% response, "(1-2)|3", "1-3"),
-	action = "click", response = c(action, "brush"),
+	layout = ifelse("brush" %in% response, "(1-2)|3", "1-3"), compact = FALSE,
+	action = "click", cursor = TRUE, response = c(action, "brush"),
 	brush_opt = list(stroke = "#f00", opacity = 0.6), 
 	output_ui = TRUE, output_ui_float = FALSE,
 
@@ -97,8 +101,9 @@ InteractiveComplexHeatmapModal = function(
 					HTML("<i class='fa fa-times'></i>")
 				),
 				InteractiveComplexHeatmapOutput(heatmap_id = heatmap_id, title1 = title1, title2 = title2,
-					width1 = width1, height1 = height1, width2 = width2, height2 = height2, width3 = width3, layout = layout,
-					action = action, response = response, brush_opt = brush_opt, output_ui = output_ui, output_ui_float = output_ui_float),
+					width1 = width1, height1 = height1, width2 = width2, height2 = height2, width3 = width3, layout = layout, compact = compact,
+					action = action, cursor = cursor, response = response, brush_opt = brush_opt, output_ui = output_ui, output_ui_float = output_ui_float,
+					internal = TRUE),
 				if(close_button) {
 					tagList(
 						tags$hr(),
@@ -212,7 +217,7 @@ InteractiveComplexHeatmapModal = function(
 	observeEvent(input[[qq("@{heatmap_id}_heatmap_modal_open")]], {
 		makeInteractiveComplexHeatmap(input, output, session, ht_list, heatmap_id = heatmap_id,
 			click_action = click_action, brush_action = brush_action)
-	})
+	}, once = TRUE)
 
 	observeEvent(input[[qq("@{heatmap_id}_heatmap_modal_remove")]], {
 		removeUI(qq("#@{heatmap_id}_heatmap_modal_background"))
@@ -237,7 +242,9 @@ InteractiveComplexHeatmapModal = function(
 # -height2 Pass to `InteractiveComplexHeatmapOutput`.
 # -width3 Pass to `InteractiveComplexHeatmapOutput`.
 # -layout Pass to `InteractiveComplexHeatmapOutput`.
+# -compact Pass to `InteractiveComplexHeatmapOutput`.
 # -action Pass to `InteractiveComplexHeatmapOutput`.
+# -cursor Pass to `InteractiveComplexHeatmapOutput`.
 # -response Pass to `InteractiveComplexHeatmapOutput`.
 # -brush_opt Pass to `InteractiveComplexHeatmapOutput`.
 # -output_ui Pass to `InteractiveComplexHeatmapOutput`.
@@ -250,7 +257,9 @@ InteractiveComplexHeatmapModal = function(
 # -cancel_action Whether to remove the UI from HTML or just hide it when the UI is closed.
 #
 # == details
-# It create an interactive heatmap widget according to a certain action. The UI is placed to the output ID that user defined.
+# It creates an interactive heatmap widget according to a certain action. The UI is placed to the output ID that user defined.
+#
+# The function is normally put inside `shiny::observe` or `shiny::observeEvent`.
 #
 # == value
 # No value is returned.
@@ -285,8 +294,8 @@ InteractiveComplexHeatmapWidget = function(
 	width2 = 370, 
 	height2 = 350, 
 	width3 = ifelse(layout == "(1-2)|3", 800, 370),
-	layout = ifelse("brush" %in% response, "(1-2)|3", "1-3"),
-	action = "click", response = c(action, "brush"),
+	layout = ifelse("brush" %in% response, "(1-2)|3", "1-3"), compact = FALSE,
+	action = "click", cursor = TRUE, response = c(action, "brush"),
 	brush_opt = list(stroke = "#f00", opacity = 0.6), 
 	output_ui = TRUE, output_ui_float = FALSE,
 
@@ -310,8 +319,9 @@ InteractiveComplexHeatmapWidget = function(
 	output[[output_id]] = renderUI({
 		div(id = qq("@{heatmap_id}_heatmap_widget"),
 			InteractiveComplexHeatmapOutput(heatmap_id = heatmap_id, title1 = title1, title2 = title2,
-				width1 = width1, height1 = height1, width2 = width2, height2 = height2, width3 = width3, layout = layout,
-				action = action, response = response, brush_opt = brush_opt, output_ui = output_ui, output_ui_float = output_ui_float),
+				width1 = width1, height1 = height1, width2 = width2, height2 = height2, width3 = width3, layout = layout, compact = compact,
+				action = action, cursor = cursor, response = response, brush_opt = brush_opt, output_ui = output_ui, output_ui_float = output_ui_float,
+				internal = TRUE),
 			if(close_button) {
 				tagList(
 					tags$hr(),

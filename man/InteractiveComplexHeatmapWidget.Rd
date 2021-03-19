@@ -17,8 +17,8 @@ InteractiveComplexHeatmapWidget(
     width2 = 370,
     height2 = 350,
     width3 = ifelse(layout == "(1-2)|3", 800, 370),
-    layout = ifelse("brush" \%in\% response, "(1-2)|3", "1-3"),
-    action = "click", response = c(action, "brush"),
+    layout = ifelse("brush" \%in\% response, "(1-2)|3", "1-3"), compact = FALSE,
+    action = "click", cursor = TRUE, response = c(action, "brush"),
     brush_opt = list(stroke = "#f00", opacity = 0.6),
     output_ui = TRUE, output_ui_float = FALSE,
     
@@ -44,7 +44,9 @@ InteractiveComplexHeatmapWidget(
   \item{height2}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{width3}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{layout}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
+  \item{compact}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{action}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
+  \item{cursor}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{response}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{brush_opt}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{output_ui}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
@@ -57,7 +59,9 @@ InteractiveComplexHeatmapWidget(
 
 }
 \details{
-It create an interactive heatmap widget according to a certain action. The UI is placed to the output ID that user defined.
+It creates an interactive heatmap widget according to a certain action. The UI is placed to the output ID that user defined.
+
+The function is normally put inside \code{\link[shiny]{observe}} or \code{\link[shiny]{observeEvent}}.
 }
 \value{
 No value is returned.

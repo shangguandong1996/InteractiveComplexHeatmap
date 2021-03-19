@@ -14,22 +14,22 @@ htShiny(ht_list = get_last_ht(), title = NULL,
     heatmap_id = NULL, title1 = "Original heatmap", title2 = "Selected sub-heatmap",
     width1 = ifelse(layout == "1|(2-3)", 800, 450),
     height1 = ifelse(layout == "1-(2|3)", 700, 350),
-    width2 = 370,
+    width2 = 400,
     height2 = 350,
-    width3 = ifelse(layout == "(1-2)|3", 800, 370),
-    layout = ifelse("brush" \%in\% response, "(1-2)|3", "1-3"),
-    action = "click", response = c(action, "brush"),
+    width3 = ifelse(layout == "(1-2)|3", 800, 400),
+    layout = ifelse("brush" \%in\% response, "(1-2)|3", "1-3"), compact = FALSE,
+    action = "click", cursor = TRUE, response = c(action, "brush"),
     brush_opt = list(stroke = "#f00", opacity = 0.6),
     output_ui_float = FALSE
     )
 }
 \arguments{
 
-  \item{ht_list}{A \code{\link[ComplexHeatmap]{Heatmap-class}} or a \code{\link[ComplexHeatmap]{HeatmapList-class}} object. If it is not specified, the last generated heatmap is used. Better already updated by \code{draw()} function.}
+  \item{ht_list}{A \code{\link[ComplexHeatmap]{Heatmap-class}} or a \code{\link[ComplexHeatmap]{HeatmapList-class}} object. If it is not specified, the last generated heatmap is used. The heatmap object should better be already updated by \code{draw()} function.}
   \item{title}{Title of the app.}
   \item{description}{Description of the app. The content will be wrapped by a \code{p} tag and inserted before the interactive heatmap widget.}
   \item{hline}{Whether to add the horizontal line (by \code{hr} tag) after \code{description}.}
-  \item{html}{HTML fragment inserted below the heatmap.}
+  \item{html}{HTML fragment inserted below the heatmap. The value can be a string or be wrapped by \code{\link[shiny:reexports]{HTML}}.}
   \item{heatmap_id}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{title1}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{title2}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
@@ -39,11 +39,25 @@ htShiny(ht_list = get_last_ht(), title = NULL,
   \item{height2}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{width3}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{layout}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
+  \item{compact}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{action}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
+  \item{cursor}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{response}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{brush_opt}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
   \item{output_ui_float}{Pass to \code{\link{InteractiveComplexHeatmapOutput}}.}
 
+}
+\details{
+With any \code{Heatmap}/\code{HeatmapList} object, directly send to \code{htShiny()} to create a Shiny app for the heatmap(s):
+
+  \preformatted{
+    htShiny(ht_list)  }
+
+If the heatmaps are already drawn, \code{ht_list} can be omitted and the last heatmap object is retrieved automatically:
+
+  \preformatted{
+    Heatmap(...) + other_heatmaps_or_annotations # or other functions that internally use Heatmap()
+    htShiny()  }
 }
 \seealso{
 \itemize{
@@ -59,7 +73,7 @@ htShiny(ht_list = get_last_ht(), title = NULL,
   \item \url{https://jokergooo.shinyapps.io/interactive_tidyheatmap/}
 }
 
-There are also many examples with \code{\link{htShinyExample}}.
+There are also many examples that can be get with \code{\link{htShinyExample}}.
 }
 \value{
 A Shiny app object.
@@ -83,6 +97,7 @@ if(interactive()) {
     htShiny(ht)
 }
 
+# vertical heatmap list
 if(interactive()) {
     m1 = matrix(rnorm(100), 10)
     rownames(m1) = 1:10
@@ -97,5 +112,12 @@ if(interactive()) {
 
     ht_list = ht1 \%v\% ht2
     htShiny(ht_list)
+}
+
+# compact mode
+if(interactive()) {
+    m = matrix(rnorm(100), 10)
+    Heatmap(m)
+    htShiny(compact = TRUE)
 }
 }

@@ -8,37 +8,42 @@ UI for the interactive complex heatmaps
 }
 \usage{
 InteractiveComplexHeatmapOutput(heatmap_id = NULL,
-    title1 = "Original heatmap", title2 = "Selected sub-heatmap",
+    title1 = "Original heatmap", title2 = "Selected sub-heatmap", title3 = "Output",
     width1 = ifelse(layout == "1|(2-3)", 800, 450),
     height1 = ifelse(layout == "1-(2|3)", 700, 350),
-    width2 = 370,
+    width2 = 400,
     height2 = 350,
-    width3 = ifelse(default_output_ui_float, 370, ifelse(layout == "(1-2)|3", 800, 370)),
-    layout = ifelse("brush" \%in\% response, "(1-2)|3", "1-3"),
-    action = "click",
+    width3 = NULL,
+    layout = ifelse("brush" \%in\% response, "(1-2)|3", "1-3"), compact = FALSE,
+    action = "click", cursor = TRUE,
     response = c(action, "brush"),
     brush_opt = list(stroke = "#f00", opacity = 0.6),
-    output_ui = default_output_ui(),
-    output_ui_float = FALSE,
-    css = "", ...)
+    output_ui = default_output_ui(heatmap_id),
+    output_ui_float = FALSE, containment = FALSE,
+    internal = FALSE,
+    ...)
 }
 \arguments{
 
   \item{heatmap_id}{ID of the plot. If it is not specified, an internal ID is assigned.}
   \item{title1}{Title of the original heatmap.}
   \item{title2}{Title of the sub-heatmap.}
+  \item{title3}{Title of the output.}
   \item{width1}{Width of the original heatmap.}
   \item{height1}{Height of the original heatmap.}
   \item{width2}{Width of the sub-heatmap.}
   \item{height2}{Height of the sub-heatmap.}
   \item{width3}{Width of the output div.}
-  \item{layout}{One of \code{"(1|2)-3"}, \code{"1-(2|3)"}, \code{"1-2-3"}, \code{"1|2|3"}, \code{"1|(2-3)"}. If there is no response to \code{brush} which is set with the \code{response} argument, the code \code{2} can be omitted.}
-  \item{action}{Which action for selecting single cell on the heatmap? Value should be \code{click}, \code{hover} or \code{dblclick}.}
-  \item{response}{Which action needs to be respond on the server side. Value should be in \code{click}/\code{hover}/\code{dblclick} and \code{brush}. Please note, if \code{brush} is not selected, there is no "search tool" in the main heatmap.}
+  \item{layout}{One of \code{"(1|2)-3"}, \code{"1-(2|3)"}, \code{"1-2-3"}, \code{"1|2|3"}, \code{"1|(2-3)"}. If \code{brush} is not set with the argument \code{response}, which means there is no sub-heatmap panel, the code \code{2} can be omitted.}
+  \item{compact}{If the value is \code{TRUE}, there will be no sub-heatmap, and output floats at the mouse position when click/hover on the original heatmap.}
+  \item{action}{Which action for selecting single cells on the heatmap? Value should be \code{click}, \code{hover} or \code{dblclick}.}
+  \item{cursor}{When moving mouse on heatmap, whether to show the cursors on the four sides?}
+  \item{response}{Which action needs to be responded on the server side? Value should be in \code{click}/\code{hover}/\code{dblclick}, \code{brush} and \code{brush-output}. \code{brush} responds in two places which are the sub-heatmap and the output components and \code{brush-output} only responds in the output component.}
   \item{brush_opt}{A list of parameters passed to \code{\link[shiny]{brushOpts}}. Do not set an ID for the brush. An internal brush ID is automatically set.}
-  \item{output_ui}{A \code{\link[shiny]{htmlOutput}} or other output object. If it is set to \code{NULL}, there is no output in the app. If it is not set, default response in server side on user's actions (i.e. click, hover or double click) is used, i.e. to print the value of the clicked/hovered cell when it is a click/hover/double click action or a runnable code to get the information of the sub-heatmap that was selected from heatmap when it is a brush action.}
+  \item{output_ui}{A \code{\link[shiny]{htmlOutput}} or other \code{*Output} object (defined in shiny or other related packages). If it is set to \code{NULL}, there is no output component in the app.}
   \item{output_ui_float}{Whether the UI defined by \code{output_ui} floats at the mouse positions.}
-  \item{css}{Self-defined CSS code.}
+  \item{containment}{Whether the resizing is restricted in a certain parent div? Value can be \code{TRUE}/\code{FALSE} or a JQuery selector.}
+  \item{internal}{Internally used.}
   \item{...}{Pass to the UI container which is wrapped by \code{\link[shiny]{fluidPage}}.}
 
 }

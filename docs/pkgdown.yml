@@ -4,8 +4,9 @@ pkgdown_sha: ~
 articles:
   InteractiveComplexHeatmap: InteractiveComplexHeatmap.html
   decoration: decoration.html
+  deseq2_app: deseq2_app.html
   implementation: implementation.html
   interactivate_indirect: interactivate_indirect.html
   shiny_dev: shiny_dev.html
-last_built: 2021-03-01T13:24Z
+last_built: 2021-03-19T20:29Z
 
