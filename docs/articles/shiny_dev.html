@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.12.1000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.12.1005</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
       <h1 data-toc-skip>Functions for Shiny app development</h1>
                         <h4 class="author">Zuguang Gu ( <a href="mailto:z.gu@dkfz.de" class="email">z.gu@dkfz.de</a> )</h4>
             
-            <h4 class="date">2021-03-20</h4>
+            <h4 class="date">2021-03-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/blob/master/vignettes/shiny_dev.Rmd"><code>vignettes/shiny_dev.Rmd</code></a></small>
       <div class="hidden name"><code>shiny_dev.Rmd</code></div>
@@ -230,13 +230,13 @@ document.write('<img src="https://jokergoo.github.io/images/app_two.png" width=1
 <div id="separately-specify-the-three-ui-components" class="section level3">
 <h3 class="hasAnchor">
 <a href="#separately-specify-the-three-ui-components" class="anchor"></a>Separately specify the three UI components</h3>
-<p><code><a href="../reference/InteractiveComplexHeatmapOutput.html">InteractiveComplexHeatmapOutput()</a></code> contains all three UI components. The three components can be separately specified as three individual functions: <code>mainHeatmapOutput()</code>, <code><a href="../reference/subHeatmapOutput.html">subHeatmapOutput()</a></code> and <code><a href="../reference/HeatmapInfoOutput.html">HeatmapInfoOutput()</a></code>. This provides flexibility for the UI arrangement, e.g. to integrate with package <strong>shinydashboard</strong> where each UI component is wrapped within an individual box.</p>
+<p><code><a href="../reference/InteractiveComplexHeatmapOutput.html">InteractiveComplexHeatmapOutput()</a></code> contains all three UI components. The three components can be separately specified as three individual functions: <code><a href="../reference/originalHeatmapOutput.html">originalHeatmapOutput()</a></code>, <code><a href="../reference/subHeatmapOutput.html">subHeatmapOutput()</a></code> and <code><a href="../reference/HeatmapInfoOutput.html">HeatmapInfoOutput()</a></code>. This provides flexibility for the UI arrangement, e.g. to integrate with package <strong>shinydashboard</strong> where each UI component is wrapped within an individual box.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">body</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/dashboardBody.html">dashboardBody</a></span><span class="op">(</span>
     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidRow</a></span><span class="op">(</span>
         <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/box.html">box</a></span><span class="op">(</span>
             title <span class="op">=</span> <span class="st">"Original heatmap"</span>, width <span class="op">=</span> <span class="fl">4</span>, solidHeader <span class="op">=</span> <span class="cn">TRUE</span>, status <span class="op">=</span> <span class="st">"primary"</span>,
-            <span class="fu">mainHeatmapOutput</span><span class="op">(</span><span class="st">"ht"</span>, title <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+            <span class="fu"><a href="../reference/originalHeatmapOutput.html">originalHeatmapOutput</a></span><span class="op">(</span><span class="st">"ht"</span>, title <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
         <span class="op">)</span>,
         <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/box.html">box</a></span><span class="op">(</span>
             title <span class="op">=</span> <span class="st">"Sub-heatmap"</span>, width <span class="op">=</span> <span class="fl">4</span>, solidHeader <span class="op">=</span> <span class="cn">TRUE</span>, status <span class="op">=</span> <span class="st">"primary"</span>,
@@ -484,6 +484,24 @@ document.write('<img src="https://jokergoo.github.io/images/float2.gif" width="1
 <script>
 document.write('<img src="https://jokergoo.github.io/images/dynamic_widget4.gif" width="100%" />');
 </script><p>The use is very natural. <code><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap()</a></code> is put inside an <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code> or an <code><a href="https://rdrr.io/pkg/shiny/man/observe.html">observe()</a></code> so that every time <code>input$column</code> changes, it triggers an update of the interactive heatmap widgets.</p>
+<p>In the following code block defined in <code>server</code> function:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R">    <span class="va">...</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">column</span>, <span class="op">{</span>
+        <span class="va">order</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">m</span><span class="op">[</span>, <span class="va">input</span><span class="op">$</span><span class="va">column</span><span class="op">]</span><span class="op">)</span>
+        <span class="va">ht</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html">Heatmap</a></span><span class="op">(</span><span class="va">m</span><span class="op">[</span><span class="va">order</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>, 
+            cluster_rows <span class="op">=</span> <span class="cn">FALSE</span>, cluster_columns <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+        <span class="fu"><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">ht</span><span class="op">)</span>
+    <span class="op">}</span><span class="op">)</span>
+    <span class="va">...</span></code></pre></div>
+<p><code><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap()</a></code> internally creates a list of responses by <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code>. Every time when <code>input$column</code> triggers the update of <code><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap()</a></code>, all the calls of <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code> will be re-executed. Re-executing <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code> only adds the observations to the current observation list while not overwrites them, thus, repeatedly executing <code><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap()</a></code> will make a same observatin running multiple times. To solve this issue, <code><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap()</a></code> saves all the observations returned by <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code> and it tries to first destroies all the avaiable observations that have been created. However, if user-defined reponses via <code>click_action</code> and <code>brush_action</code> use <code><a href="https://rdrr.io/pkg/shiny/man/observe.html">observe()</a></code> or <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code>, they must manually recorded so that they can also be destroied when updating <code><a href="../reference/makeInteractiveComplexHeatmap.html">makeInteractiveComplexHeatmap()</a></code>. See the following example:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">click_action</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">obs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">foo</span>, <span class="op">{</span>
+        <span class="va">...</span>
+    <span class="op">}</span><span class="op">)</span>
+    <span class="fu"><a href="../reference/record_observation.html">record_observation</a></span><span class="op">(</span><span class="va">obs</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="use-interactivecomplexheatmapmodal-and-interactivecomplexheatmapwidget" class="section level3">
 <h3 class="hasAnchor">
@@ -491,7 +509,7 @@ document.write('<img src="https://jokergoo.github.io/images/dynamic_widget4.gif"
 </h3>
 <p>In the first example, the interactive heatmap is already generated when the Shiny app is loaded. There is a second scenario where the complete interactive heatmap widget is dynamically generated and inserted into the HTML document. There are two other functions <code><a href="../reference/InteractiveComplexHeatmapModal.html">InteractiveComplexHeatmapModal()</a></code> and <code><a href="../reference/InteractiveComplexHeatmapWidget.html">InteractiveComplexHeatmapWidget()</a></code> which have very similar behaviors. These two functions are normally put inside e.g. <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">shiny::observeEvent()</a></code> or <code><a href="https://rdrr.io/pkg/shiny/man/observe.html">shiny::observe()</a></code> and they generate UI as well as render the interactive heatmaps.</p>
 <p>First I will introduce the usage of <code><a href="../reference/InteractiveComplexHeatmapModal.html">InteractiveComplexHeatmapModal()</a></code>. In the following example, there is only an action button in the UI, and in the server function, <code><a href="../reference/InteractiveComplexHeatmapModal.html">InteractiveComplexHeatmapModal()</a></code> is called when receiving an <code>input$show_heatmap</code> signal. This example can also be run by <code><a href="../reference/htShinyExample.html">htShinyExample(6.3)</a></code>.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ui</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span>
     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html">actionButton</a></span><span class="op">(</span><span class="st">"show_heatmap"</span>, <span class="st">"Generate_heatmap"</span><span class="op">)</span>,
 <span class="op">)</span>
@@ -509,7 +527,7 @@ document.write('<img src="https://jokergoo.github.io/images/dynamic_widget4.gif"
 <script>
 document.write('<img src="https://jokergoo.github.io/images/dynamic_widget.gif" width="100%" />');
 </script><p>In the next example which is also available in <code><a href="../reference/htShinyExample.html">htShinyExample(6.4)</a></code>, a different heatmap is generated according to user’s selection.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ui</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span>
     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/radioButtons.html">radioButtons</a></span><span class="op">(</span><span class="st">"select"</span>, <span class="st">"Select"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Numeric"</span> <span class="op">=</span> <span class="fl">1</span>, <span class="st">"Character"</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,
     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html">actionButton</a></span><span class="op">(</span><span class="st">"show_heatmap"</span>, <span class="st">"Generate_heatmap"</span><span class="op">)</span>,
@@ -535,7 +553,7 @@ document.write('<img src="https://jokergoo.github.io/images/dynamic_widget.gif" 
 document.write('<img src="https://jokergoo.github.io/images/dynamic_widget_radio_selection.gif" width="100%" />');
 </script><p>The usage of <code><a href="../reference/InteractiveComplexHeatmapWidget.html">InteractiveComplexHeatmapWidget()</a></code> is very similar as <code><a href="../reference/InteractiveComplexHeatmapModal.html">InteractiveComplexHeatmapModal()</a></code>, except that now for <code><a href="../reference/InteractiveComplexHeatmapWidget.html">InteractiveComplexHeatmapWidget()</a></code>, user needs to allocate a place defined by <code><a href="https://rdrr.io/pkg/shiny/man/htmlOutput.html">shiny::htmlOutput()</a></code> in UI, and later the interactive heatmap widget is put there.</p>
 <p>I modify the previous example with <code><a href="../reference/InteractiveComplexHeatmapWidget.html">InteractiveComplexHeatmapWidget()</a></code>. Now in the UI, I add one line where I specify <code><a href="https://rdrr.io/pkg/shiny/man/htmlOutput.html">htmlOutput()</a></code> with ID <code>"heatmap_output"</code>, and this ID is set in <code><a href="../reference/InteractiveComplexHeatmapWidget.html">InteractiveComplexHeatmapWidget()</a></code> correspondingly.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ui</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span>
     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html">actionButton</a></span><span class="op">(</span><span class="st">"show_heatmap"</span>, <span class="st">"Generate_heatmap"</span><span class="op">)</span>,
     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/htmlOutput.html">htmlOutput</a></span><span class="op">(</span><span class="st">"heatmap_output"</span><span class="op">)</span>
@@ -554,7 +572,7 @@ document.write('<img src="https://jokergoo.github.io/images/dynamic_widget_radio
 <script>
 document.write('<img src="https://jokergoo.github.io/images/dynamic_widget2.gif" width="100%" />');
 </script><p><code><a href="../reference/InteractiveComplexHeatmapModal.html">InteractiveComplexHeatmapModal()</a></code> and <code><a href="../reference/InteractiveComplexHeatmapWidget.html">InteractiveComplexHeatmapWidget()</a></code> all accept an argument <code>js_code</code> where customized JavaScript code can be inserted after the interactive UI. This is sometimes useful. In previous example where the heatmap widget is triggered by clicking on the action button, every time when clicking on the button, the widget is regenerated although the heatmaps are actually the same. Actually we can change the behavior of the button that from the second click it just switches the visibility of the heatmap widget. Note here we also need to set <code>cancel_action = "hide"</code> so that the heatmap UI is not removed from HTML document after it is closed.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ui</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span>
     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html">actionButton</a></span><span class="op">(</span><span class="st">"show_heatmap"</span>, <span class="st">"Generate_heatmap"</span><span class="op">)</span>,
     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/htmlOutput.html">htmlOutput</a></span><span class="op">(</span><span class="st">"heatmap_output"</span><span class="op">)</span>
@@ -580,8 +598,70 @@ document.write('<img src="https://jokergoo.github.io/images/dynamic_widget2.gif"
 <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 <script>
 document.write('<img src="https://jokergoo.github.io/images/dynamic_widget3.gif" width="100%" />');
-</script><p><br><br><br><br><br></p>
+</script>
 </div>
+</div>
+<div id="implement-interactivity-from-scratch" class="section level2">
+<h2 class="hasAnchor">
+<a href="#implement-interactivity-from-scratch" class="anchor"></a>Implement interactivity from scratch</h2>
+<p><strong>InteractiveComplexHeatmap</strong> provides rich tools for interactively working with heatmaps. However, some people might want to develop their own tools while they only need the information of which cells are selected. Next I demonstrate it with a simple example. The following example is runnable.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ui</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html">actionButton</a></span><span class="op">(</span><span class="st">"action"</span>, <span class="st">"Generate heatmap"</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span><span class="op">(</span><span class="st">"heatmap"</span>, width <span class="op">=</span> <span class="fl">500</span>, height <span class="op">=</span> <span class="fl">500</span>, click <span class="op">=</span> <span class="st">"heatmap_click"</span>, 
+        brush <span class="op">=</span> <span class="st">"heatmap_brush"</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"output"</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="va">server</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
+
+    <span class="va">ht_obj</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactiveVal.html">reactiveVal</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>
+    <span class="va">ht_pos_obj</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactiveVal.html">reactiveVal</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>
+
+    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">action</span>, <span class="op">{</span>
+        <span class="va">m</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span>
+        <span class="fu"><a href="https://rdrr.io/pkg/cola/man/rownames-dispatch.html">rownames</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>
+        <span class="fu"><a href="https://rdrr.io/pkg/cola/man/colnames-dispatch.html">colnames</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>
+
+        <span class="va">output</span><span class="op">$</span><span class="va">heatmap</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span>
+            <span class="va">ht</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html">draw</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html">Heatmap</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span>
+            <span class="va">ht_pos</span> <span class="op">=</span> <span class="fu"><a href="../reference/htPositionsOnDevice.html">htPositionsOnDevice</a></span><span class="op">(</span><span class="va">ht</span><span class="op">)</span>
+
+            <span class="fu">ht_obj</span><span class="op">(</span><span class="va">ht</span><span class="op">)</span>
+            <span class="fu">ht_pos_obj</span><span class="op">(</span><span class="va">ht_pos</span><span class="op">)</span>
+        <span class="op">}</span><span class="op">)</span>
+    <span class="op">}</span><span class="op">)</span>
+
+    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">heatmap_click</span>, <span class="op">{</span>
+        <span class="va">pos</span> <span class="op">=</span> <span class="fu">InteractiveComplexHeatmap</span><span class="fu">:::</span><span class="fu">get_pos_from_click</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">heatmap_click</span><span class="op">)</span>
+
+        <span class="va">selection</span> <span class="op">=</span> <span class="fu"><a href="../reference/selectPosition.html">selectPosition</a></span><span class="op">(</span><span class="fu">ht_obj</span><span class="op">(</span><span class="op">)</span>, <span class="va">pos</span>, mark <span class="op">=</span> <span class="cn">FALSE</span>, ht_pos <span class="op">=</span> <span class="fu">ht_pos_obj</span><span class="op">(</span><span class="op">)</span>, 
+            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+        <span class="va">output</span><span class="op">$</span><span class="va">output</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderPrint</a></span><span class="op">(</span><span class="op">{</span>
+            <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">selection</span><span class="op">)</span>
+        <span class="op">}</span><span class="op">)</span>
+    <span class="op">}</span><span class="op">)</span>
+
+    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">heatmap_brush</span>, <span class="op">{</span>
+        <span class="va">lt</span> <span class="op">=</span> <span class="fu">InteractiveComplexHeatmap</span><span class="fu">:::</span><span class="fu">get_pos_from_brush</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">heatmap_brush</span><span class="op">)</span>
+
+        <span class="va">selection</span> <span class="op">=</span> <span class="fu"><a href="../reference/selectArea.html">selectArea</a></span><span class="op">(</span><span class="fu">ht_obj</span><span class="op">(</span><span class="op">)</span>, <span class="va">lt</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">lt</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, mark <span class="op">=</span> <span class="cn">FALSE</span>, ht_pos <span class="op">=</span> <span class="fu">ht_pos_obj</span><span class="op">(</span><span class="op">)</span>, 
+            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+        <span class="va">output</span><span class="op">$</span><span class="va">output</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderPrint</a></span><span class="op">(</span><span class="op">{</span>
+            <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">selection</span><span class="op">)</span>
+        <span class="op">}</span><span class="op">)</span>
+    <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
+<p>In this simple Shiny app, a click or a brush on heatmap prints the corresponding data frame that contains the information of the selected cells.</p>
+<p>There are several points that need to be noticed:</p>
+<ol style="list-style-type: decimal">
+<li>
+<code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html">draw()</a></code> and <code><a href="../reference/htPositionsOnDevice.html">htPositionsOnDevice()</a></code> need to be put inside the <code><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot()</a></code>.</li>
+<li>To get the position of the click on heatmap, <code>InteractiveComplexHeatmap:::get_pos_from_click()</code> should be used. Note this function is not exported, thus you need to add <code>InteractiveComplexHeatmap:::</code> prefix. With knowing the position of the click, it can be sent to <code><a href="../reference/selectPosition.html">selectPosition()</a></code> to correspond to the original matrix.</li>
+<li>Similarly, to get the positions of the area that was brushed on heatmap, <code>InteractiveComplexHeatmap:::get_pos_from_brush()</code> should be used.</li>
+</ol>
+<p>This method also works for complex heatmaps, e.g. with row or column splitting, or with multiple heatmaps.</p>
+<p><br><br><br><br><br></p>
 </div>
   </div>
 

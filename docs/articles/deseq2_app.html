@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.12.1000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.12.1005</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
       <h1 data-toc-skip>A Shiny app for visualizing DESeq2 results</h1>
                         <h4 class="author">Zuguang Gu ( <a href="mailto:z.gu@dkfz.de" class="email">z.gu@dkfz.de</a> )</h4>
             
-            <h4 class="date">2021-03-20</h4>
+            <h4 class="date">2021-03-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/blob/master/vignettes/deseq2_app.Rmd"><code>vignettes/deseq2_app.Rmd</code></a></small>
       <div class="hidden name"><code>deseq2_app.Rmd</code></div>
@@ -119,7 +119,11 @@ img {
     margin: 0 5px;
 }
 </style>
-<p>In this vignette, I demonstrate how to implement a Shiny app for visualizing DESeq2 results with <strong>InteractiveComplexHeatmap</strong> package. First we run DESeq2 analysis on the <strong>airway</strong> dataset:</p>
+<p>In this vignette, I demonstrate how to implement a Shiny app for visualizing DESeq2 results with <strong>InteractiveComplexHeatmap</strong> package.</p>
+<div id="implement-from-scratch" class="section level2">
+<h2 class="hasAnchor">
+<a href="#implement-from-scratch" class="anchor"></a>Implement from scratch</h2>
+<p>First we run DESeq2 analysis on the <strong>airway</strong> dataset:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">airway</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">airway</span><span class="op">)</span>
@@ -349,12 +353,31 @@ which(l)[row_index]
 <p>This app can be directly generated with <code><a href="../reference/htShinyExample.html">htShinyExample(10.5)</a></code>. A demonstration of the app is in following figure:</p>
 <script>
 document.write('<img src="https://user-images.githubusercontent.com/449218/111832925-b16ae280-88f1-11eb-8530-290374f9f2c2.gif" width="100%" />');
-</script><p><br><br><br><br><br><br></p>
+</script>
+</div>
+<div id="the-function-interactivate" class="section level2">
+<h2 class="hasAnchor">
+<a href="#the-function-interactivate" class="anchor"></a>The function <code>interactivate()</code>
+</h2>
+<p><strong>InteractiveComplexHeatmap</strong> has a generic function <code><a href="../reference/interactivate.html">interactivate()</a></code> which aims to provide an API to generate Shiny apps for objects that contain results for specific analysis. Currently, it only has an implementation for the <code>DESeqDataSet</code> object, which is from DESeq2 analysis. It can be simply used as:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mikelove/DESeq2">DESeq2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">airway</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">airway</span><span class="op">)</span>
+
+<span class="va">dds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeqDataSet.html">DESeqDataSet</a></span><span class="op">(</span><span class="va">sairwaye</span>, design <span class="op">=</span> <span class="op">~</span> <span class="va">dex</span><span class="op">)</span>
+<span class="va">dds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span><span class="op">(</span><span class="va">dds</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/interactivate.html">interactivate</a></span><span class="op">(</span><span class="va">dds</span><span class="op">)</span></code></pre></div>
+<p><br><br><br><br><br><br></p>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 

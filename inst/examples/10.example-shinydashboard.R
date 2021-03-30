@@ -264,7 +264,7 @@ brush_action = function(df, input, output, session) {
         make_maplot(res, selected)
     })
 
-    output[["volcanno_plot"]] = renderPlot({
+    output[["volcano_plot"]] = renderPlot({
         make_volcano(res, selected)
     })
 
@@ -282,7 +282,7 @@ l = res$padj <= @{input$fdr} &
 l[is.na(l)] = FALSE
 which(l)[row_index]
 </pre>
-<p>where <code>res</code> is the complete data frame from DESeq2 analysis and <code>row_index</code> is the <code>row_index</code> column captured from the code in <b>Output</b>.</p>"))
+<p>where <code>res</code> is the complete data frame (by function <code>results()</code>) from DESeq2 analysis and <code>row_index</code> is the <code>row_index</code> column captured from the code in <b>Output</b>.</p>"))
     	}
     })
 }
@@ -316,8 +316,8 @@ body = dashboardBody(
             box(title = "MA-plot", width = NULL, solidHeader = TRUE, status = "primary",
                 plotOutput("ma_plot")
             ),
-            box(title = "Volcanno plot", width = NULL, solidHeader = TRUE, status = "primary",
-                plotOutput("volcanno_plot")
+            box(title = "Volcano plot", width = NULL, solidHeader = TRUE, status = "primary",
+                plotOutput("volcano_plot")
             ),
             box(title = "Result table of the selected genes", width = NULL, solidHeader = TRUE, status = "primary",
                 DTOutput("res_table")

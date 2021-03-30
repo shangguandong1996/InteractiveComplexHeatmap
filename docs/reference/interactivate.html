@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Process heatmaps on the sever side — makeInteractiveComplexHeatmap • InteractiveComplexHeatmap</title>
+<title>Generic function for interactivate an object in an interactive Shiny app — interactivate • InteractiveComplexHeatmap</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Process heatmaps on the sever side — makeInteractiveComplexHeatmap" />
-<meta property="og:description" content="Process heatmaps on the sever side" />
+<meta property="og:title" content="Generic function for interactivate an object in an interactive Shiny app — interactivate" />
+<meta property="og:description" content="Generic function for interactivate an object in an interactive Shiny app" />
 
 
 
@@ -135,84 +135,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Process heatmaps on the sever side</h1>
+    <h1>Generic function for interactivate an object in an interactive Shiny app</h1>
     
-    <div class="hidden name"><code>makeInteractiveComplexHeatmap.Rd</code></div>
+    <div class="hidden name"><code>interactivate.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Process heatmaps on the sever side</p>
+    <p>Generic function for interactivate an object in an interactive Shiny app</p>
     </div>
 
-    <pre class="usage"><span class='fu'>makeInteractiveComplexHeatmap</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>ht_list</span>,
-    heatmap_id <span class='op'>=</span> <span class='va'>shiny_env</span><span class='op'>$</span><span class='va'>current_heatmap_id</span>,
-    click_action <span class='op'>=</span> <span class='cn'>NULL</span>, hover_action <span class='op'>=</span> <span class='cn'>NULL</span>,
-    dblclick_action <span class='op'>=</span> <span class='cn'>NULL</span>, brush_action <span class='op'>=</span> <span class='cn'>NULL</span>, res <span class='op'>=</span> <span class='fl'>72</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>interactivate</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>input</th>
-      <td><p>Passed from the Shiny server function.</p></td>
+      <th>x</th>
+      <td><p>An object.</p></td>
     </tr>
     <tr>
-      <th>output</th>
-      <td><p>Passed from the Shiny server function.</p></td>
-    </tr>
-    <tr>
-      <th>session</th>
-      <td><p>Passed from the Shiny server function.</p></td>
-    </tr>
-    <tr>
-      <th>ht_list</th>
-      <td><p>A <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap-class.html'>Heatmap-class</a></code> or a <code><a href='https://rdrr.io/pkg/ComplexHeatmap/man/HeatmapList-class.html'>HeatmapList-class</a></code> object.</p></td>
-    </tr>
-    <tr>
-      <th>heatmap_id</th>
-      <td><p>The corresponding heatmap ID from the UI. If there is only one interactive heatmap in the app,  this argument does not need to be specified and it will use the current one used in <code><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>click_action</th>
-      <td><p>Additional actions on the server side when receiving a click event on the UI. This self-defined function should accept two or four arguments. If it is two arguments, they should be <code>df</code> and <code>output</code> and if it is four arguments, they should be <code>df</code>, <code>input</code>, <code>output</code> and <code>session</code>.</p></td>
-    </tr>
-    <tr>
-      <th>hover_action</th>
-      <td><p>Additional actions at the server side when receiving a hover event on the UI.</p></td>
-    </tr>
-    <tr>
-      <th>dblclick_action</th>
-      <td><p>Additional actions at the server side when receiving a dblclick event on the UI.</p></td>
-    </tr>
-    <tr>
-      <th>brush_action</th>
-      <td><p>Additional actions at the server side when receiving a brush event on the UI.</p></td>
-    </tr>
-    <tr>
-      <th>res</th>
-      <td><p>Resolution of the plot, pass to <code><a href='https://rdrr.io/pkg/shiny/man/renderPlot.html'>renderPlot</a></code>.</p></td>
+      <th>...</th>
+      <td><p>Other arguments.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>No value is returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='va'>ht</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html'>Heatmap</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
-    <span class='va'>ht</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html'>draw</a></span><span class='op'>(</span><span class='va'>ht</span><span class='op'>)</span>
-
-    <span class='va'>ui</span> <span class='op'>=</span> <span class='fu'>fluidPage</span><span class='op'>(</span>
-        <span class='fu'><a href='InteractiveComplexHeatmapOutput.html'>InteractiveComplexHeatmapOutput</a></span><span class='op'>(</span><span class='op'>)</span>
-    <span class='op'>)</span>
-
-    <span class='va'>server</span> <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span><span class='op'>)</span> <span class='op'>{</span>
-        <span class='fu'>makeInteractiveComplexHeatmap</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span>, <span class='va'>ht</span><span class='op'>)</span>
-    <span class='op'>}</span>
-
-    <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/shinyApp.html'>shinyApp</a></span><span class='op'>(</span><span class='va'>ui</span>, <span class='va'>server</span><span class='op'>)</span>
-<span class='op'>}</span>
+    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
+<span class='cn'>NULL</span>
+</div><div class='output co'>#&gt; NULL</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
