@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.12.1005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.13.9000</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
       <h1 data-toc-skip>Functions for Shiny app development</h1>
                         <h4 class="author">Zuguang Gu ( <a href="mailto:z.gu@dkfz.de" class="email">z.gu@dkfz.de</a> )</h4>
             
-            <h4 class="date">2021-03-30</h4>
+            <h4 class="date">2021-03-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jokergoo/InteractiveComplexHeatmap/blob/master/vignettes/shiny_dev.Rmd"><code>vignettes/shiny_dev.Rmd</code></a></small>
       <div class="hidden name"><code>shiny_dev.Rmd</code></div>
@@ -632,7 +632,7 @@ document.write('<img src="https://jokergoo.github.io/images/dynamic_widget3.gif"
     <span class="op">}</span><span class="op">)</span>
 
     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">heatmap_click</span>, <span class="op">{</span>
-        <span class="va">pos</span> <span class="op">=</span> <span class="fu">InteractiveComplexHeatmap</span><span class="fu">:::</span><span class="fu">get_pos_from_click</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">heatmap_click</span><span class="op">)</span>
+        <span class="va">pos</span> <span class="op">=</span> <span class="fu"><a href="../reference/getPositionFromClick.html">getPositionFromClick</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">heatmap_click</span><span class="op">)</span>
 
         <span class="va">selection</span> <span class="op">=</span> <span class="fu"><a href="../reference/selectPosition.html">selectPosition</a></span><span class="op">(</span><span class="fu">ht_obj</span><span class="op">(</span><span class="op">)</span>, <span class="va">pos</span>, mark <span class="op">=</span> <span class="cn">FALSE</span>, ht_pos <span class="op">=</span> <span class="fu">ht_pos_obj</span><span class="op">(</span><span class="op">)</span>, 
             verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
@@ -642,7 +642,7 @@ document.write('<img src="https://jokergoo.github.io/images/dynamic_widget3.gif"
     <span class="op">}</span><span class="op">)</span>
 
     <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">heatmap_brush</span>, <span class="op">{</span>
-        <span class="va">lt</span> <span class="op">=</span> <span class="fu">InteractiveComplexHeatmap</span><span class="fu">:::</span><span class="fu">get_pos_from_brush</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">heatmap_brush</span><span class="op">)</span>
+        <span class="va">lt</span> <span class="op">=</span> <span class="fu"><a href="../reference/getPositionFromBrush.html">getPositionFromBrush</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">heatmap_brush</span><span class="op">)</span>
 
         <span class="va">selection</span> <span class="op">=</span> <span class="fu"><a href="../reference/selectArea.html">selectArea</a></span><span class="op">(</span><span class="fu">ht_obj</span><span class="op">(</span><span class="op">)</span>, <span class="va">lt</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">lt</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, mark <span class="op">=</span> <span class="cn">FALSE</span>, ht_pos <span class="op">=</span> <span class="fu">ht_pos_obj</span><span class="op">(</span><span class="op">)</span>, 
             verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
@@ -657,8 +657,8 @@ document.write('<img src="https://jokergoo.github.io/images/dynamic_widget3.gif"
 <ol style="list-style-type: decimal">
 <li>
 <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/draw-dispatch.html">draw()</a></code> and <code><a href="../reference/htPositionsOnDevice.html">htPositionsOnDevice()</a></code> need to be put inside the <code><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot()</a></code>.</li>
-<li>To get the position of the click on heatmap, <code>InteractiveComplexHeatmap:::get_pos_from_click()</code> should be used. Note this function is not exported, thus you need to add <code>InteractiveComplexHeatmap:::</code> prefix. With knowing the position of the click, it can be sent to <code><a href="../reference/selectPosition.html">selectPosition()</a></code> to correspond to the original matrix.</li>
-<li>Similarly, to get the positions of the area that was brushed on heatmap, <code>InteractiveComplexHeatmap:::get_pos_from_brush()</code> should be used.</li>
+<li>To get the position of the click on heatmap, <code><a href="../reference/getPositionFromClick.html">getPositionFromClick()</a></code> should be used. With knowing the position of the click, it can be sent to <code><a href="../reference/selectPosition.html">selectPosition()</a></code> to correspond to the original matrix.</li>
+<li>Similarly, to get the positions of the area that was brushed on heatmap, <code><a href="../reference/getPositionFromBrush.html">getPositionFromBrush()</a></code> should be used.</li>
 </ol>
 <p>This method also works for complex heatmaps, e.g. with row or column splitting, or with multiple heatmaps.</p>
 <p><br><br><br><br><br></p>
