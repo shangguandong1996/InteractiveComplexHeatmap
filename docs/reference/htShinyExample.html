@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.13.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.15</span>
       </span>
     </div>
 
@@ -102,6 +102,9 @@
     </li>
     <li>
       <a href="../articles/deseq2_app.html">A Shiny app for visualizing DESeq2 results</a>
+    </li>
+    <li>
+      <a href="../articles/from_scratch.html">Implement interactive heatmap from scratch</a>
     </li>
     <li>
       <a href="../articles/implementation.html">How interactive complex heatmap is implemented</a>
@@ -177,7 +180,9 @@
 #&gt;  1.7 Use last generated heatmap, an example from cola package.
 #&gt;  1.8 Use last generated heatmap, an app with three interactive heatmaps
 #&gt;  1.9 Demonstrate hover, click and dblclick actions to select cells.
-#&gt;  1.10 Only response to one of click/hover/dblclick/hover events.
+#&gt;  1.10 Only response to one of click/hover/dblclick/hover events. Please use
+#&gt;       htShinyExample('1.10') to get this example (quote the index, or else
+#&gt;       htShinyExample(1.10) will be treated as the same as htShinyExample(1.1)).
 #&gt;  1.11 Interactive heatmap under compact mode.
 #&gt; 
 #&gt; ──────── 2. On other plots and packages ───────────────────────────────────────────── 
@@ -189,6 +194,8 @@
 #&gt;  2.6 An interactive heatmap from heatmap.2().
 #&gt;  2.7 A heatmap produced from tidyHeatmap package.
 #&gt;  2.8 Genome-scale heatmap.
+#&gt;  2.9 A package-dependency heatmap. You can try to control "Fill figure region"
+#&gt;      and "Remove empty rows and columns" in the tools under the sub-heatmap.
 #&gt; 
 #&gt; ──────── 3. Enriched heatmaps ─────────────────────────────────────────────────────── 
 #&gt;  3.1 A single enriched heatmap.
@@ -212,10 +219,16 @@
 #&gt;  5.6 A heatmap on Jaccard coefficients for a list of genomic regions. Clicking
 #&gt;      on the cell generates a Hilbert curve of how the two sets of genomic
 #&gt;      regions overlap.
-#&gt;  5.7 Implement interactivity from scratch.
+#&gt;  5.7 Implement interactivity from scratch. Instead of generating the whole
+#&gt;      interactive heatmap widget, it only returns the information of rows and
+#&gt;      columns that user have selected on heatmap and users can use this
+#&gt;      information to build their own interactive heatmap widgets.
+#&gt;  5.8 Implement interactivity from scratch. A visualization of 2D density
+#&gt;      distribution. Brushing on heatmap triggers a new 2D density estimation
+#&gt;      only on the subset of data.
 #&gt; 
 #&gt; ──────── 6. Dynamically generate heatmap widget in Shiny app ──────────────────────── 
-#&gt;  6.1 The matrix is dynamically generated.
+#&gt;  6.1 The matrix with different dimensions is dynamically generated.
 #&gt;  6.2 Reorder by a column that is specified by user.
 #&gt;  6.3 Dynamically generate the widget with InteractiveComplexHeatmapModal(). The
 #&gt;      modal is triggered by an action button.
@@ -249,8 +262,8 @@
 #&gt;  10.1 Separate the three UI components into three boxes.
 #&gt;  10.2 The three UI components are draggable.
 #&gt;  10.3 A Shiny dashboard with two tabs.
-#&gt;  10.4 Only contain the original heatmap where output floats
-#&gt;  10.5 A complex dashboard that visualizes a DESeq2 results
+#&gt;  10.4 Only contain the original heatmap where output floats.
+#&gt;  10.5 A complex dashboard that visualizes a DESeq2 results.
 #&gt; </div><div class='input'>
 <span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='fu'>htShinyExample</span><span class='op'>(</span><span class='fl'>4.2</span><span class='op'>)</span>

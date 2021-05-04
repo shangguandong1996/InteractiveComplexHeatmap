@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">InteractiveComplexHeatmap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.13.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.15</span>
       </span>
     </div>
 
@@ -102,6 +102,9 @@
     </li>
     <li>
       <a href="../articles/deseq2_app.html">A Shiny app for visualizing DESeq2 results</a>
+    </li>
+    <li>
+      <a href="../articles/from_scratch.html">Implement interactive heatmap from scratch</a>
     </li>
     <li>
       <a href="../articles/implementation.html">How interactive complex heatmap is implemented</a>
@@ -151,7 +154,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dblclick</th>
-      <td><p>The input dblclick object. Assume <code>heatmap_dblclick</code> is the value set to argument <code>dblclick</code> in <code><a href='https://rdrr.io/pkg/shiny/man/plotOutput.html'>plotOutput</a></code>, then the value here is <code>input$heatmap_dblclick</code>.</p></td>
+      <td><p>The input dblclick object. Assume <code>heatmap_dblclick</code> is the ID set to argument <code>dblclick</code> in <code><a href='https://rdrr.io/pkg/shiny/man/plotOutput.html'>plotOutput</a></code>, then the value here is <code>input$heatmap_dblclick</code>.</p></td>
     </tr>
     <tr>
       <th>ratio</th>
@@ -166,7 +169,8 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># There is no example</span>
 <span class='cn'>NULL</span>
-</div><div class='output co'>#&gt; NULL</div></pre>
+</div><div class='output co'>#&gt; NULL</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -9,19 +9,25 @@ library(SingleCellExperiment)
 library(SC3)
 library(scater)
 
-sce <- SingleCellExperiment(
-    assays = list(
-        counts = as.matrix(yan),
-        logcounts = log2(as.matrix(yan) + 1)
-    ), 
-    colData = ann
-)
+if(0) {
+	# the following code is runnable. To save the runtime of this example, the object `sce` is already generated. 
+	sce <- SingleCellExperiment(
+	    assays = list(
+	        counts = as.matrix(yan),
+	        logcounts = log2(as.matrix(yan) + 1)
+	    ), 
+	    colData = ann
+	)
 
-rowData(sce)$feature_symbol <- rownames(sce)
-sce <- sce[!duplicated(rowData(sce)$feature_symbol), ]
-sce <- runPCA(sce)
-sce <- sc3(sce, ks = 2:4, biology = TRUE)
+	rowData(sce)$feature_symbol <- rownames(sce)
+	sce <- sce[!duplicated(rowData(sce)$feature_symbol), ]
+	sce <- runPCA(sce)
+	sce <- sc3(sce, ks = 2:4, biology = TRUE)
+}
 
+download.file("https://jokergoo.github.io/SC3_sce.rds", "SC3_sce.rds")
+sce = readRDS("SC3_sce.rds")
+file.remove("SC3_sce.rds")
 # pheatmap() is internally used in sc3_plot_expression()
 sc3_plot_expression(sce, k = 3)
 htShiny()
@@ -59,12 +65,12 @@ assignInNamespace("pheatmap", ComplexHeatmap::pheatmap, ns = "pheatmap")
 # We construct two functions p1() and p2() which internally generate heatmaps
 # with pheatmap() but do not return the heatmap objects.
 p1 = function(mat) {
-	draw(pheatmap::pheatmap(mat, col = c("white", "red")))
+	pheatmap::pheatmap(mat, col = c("white", "red"))
 	1
 }
 
 p2= function(mat) {
-	draw(pheatmap::pheatmap(mat, col = c("white", "blue")))
+	pheatmap::pheatmap(mat, col = c("white", "blue"))
 	1
 }
 

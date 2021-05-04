@@ -164,7 +164,7 @@ server = function(input, output, session) {
 shinyApp(ui, server)
 
 ################################################################
-# title: Only response to one of click/hover/dblclick/hover events.
+# title: Only response to one of click/hover/dblclick/hover events. Please use htShinyExample('1.10') to get this example (quote the index, or else htShinyExample(1.10) will be treated as the same as htShinyExample(1.1)).
 
 m = matrix(rnorm(10*10), 10)
 ht = Heatmap(m)
@@ -175,7 +175,7 @@ ui = tabsetPanel(
     tabPanel("response = 'hover'",    InteractiveComplexHeatmapOutput("heatmap_1", action = "hover", response = "hover")),
     tabPanel("response = 'click'",    InteractiveComplexHeatmapOutput("heatmap_2", action = "click", response = "click")),
     tabPanel("response = 'dblclick'", InteractiveComplexHeatmapOutput("heatmap_3", action = "dblclick", response = "dblclick")),
-    tabPanel("response = 'brush-output'", InteractiveComplexHeatmapOutput("heatmap_4", response = "brush-output"))
+    tabPanel("response = 'brush-output'", InteractiveComplexHeatmapOutput("heatmap_4", response = "brush-output")),
     tabPanel("response = 'brush'",    InteractiveComplexHeatmapOutput("heatmap_5", response = "brush"))
 )
 

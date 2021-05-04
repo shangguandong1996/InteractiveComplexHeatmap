@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>UI for the output — HeatmapInfoOutput • InteractiveComplexHeatmap</title>
+<title>Interactive Shiny application for 2D density distribution — interactivateDensity2D • InteractiveComplexHeatmap</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="UI for the output — HeatmapInfoOutput" />
-<meta property="og:description" content="UI for the output" />
+<meta property="og:title" content="Interactive Shiny application for 2D density distribution — interactivateDensity2D" />
+<meta property="og:description" content="Interactive Shiny application for 2D density distribution" />
 
 
 
@@ -138,62 +138,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>UI for the output</h1>
+    <h1>Interactive Shiny application for 2D density distribution</h1>
     
-    <div class="hidden name"><code>HeatmapInfoOutput.Rd</code></div>
+    <div class="hidden name"><code>interactivateDensity2D.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>UI for the output</p>
+    <p>Interactive Shiny application for 2D density distribution</p>
     </div>
 
-    <pre class="usage"><span class='fu'>HeatmapInfoOutput</span><span class='op'>(</span><span class='va'>heatmap_id</span>, title <span class='op'>=</span> <span class='cn'>NULL</span>, width <span class='op'>=</span> <span class='fl'>400</span>,
-    output_ui <span class='op'>=</span> <span class='fu'>default_output_ui</span><span class='op'>(</span><span class='va'>heatmap_id</span><span class='op'>)</span>,
-    output_ui_float <span class='op'>=</span> <span class='cn'>FALSE</span>, action <span class='op'>=</span> <span class='cn'>NULL</span>, response <span class='op'>=</span> <span class='cn'>NULL</span>, internal <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>interactivateDensity2D</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>heatmap_id</th>
-      <td><p>ID of the plot.</p></td>
+      <th>x</th>
+      <td><p>A numeric vector.</p></td>
     </tr>
     <tr>
-      <th>title</th>
-      <td><p>Title of the output.</p></td>
+      <th>y</th>
+      <td><p>A numeric vector.</p></td>
     </tr>
     <tr>
-      <th>width</th>
-      <td><p>Width of the output div.</p></td>
-    </tr>
-    <tr>
-      <th>output_ui</th>
-      <td><p>A <code><a href='https://rdrr.io/pkg/shiny/man/htmlOutput.html'>htmlOutput</a></code> or other <code>*Output</code> object (defined in shiny or other related packages).</p></td>
-    </tr>
-    <tr>
-      <th>output_ui_float</th>
-      <td><p>Whether the UI defined by <code>output_ui</code> floats at the mouse positions.</p></td>
-    </tr>
-    <tr>
-      <th>action</th>
-      <td><p>It is only used when <code>output_ui_float = TRUE</code> to properly bind the floating frame to the event on heatmap (i.e. <code>click</code>, <code>hover</code> or <code>dblclick</code>). If <code>HeatmapInfoOutput</code> is executed after <code><a href='originalHeatmapOutput.html'>originalHeatmapOutput</a></code>, the value for it is automatically decided</p></td>
-    </tr>
-    <tr>
-      <th>response</th>
-      <td><p>It is only used when <code>output_ui_float = TRUE</code> and <code>response = "brush"</code> or <code>response = "brush-output"</code>, so that single clicking or hovering won't have any effect, in other word, there is only response from brushing. If <code>HeatmapInfoOutput</code> is executed after <code><a href='originalHeatmapOutput.html'>originalHeatmapOutput</a></code>, the value for it is automatically decided</p></td>
-    </tr>
-    <tr>
-      <th>internal</th>
-      <td><p>Internally used.</p></td>
+      <th>...</th>
+      <td><p>All pass to <code><a href='https://rdrr.io/pkg/ks/man/kde.html'>kde</a></code>.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='originalHeatmapOutput.html'>originalHeatmapOutput</a></code>, <code><a href='subHeatmapOutput.html'>subHeatmapOutput</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># See examples on the help page of originalHeatmapOutput()</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>lt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"2d_density_xy.rds"</span>, package <span class='op'>=</span> <span class='st'>"InteractiveComplexHeatmap"</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='fu'>interactivateDensity2D</span><span class='op'>(</span><span class='va'>lt</span><span class='op'>$</span><span class='va'>x</span>, <span class='va'>lt</span><span class='op'>$</span><span class='va'>y</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
